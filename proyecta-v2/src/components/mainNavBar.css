@@ -1,7 +1,17 @@
+
+
 #logo{
     width: max-content;
+    font-family: BerkshireSwash;
+    font-size: x-large;
+    color: white;
 }
 
-.NavBarTitle{
-    font-family: BerkshireSwash;
+button{
+    font-family: nunitoRegular !important;
+    letter-spacing: 0.05em; 
+}
+
+.mainNavBar{
+    background-color: var(--base-color);
 }

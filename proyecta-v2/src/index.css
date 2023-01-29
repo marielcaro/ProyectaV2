@@ -1,3 +1,16 @@
+
+html, body, #root, #root>div {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  height: 100%;
+}
+
+:root{
+  --base-color:#EB5401;
+  --button-color: #018C96;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +18,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 code {

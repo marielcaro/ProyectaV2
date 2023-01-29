@@ -34,9 +34,15 @@
 }
 
 
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 100% !important;
+        margin-left: 0!important;
+        margin-right: 0 !important;
+    }
 
 .App {
   text-align: center;
+  height: 1vh;
 }
 
 
