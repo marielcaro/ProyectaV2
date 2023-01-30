@@ -2,10 +2,14 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 
+import { useSelector, useDispatch } from 'react-redux'
+import { access, exit } from '../features/login/loginAction'
+
 import icon from '../assets/icons/proyectaIcon.png';
 import './mainNavBar.css';
 const MainNavBar = () => {
 
+  const dispatch = useDispatch()
 
 return (
 <Navbar className='mainNavBar'>
@@ -22,7 +26,7 @@ return (
             
           </Navbar.Brand>
 
-          <Button  variant="light">
+          <Button onClick={() => dispatch(access())}  variant="light">
             Acceder
           </Button>
         </Container>

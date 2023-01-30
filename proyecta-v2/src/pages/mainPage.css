@@ -1,6 +1,6 @@
 
 #welcomeImg{
-    height: auto;
+    max-width: 75%;
 }
 
 @media (max-width: 768px) {
@@ -16,6 +16,7 @@
     color: white;
     
 }
+
 .welcome{
     background-image: linear-gradient(#EB5401, #EFB52B);
     
