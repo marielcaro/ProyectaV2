@@ -1,0 +1,14 @@
+/* svg{
+    height: 50px !important;
+}
+
+label{
+    height: 200px !important;
+    width: 300px !important;
+} */
+
+.boxImage{
+    background-color: aqua;
+    height: 200px !important;
+    width: 300px !important;
+} 

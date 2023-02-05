@@ -1,7 +1,53 @@
+
+.icons
+{
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-right: 12px;
+
+}
+
+.card-title{
+    font-family: BerkshireSwash !important;
+    color: #EB5401;
+    font-size: 36pt;
+}
+
+.card-subtitle{
+    font-family: nunitoBold !important;
+    font-size: 14pt;
+}
+
+.box{
+    width: 100% !important;
+    max-height: 60% !important;
+}
+
 .registerUser{
     background: rgb(255,255,255);
     background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,251,215,1) 62%, rgba(250,165,7,1) 100%);
-    
+ 
   
-  
+}
+
+@media (min-width: 768px) {
+    .formColumn{
+        font-family: nunitoRegular;
+        width: 36% !important;
+    }
+
+ }
+
+ @media (max-width: 768px) {
+    .formColumn{
+        font-family: nunitoRegular;
+        margin-bottom: 1rem;
+        width: 80% !important;
+    }
+
+ }
+
+
+label, input{
+    font-family: nunitoLight !important;
 }
