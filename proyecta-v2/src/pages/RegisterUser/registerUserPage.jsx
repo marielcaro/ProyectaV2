@@ -2,7 +2,6 @@ import './registerUserPage.css';
 
 import Stack from '@mui/material/Stack';
 import ImageUploader from '../../components/imageUploader/imageUploader';
-import ImageDragDropUploader from '../../components/imageUploader/imageDragDropUploader';
 
 import * as React from 'react';
 import BasicDatePicker from '../../components/DatePicker/DatePicker';
