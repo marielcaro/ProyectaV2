@@ -1,9 +1,15 @@
+.selectorContainer{
+    width: 100% !important;
+}
+
+
 
 .icons
 {
     margin-top: 4px;
     margin-bottom: 4px;
     margin-right: 12px;
+    margin-left: 12px;
 
 }
 
@@ -30,20 +36,31 @@
   
 }
 
-@media (min-width: 768px) {
+@media (min-width: 900px) {
     .formColumn{
         font-family: nunitoRegular;
-        width: 36% !important;
+        width: 25% !important;
     }
+
+    .createBtn{
+        margin-top: 25% !important;
+        margin: auto;
+     }
+     
 
  }
 
- @media (max-width: 768px) {
+ @media (max-width: 900px) {
     .formColumn{
         font-family: nunitoRegular;
         margin-bottom: 1rem;
-        width: 80% !important;
+        width: 90% !important;
     }
+
+    .createBtn{
+        margin-left: 50%;
+     }
+     
 
  }
 

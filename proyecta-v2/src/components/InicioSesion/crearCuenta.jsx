@@ -60,7 +60,7 @@ const CrearCuenta = () => {
       <img className='icons' src={mail} height="24" width="24" alt="Mail" />
          <TextField fullWidth  
                    
-          id="standard-basic" label="Correo Electrónico" variant="standard" />
+          id="standard-basic" label="Correo Electrónico"  type="email" variant="standard" />
 
 </Box>
 
@@ -70,7 +70,7 @@ const CrearCuenta = () => {
 
          <TextField fullWidth  
                
-          id="standard-basic" label="Contraseña" variant="standard" />
+          id="standard-basic" label="Contraseña"  type="password" variant="standard" />
 </Box>
 
 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -79,7 +79,7 @@ const CrearCuenta = () => {
 
          <TextField fullWidth  
                
-          id="standard-basic" label="Repetir Contraseña" variant="standard" />
+          id="standard-basic" label="Repetir Contraseña"  type="password" variant="standard" />
 </Box>
 
 <button type="button" className="createBtn shadow-sm btn btn-primary px-4 rounded-pill  ">Crear Cuenta</button>

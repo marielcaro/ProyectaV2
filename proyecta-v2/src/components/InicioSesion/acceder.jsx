@@ -56,7 +56,7 @@ const Acceder = () => {
 
          <TextField fullWidth  
                
-          id="standard-basic" label="Contraseña" variant="standard" />
+          id="standard-basic" label="Contraseña"  type="password" variant="standard" />
 </Box>
 
          <button onClick={() => dispatch(recover())} type="button" className="recover btn btn-link">¿Olvidaste tu Contraseña?</button>

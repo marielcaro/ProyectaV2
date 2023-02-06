@@ -60,7 +60,7 @@ const RecuperarCuenta = () => {
 
          <TextField fullWidth  
                
-          id="standard-basic" label="Contraseña" variant="standard" />
+          id="standard-basic" label="Contraseña"  type="password" variant="standard" />
 </Box>
 
 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -69,7 +69,7 @@ const RecuperarCuenta = () => {
 
          <TextField fullWidth  
                
-          id="standard-basic" label="Repetir Contraseña" variant="standard" />
+          id="standard-basic" label="Repetir Contraseña"  type="password" variant="standard" />
 </Box>
 
 <button type="button" className="recoverBtn shadow-sm btn btn-primary px-4 rounded-pill  ">Recuperar</button>
