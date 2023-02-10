@@ -1,0 +1,89 @@
+.toggleImage{
+   margin-top:6px;
+
+}
+
+.toggleButton:hover{
+    width:40px;
+    height: 40px;
+    margin-left: 32px;
+    margin-right: 24px;
+    border-color: lightgray;
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+    background-color: lightgray;
+    cursor:pointer;
+
+}
+
+.toggleButton{
+    width:40px;
+    height: 40px;
+    margin-left: 32px;
+    margin-right: 24px;
+    border-color: #F6EBF9;
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+    background-color: #F6EBF9;
+
+}
+
+.dotBadge{
+    top:4px;
+    left: 32px;
+
+}
+.icons{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.iconButton:hover{
+    margin-right: 8px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        border-radius: 50%;
+        border-color: lightsalmon;
+        border-width: 2px;
+        border-style:solid;
+        cursor:pointer;
+    }
+
+.iconButton{
+    width:40px;
+    height: 40px;
+margin-right: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-radius: 50%;
+    border-color: whitesmoke;
+    border-width: 2px;
+    border-style: solid;
+    background-image: url('../../../assets/icons/notificacion.png');
+    background-repeat: no-repeat;
+    background-size:auto;
+    background-position: center;
+}
+
+#logo{
+    width: max-content;
+    font-family: BerkshireSwash;
+    font-size: x-large;
+    color:  var(--base-color);
+}
+
+button{
+    font-family: nunitoRegular !important;
+    letter-spacing: 0.05em; 
+}
+
+.DashboardNavBar{
+    background-color: white;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #EB5401;
+    
+
+}

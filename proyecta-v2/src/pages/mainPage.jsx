@@ -13,7 +13,7 @@ const MainPage = () => {
     return (
         <div className='welcome container-fluid d-flex flex-grow-1 flex-column'>
       <div className='row  d-flex flex-grow-1  align-items-center' >
-        <div className='portada col  col-12 col-sm-12 col-md-4  col-lg-6 col-xl-6'>
+        <div className='portada col  col-12 col-sm-12 col-md-4  col-lg-6 col-xxl-8'>
           <div className='portadaPrincipal my-4'> 
                <h3> Investigación Colaborativa</h3>
                <h3> Universidad Nacional de Santiago del Estero </h3>
@@ -23,7 +23,7 @@ const MainPage = () => {
 
         </div>
         </div>
-        <div className='inicioSesion col col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6 '>
+        <div className='inicioSesion col col-12 col-sm-12 col-md-8 col-lg-6 col-xxl-4 '>
           <InicioSesion />
 
         </div>

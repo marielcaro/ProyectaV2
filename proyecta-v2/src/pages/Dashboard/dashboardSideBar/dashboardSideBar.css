@@ -1,0 +1,15 @@
+label{
+    padding-top:8px;
+    padding-bottom: 8px;
+}
+.ps-menu-button:hover{
+    background-color:white!important;
+}
+.ps-menu-root{
+    margin-top:24px;
+}
+.sidebar{
+    display: 'flex' !important;
+    height: 100% !important ;
+    box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+}

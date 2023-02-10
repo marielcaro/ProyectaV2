@@ -9,12 +9,15 @@ import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals';
 import * as bootstrap from 'bootstrap';
  import 'bootstrap/dist/css/bootstrap.min.css';
+ import { ProSidebarProvider } from 'react-pro-sidebar';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
      <Provider store={store}>
+     <ProSidebarProvider>
         <App />
+      </ProSidebarProvider>
     </Provider>
   </React.StrictMode>
 );
