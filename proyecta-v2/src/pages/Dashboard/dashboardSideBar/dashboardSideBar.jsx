@@ -59,7 +59,7 @@ const handleLostFocusCalendar = () =>{
 <div className='sidebarContainer'style={{ display: 'flex', height: '100%' }}>
     <Sidebar  className= 'sidebar' breakPoint="lg"  backgroundColor= '#F6EBF9'>
     <Menu>
-      <MenuItem label="tablero" onMouseOver={() => handleHoverDashboard()} onMouseOut={() => handleLostFocusDashboard()}>
+      <MenuItem className='menuItem' label="tablero" onMouseOver={() => handleHoverDashboard()} onMouseOut={() => handleLostFocusDashboard()}>
                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={dashImage} height="24" width="24" alt="tablero" />
                                         <label> 
@@ -69,7 +69,7 @@ const handleLostFocusCalendar = () =>{
                                     </Box>
     
       </MenuItem>
-      <MenuItem label="proyectos" onMouseOver={() => handleHoverProyectos()} onMouseOut={() => handleLostFocusProyectos()}> 
+      <MenuItem className='menuItem' label="proyectos" onMouseOver={() => handleHoverProyectos()} onMouseOut={() => handleLostFocusProyectos()}> 
        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={projectsImage} height="24" width="24" alt="tablero" />
                                         <label> 
@@ -78,7 +78,7 @@ const handleLostFocusCalendar = () =>{
 
                                     </Box>
      </MenuItem>
-      <MenuItem label="tareas" onMouseOver={() => handleHoverTareas()} onMouseOut={() => handleLostFocusTareas()} >  
+      <MenuItem className='menuItem' label="tareas" onMouseOver={() => handleHoverTareas()} onMouseOut={() => handleLostFocusTareas()} >  
       <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={tasksImage} height="24" width="24" alt="tablero" />
                                         <label> 
@@ -88,7 +88,7 @@ const handleLostFocusCalendar = () =>{
                                     </Box>
      </MenuItem>
 
-     <MenuItem label="calendario" onMouseOver={() => handleHoverCalendar()} onMouseOut={() => handleLostFocusCalendar()}>  
+     <MenuItem className='menuItem' label="calendario" onMouseOver={() => handleHoverCalendar()} onMouseOut={() => handleLostFocusCalendar()}>  
      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={calendarImage} height="24" width="24" alt="tablero" />
                                         <label> 
