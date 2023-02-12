@@ -1,3 +1,10 @@
+.AvatarButton:hover{
+    border-color: #018C96;
+    border-width: 2px;
+    border-style: solid;
+    cursor:pointer;
+}
+
 .toggleImage{
    margin-top:6px;
 

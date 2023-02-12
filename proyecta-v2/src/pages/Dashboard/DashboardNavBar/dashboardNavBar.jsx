@@ -16,11 +16,20 @@ import image from '../../../assets/images/sampleImage.jpg';
 import menu from '../../../assets/icons/menu.png';
 import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
 
+import { useState } from "react";
+import {useFloating} from '@floating-ui/react';
+
 const DashboardNavBar = () => {
 
   const dispatch = useDispatch()
   const { toggleSidebar, collapseSidebar, broken, collapsed, toggled } = useProSidebar();
-
+  const [isOpen, setIsOpen] = useState(false);
+ 
+  const {x, y, strategy, refs} = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+  });
+  
   const HandleToggleCollapsed = (toggled, collapsed) => {
       if(broken === false){
         console.log(broken)
@@ -59,7 +68,7 @@ return (
               <span className="visually-hidden">New alerts</span>
             </span>
           </div>
-            <Avatar alt="Orianna Queen" src={image}/>
+            <Avatar className="AvatarButton" alt="Orianna Queen" src={image}/>
           </Box>
 
         </Container>

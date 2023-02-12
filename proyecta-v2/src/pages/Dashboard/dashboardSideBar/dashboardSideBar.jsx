@@ -2,7 +2,7 @@ import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import './dashboardSideBar.css'
 import Box from '@mui/material/Box';
 
-import dashboard from '../../../assets/icons/dashboard.png'
+import dashboardIcon from '../../../assets/icons/dashboard.png'
 import dashboardnormal from '../../../assets/icons/dashboardNormal.png'
 import proyectos from '../../../assets/icons/proyectos.png'
 import proyectosFocus from '../../../assets/icons/proyectosFocus.png'
@@ -11,6 +11,8 @@ import tareasFocus from '../../../assets/icons/tareasFocus.png'
 import calendario from '../../../assets/icons/calendario.png'
 import calendarioFocus from '../../../assets/icons/calendarFocus.png'
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { projects, dashboard, tasks, calendar } from '../../../features/dashboard/dashboardAction.js'
 
 const DashboardSideBar = () => {
 const [dashImage, setDashImage] = useState(dashboardnormal);
@@ -19,8 +21,10 @@ const [tasksImage, setTasksImage] = useState(tareas);
 const [calendarImage, setCalendarImage] = useState(calendario);
 
 
+const dispatch = useDispatch()
+
 const handleHoverDashboard = () =>{
-  setDashImage(dashboard)
+  setDashImage(dashboardIcon)
 }
 
 const handleLostFocusDashboard = () =>{
@@ -59,7 +63,7 @@ const handleLostFocusCalendar = () =>{
 <div className='sidebarContainer'style={{ display: 'flex', height: '100%' }}>
     <Sidebar  className= 'sidebar' breakPoint="lg"  backgroundColor= '#F6EBF9'>
     <Menu>
-      <MenuItem className='menuItem' label="tablero" onMouseOver={() => handleHoverDashboard()} onMouseOut={() => handleLostFocusDashboard()}>
+      <MenuItem className='menuItem' label="tablero" onClick={() => dispatch(dashboard())} onMouseOver={() => handleHoverDashboard()} onMouseOut={() => handleLostFocusDashboard()}>
                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={dashImage} height="24" width="24" alt="tablero" />
                                         <label> 
@@ -69,7 +73,7 @@ const handleLostFocusCalendar = () =>{
                                     </Box>
     
       </MenuItem>
-      <MenuItem className='menuItem' label="proyectos" onMouseOver={() => handleHoverProyectos()} onMouseOut={() => handleLostFocusProyectos()}> 
+      <MenuItem className='menuItem' label="proyectos" onClick={() => dispatch(projects())} onMouseOver={() => handleHoverProyectos()} onMouseOut={() => handleLostFocusProyectos()}> 
        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={projectsImage} height="24" width="24" alt="tablero" />
                                         <label> 
@@ -78,7 +82,7 @@ const handleLostFocusCalendar = () =>{
 
                                     </Box>
      </MenuItem>
-      <MenuItem className='menuItem' label="tareas" onMouseOver={() => handleHoverTareas()} onMouseOut={() => handleLostFocusTareas()} >  
+      <MenuItem className='menuItem' label="tareas" onClick={() => dispatch(tasks())} onMouseOver={() => handleHoverTareas()} onMouseOut={() => handleLostFocusTareas()} >  
       <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={tasksImage} height="24" width="24" alt="tablero" />
                                         <label> 
@@ -88,7 +92,7 @@ const handleLostFocusCalendar = () =>{
                                     </Box>
      </MenuItem>
 
-     <MenuItem className='menuItem' label="calendario" onMouseOver={() => handleHoverCalendar()} onMouseOut={() => handleLostFocusCalendar()}>  
+     <MenuItem className='menuItem' label="calendario" onClick={() => dispatch(calendar())} onMouseOver={() => handleHoverCalendar()} onMouseOut={() => handleLostFocusCalendar()}>  
      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={calendarImage} height="24" width="24" alt="tablero" />
                                         <label> 
