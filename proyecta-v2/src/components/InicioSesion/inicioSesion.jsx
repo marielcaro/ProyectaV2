@@ -19,9 +19,14 @@ const InicioSesion = () => {
   console.log(login);
   const changeCardUI = () => {
           switch (login) {
-          case 'Access':
-            return   (<Acceder />)
-          break;
+         
+            case 'Access':
+        return   (<Acceder />)
+      break;
+      case 'Exit':
+        return (<Acceder />)
+        break;
+
           case 'Create':
             return (<CrearCuenta />)
             break;
@@ -39,7 +44,7 @@ const InicioSesion = () => {
 
     return (
     
-      <div className='box d-flex  mx-auto my-4  p-5 align-items-center  '>
+      <div className='box d-flex  mx-auto my-1  px-4  align-items-center  '>
    
           {changeCardUI()}
         </div>

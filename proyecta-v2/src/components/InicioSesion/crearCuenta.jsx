@@ -24,7 +24,7 @@ const CrearCuenta = () => {
     const dispatch = useDispatch()
 
     return(
-        <div className="crearCuenta card mx-auto my-4 w-100  p-5">
+        <div className="crearCuenta card mx-auto my-1   p-5">
     <IconButton onClick={() => dispatch(init())}  className="backButton" aria-label="back">
               <ArrowBackIcon />
             </IconButton>
@@ -52,7 +52,7 @@ const CrearCuenta = () => {
       <img className='icons' src={user} height="24" width="24" alt="User" />
          <TextField fullWidth  
                    
-          id="standard-basic" label="Usuario" variant="standard" />
+          id="standard-usercreate" label="Usuario" variant="standard" />
 
 </Box>
 
@@ -60,7 +60,7 @@ const CrearCuenta = () => {
       <img className='icons' src={mail} height="24" width="24" alt="Mail" />
          <TextField fullWidth  
                    
-          id="standard-basic" label="Correo Electrónico"  type="email" variant="standard" />
+          id="standard-mailcreate" label="Correo Electrónico"  type="email" variant="standard" />
 
 </Box>
 
@@ -70,7 +70,7 @@ const CrearCuenta = () => {
 
          <TextField fullWidth  
                
-          id="standard-basic" label="Contraseña"  type="password" variant="standard" />
+          id="standard-passwordcreate" label="Contraseña"  type="password" variant="standard" />
 </Box>
 
 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -79,10 +79,10 @@ const CrearCuenta = () => {
 
          <TextField fullWidth  
                
-          id="standard-basic" label="Repetir Contraseña"  type="password" variant="standard" />
+          id="standard-repeatcreate" label="Repetir Contraseña"  type="password" variant="standard" />
 </Box>
 
-<button type="button" className="createBtn shadow-sm btn btn-primary px-4 rounded-pill  ">Crear Cuenta</button>
+<button type="button" onClick={() => dispatch(access())} className="createBtn shadow-sm btn btn-primary px-4 rounded-pill  ">Crear Cuenta</button>
          </Stack>
         </div>
        

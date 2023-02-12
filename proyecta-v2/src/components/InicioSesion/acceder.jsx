@@ -22,7 +22,7 @@ const Acceder = () => {
     const dispatch = useDispatch()
 
     return(
-        <div className="inicioSesion card mx-auto my-4 w-100  p-5">
+        <div className="inicioSesion card mx-auto my-1   p-5">
 
         <div className="card-body">
         <h5 className="card-title my-3">Iniciar Sesión</h5>
@@ -46,7 +46,7 @@ const Acceder = () => {
       <img className='icons' src={user} height="24" width="24" alt="User" />
          <TextField fullWidth  
                    
-          id="standard-basic" label="Usuario" variant="standard" />
+          id="standard-user" label="Usuario" variant="standard" />
 
 </Box>
 
@@ -56,7 +56,7 @@ const Acceder = () => {
 
          <TextField fullWidth  
                
-          id="standard-basic" label="Contraseña"  type="password" variant="standard" />
+          id="standard-password" label="Contraseña"  type="password" variant="standard" />
 </Box>
 
          <button onClick={() => dispatch(recover())} type="button" className="recover btn btn-link">¿Olvidaste tu Contraseña?</button>

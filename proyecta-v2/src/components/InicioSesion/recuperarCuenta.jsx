@@ -24,7 +24,7 @@ const RecuperarCuenta = () => {
     const dispatch = useDispatch()
 
     return(
-        <div className="recuperarCuenta card mx-auto my-4 w-100  p-5">
+        <div className="recuperarCuenta card mx-auto my-1   p-5">
    <IconButton onClick={() => dispatch(init())} className="backButton" aria-label="back">
               <ArrowBackIcon />
             </IconButton>
@@ -50,7 +50,7 @@ const RecuperarCuenta = () => {
       <img className='icons' src={user} height="24" width="24" alt="User" />
          <TextField fullWidth  
                    
-          id="standard-basic" label="Usuario" variant="standard" />
+          id="standard-userrecover" label="Usuario" variant="standard" />
 
 </Box>
 
@@ -60,7 +60,7 @@ const RecuperarCuenta = () => {
 
          <TextField fullWidth  
                
-          id="standard-basic" label="Contraseña"  type="password" variant="standard" />
+          id="standard-passwordrecover" label="Contraseña"  type="password" variant="standard" />
 </Box>
 
 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -69,10 +69,10 @@ const RecuperarCuenta = () => {
 
          <TextField fullWidth  
                
-          id="standard-basic" label="Repetir Contraseña"  type="password" variant="standard" />
+          id="standard-repeatrecover" label="Repetir Contraseña"  type="password" variant="standard" />
 </Box>
 
-<button type="button" className="recoverBtn shadow-sm btn btn-primary px-4 rounded-pill  ">Recuperar</button>
+<button type="button" className="recoverBtn shadow-sm btn btn-primary px-4 rounded-pill  " onClick={() => dispatch(access())} >Recuperar</button>
          </Stack>
         </div>
        

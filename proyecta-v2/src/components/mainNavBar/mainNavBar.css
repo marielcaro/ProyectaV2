@@ -4,7 +4,7 @@
     width: max-content;
     font-family: BerkshireSwash;
     font-size: x-large;
-    color: white;
+    color: white !important;
 }
 
 button{
