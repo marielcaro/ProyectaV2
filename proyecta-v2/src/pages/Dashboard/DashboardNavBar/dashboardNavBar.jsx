@@ -65,7 +65,7 @@ return (
           <div className='toggleButton'  checked={collapsed }  onClick={(toggled,collapsed) => HandleToggleCollapsed(toggled,collapsed)}>
             <img className='toggleImage' src={menu} alt='menu' /> 
           </div>
-          <Navbar.Brand id='logo' href="#home">
+          <Navbar.Brand id='logoDashboard' href="#dashboard">
             <img
               alt=""
               src={icon}

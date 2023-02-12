@@ -74,11 +74,11 @@ margin-right: 8px;
     background-position: center;
 }
 
-#logo{
+#logoDashboard{
     width: max-content;
     font-family: BerkshireSwash;
     font-size: x-large;
-    color:  var(--base-color);
+    color:  #EB5401 !important;
 }
 
 button{
