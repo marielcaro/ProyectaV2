@@ -11,9 +11,11 @@ import logout from '../../../assets/icons/logout.png'
 import user from '../../../assets/icons/user.png'
 
 import * as React from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { access, exit, create, recover, init } from '../../../features/login/loginAction'
 
 const UserMenu = () => {
-
+  const dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -39,7 +41,7 @@ return(
 
                                     </Box></MenuItem>
           <Divider sx={{ my: 0.5 , borderColor: '#212529'}} />
-          <MenuItem><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <MenuItem onClick={() => dispatch(exit())}><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={logout} height="16" width="16" alt="User" />
                                           Salir
 

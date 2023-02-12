@@ -31,7 +31,13 @@ import key from '../../assets/icons/key.png'
 import email from '../../assets/icons/mail.png'
 import repeat from '../../assets/icons/repeat.png'
 
+import { useSelector, useDispatch } from 'react-redux'
+import { access, recover, exit, create, init } from '../../features/login/loginAction'
+
+import MainNavBar from '../../components/mainNavBar/mainNavBar';
+
 const RegisterUserPage = () => {
+  const dispatch = useDispatch()
 
   const [grado, setGrado] = React.useState('');
 
@@ -40,6 +46,9 @@ const RegisterUserPage = () => {
   };
 
     return (
+      <>
+               <MainNavBar />
+
         <div className='registerUser container-fluid  d-flex flex-grow-1 flex-column'>
       <div className='row  d-flex my-4 flex-grow-1  align-items-center' >
       <div className='registerPage col  col-12 '>
@@ -173,7 +182,7 @@ const RegisterUserPage = () => {
                                     </Box>
 
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                    <button type="button" className="createBtn shadow-sm  btn btn-primary px-4 rounded-pill  ">Crear Cuenta</button>
+                                    <button type="button" className="createBtn shadow-sm  btn btn-primary px-4 rounded-pill  " onClick={() => dispatch(access())}>Crear Cuenta</button>
                                     </Box>
                                     </Stack>
                           </div>
@@ -188,6 +197,7 @@ const RegisterUserPage = () => {
       </div>
   
     </div> 
+    </>
     )
     }
     

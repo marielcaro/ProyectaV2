@@ -27,6 +27,10 @@ function App() {
         return (<MainPage />)
         break;
 
+         case 'Register':
+        return (<RegisterUserPage />)
+        break;
+
         case 'Create':
           return (<MainPage />)
           break;

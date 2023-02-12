@@ -18,7 +18,7 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import KeyIcon from '@mui/icons-material/Key';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { access, exit, create, recover, init } from '../../features/login/loginAction'
+import { access, exit, create, recover, init, register } from '../../features/login/loginAction'
 
 const CrearCuenta = () => {
     const dispatch = useDispatch()
@@ -82,7 +82,7 @@ const CrearCuenta = () => {
           id="standard-repeatcreate" label="Repetir Contraseña"  type="password" variant="standard" />
 </Box>
 
-<button type="button" onClick={() => dispatch(access())} className="createBtn shadow-sm btn btn-primary px-4 rounded-pill  ">Crear Cuenta</button>
+<button type="button" onClick={() => dispatch(register())} className="createBtn shadow-sm btn btn-primary px-4 rounded-pill  ">Crear Cuenta</button>
          </Stack>
         </div>
        
