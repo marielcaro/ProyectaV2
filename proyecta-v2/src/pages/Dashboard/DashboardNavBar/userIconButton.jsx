@@ -22,8 +22,14 @@ import {useFloating,  offset,  flip,  shift } from '@floating-ui/react';
 import { useClick, useInteractions} from '@floating-ui/react';
 import {useDismiss} from '@floating-ui/react'
 
+import { foto, initial } from '../../../features/profileImage/profileAction'
 
 const UserIconButton = () => {
+
+  const profile = useSelector((state) => state.profile.value)
+
+  const dispatch = useDispatch()
+
     const [isOpen, setIsOpen] = useState(false);
 
     const {x, y, strategy, refs, context} = useFloating({
@@ -46,7 +52,7 @@ const UserIconButton = () => {
 
     return (
         <>
-         <Avatar  ref={refs.setReference} {...getReferenceProps()} className="AvatarButton" alt="Orianna Queen" src={image}/>
+         <Avatar  ref={refs.setReference} {...getReferenceProps()} className="AvatarButton" alt="Orianna Queen" src={profile.payload === undefined ? "Orianna Queen" : profile.payload}/>
             {isOpen && (
         <div
           ref={refs.setFloating}

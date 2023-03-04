@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import LoginAlone from '../../pages/LoginAlone';
 
 import Acceder from './acceder.jsx';
 import CrearCuenta from './crearCuenta.jsx';
@@ -19,7 +20,9 @@ const InicioSesion = () => {
   console.log(login);
   const changeCardUI = () => {
           switch (login) {
-         
+            case 'Login':
+              return   (<Acceder />)
+            break;
             case 'Access':
         return   (<Acceder />)
       break;

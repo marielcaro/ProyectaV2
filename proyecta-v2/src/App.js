@@ -3,6 +3,7 @@ import './App.css';
 import MainNavBar from './components/mainNavBar/mainNavBar';
 import MainPage from './pages/mainPage';
 import RegisterUserPage from './pages/RegisterUser/registerUserPage';
+import LoginAlone from './pages/LoginAlone';
 
 import Dashboard from './pages/Dashboard/dashboard';
 
@@ -16,6 +17,9 @@ function App() {
 
   const Page  = () => {
     switch (login) {
+      case 'Login':
+        return   (<LoginAlone />)
+      break;
       case 'Access':
         return   (<Dashboard />)
       break;

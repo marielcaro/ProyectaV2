@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const initialState = {
+  value: "Dashboard",
+}
 
 export const dashboardAction = createSlice({
     name: 'dashboardAction',
-    initialState: {
-      value: 'Dashboard',
-    },
+    initialState,
     reducers: {
       projects: (state) => {
           state.value ='Projects'

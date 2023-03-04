@@ -1,17 +1,44 @@
 import React, {useState, useEffect, useRef} from 'react';
 import './imageUploader.css';
+import { useSelector, useDispatch } from 'react-redux'
+import { foto, initial } from '../../features/profileImage/profileAction'
 
 import uploadIcon from "../../assets/icons/upload.png"
 
 const ImageUploader = () => {
+ 
+    const convertToBase64 = (file) => {
+        const reader = new FileReader()
+           
+        reader.readAsDataURL(file)
     
-    const[image, setImage] = useState(null);
-    const[previewUrl, setPreviewUrl] = useState(uploadIcon); 
+        reader.onload = () => {
+         setBase(reader.result)
+      
+        return reader.result
+        }
+    }
+    
+
+    const profile = useSelector((state) => state.profile.value)
+
+  
+    // const[image, setImage] = useState(null);
+    const[previewUrl, setPreviewUrl] = useState(profile); 
+    const[base, setBase] = useState(""); 
+
+    const dispatch = useDispatch()
+
     const handleFile = file => {
-        //you can carry out any file validations here...
-        setImage(file);
+        const fileBase = convertToBase64 (file)
+
+        setBase(fileBase)
+    
+        dispatch (foto(base));
         setPreviewUrl(URL.createObjectURL(file));
     }
+
+   
 
     const fileInput = useRef(null);
 
@@ -19,15 +46,21 @@ const ImageUploader = () => {
         event.preventDefault();
     }
     const handleOnDrop = event => {
-        //prevent the browser from opening the image
         event.preventDefault(); 
         event.stopPropagation(); 
-        //let's grab the image file
+       
         let imageFile = event.dataTransfer.files[0];
         handleFile(imageFile);
     }
 
 
+    React.useEffect(()=> {
+        if(base !== ""){
+        
+            dispatch (foto(base));
+            setPreviewUrl(base);
+        }
+    }, [base])
 
 return (
 

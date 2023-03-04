@@ -1,3 +1,9 @@
+@media (min-width: 767.98px) {
+    .loginButton{
+        display: none!important;
+    }
+
+ }
 
 
 #logo{

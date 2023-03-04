@@ -7,6 +7,9 @@ export const loginAction = createSlice({
       value: 'Initial',
     },
     reducers: {
+      login: (state) => {
+        state.value ='Login'
+    },
       access: (state) => {
           state.value ='Access'
       },
@@ -30,6 +33,6 @@ export const loginAction = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { access, create, recover, exit, init, register } = loginAction.actions
+export const { access, create, recover, exit, init, register, login } = loginAction.actions
 
 export default loginAction.reducer

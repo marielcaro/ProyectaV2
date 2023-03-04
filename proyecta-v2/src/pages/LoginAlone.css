@@ -1,0 +1,25 @@
+
+#welcomeImg{
+    max-width: 75%;
+}
+
+@media (max-width: 768px) {
+    .inicioSesion{
+        display: contents;
+    }
+
+ }
+
+.portadaPrincipal{
+    font-family: nunitoMedium;
+    font-size: 36;
+    color: white;
+    
+}
+
+.welcome{
+    background-image: linear-gradient(#EB5401, #EFB52B);
+    
+  
+  
+}
