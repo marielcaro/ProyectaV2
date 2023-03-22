@@ -1,10 +1,12 @@
 
 import './tasksContainerPage.css'
 
+import Taskboard from './Taskboard'
+
 const TasksContainerPage = () => {
     return(
         <div>
-        Tasks Container
+       <Taskboard />
      </div>
      )
 }
