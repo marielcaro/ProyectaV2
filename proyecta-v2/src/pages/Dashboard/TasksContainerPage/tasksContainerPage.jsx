@@ -2,10 +2,12 @@
 import './tasksContainerPage.css'
 import HomePage from './HomePage'
 
+import Taskboard from './Taskboard'
+
 const TasksContainerPage = () => {
     return(
         <div>
-      <HomePage />
+       <Taskboard />
      </div>
      )
 }
