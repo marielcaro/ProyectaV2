@@ -1,7 +1,7 @@
 import React from "react";
 import { useDrop } from "react-dnd";
-import ITEM_TYPES from "../data/types";
-import { statuses } from "../data/data";
+import ITEM_TYPES from "./Data/types";
+import { statuses } from "./Data/data";
 
 const DropWrapper = ({ onDrop, children, status }) => {
   const [{ isOver }, drop] = useDrop({

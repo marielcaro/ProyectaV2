@@ -1,10 +1,11 @@
 
 import './tasksContainerPage.css'
+import HomePage from './HomePage'
 
 const TasksContainerPage = () => {
     return(
         <div>
-        Tasks Container
+      <HomePage />
      </div>
      )
 }

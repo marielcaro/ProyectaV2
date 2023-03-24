@@ -1,7 +1,7 @@
 import { Fragment, useRef, useState } from "react";
 import { useDrag, useDrop } from 'react-dnd';
 import Window from './Window';
-import ITEM_TYPES from '../data/types'
+import ITEM_TYPES from './Data/types'
 
 const Item = ({ item, index, moveItem, status }) => {
     const ref = useRef(null)
@@ -34,10 +34,11 @@ const Item = ({ item, index, moveItem, status }) => {
         }
     })
     const [{ isDragging }, drag] = useDrag({
-        item: { type: ITEM_TYPES, ...item, index },
-        collect: monitor => ({
-            isDragging: monitor.isDragging()
-        })
+        type: 'card',
+        item: { item },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
     });
 
     const [show, setShow] = useState(false);

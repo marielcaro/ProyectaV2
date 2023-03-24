@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Item from "./Items";
+import CardItem from "./CardItem";
 import DropWrapper from "./DropWrapper";
-import Col from "./Col";
-import { data, statuses } from "../data/data";
+import Column from "./Column";
+import { data, statuses } from "./Data/data";
 
 const Homepage = () => {
   const [items, setItems] = useState(data);
@@ -32,11 +32,11 @@ const Homepage = () => {
           <div key={s.status} className={"col-wrapper"}>
             <h4 className={"col-header"}>{s.status.toUpperCase}</h4>
             <DropWrapper onDrop={onDrop} status={s.status}>
-              <Col>
+              <Column>
                 {items
                   .filter((i) => i.status === s.status)
                   .map((i, idx) => (
-                    <Item
+                    <CardItem
                       key={i.id}
                       item={i}
                       index={idx}
@@ -44,7 +44,7 @@ const Homepage = () => {
                       status={s}
                     />
                   ))}
-              </Col>
+              </Column>
             </DropWrapper>
           </div>
         );
