@@ -1,6 +1,5 @@
 
 import './tasksContainerPage.css'
-import HomePage from './HomePage'
 
 import Taskboard from './Taskboard'
 
