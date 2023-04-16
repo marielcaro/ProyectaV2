@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext, Droppable,Draggable } from 'react-beautiful-dnd';
 import TaskList from './TaskList';
 
+import './tasksContainerPage.css';
+
 const Taskboard = () => {
   const [tasks1, setTasks1] = useState([
     { id: uuidv4(), content: 'Task 1' },
@@ -22,26 +24,23 @@ const Taskboard = () => {
     { id: uuidv4(), content: 'Task 9' },
   ]);
 
+  const [tasks4, setTasks4] = useState([
+    { id: uuidv4(), content: 'Task 10' },
+    { id: uuidv4(), content: 'Task 11' },
+    { id: uuidv4(), content: 'Task 12' },
+    { id: uuidv4(), content: 'Task 13' },
+    { id: uuidv4(), content: 'Task 14' },
+    { id: uuidv4(), content: 'Task 15' },
+  ]);
 
-  const [state, setState] = useState([ { id: "0", tasks : tasks1 }, {id:"1" , tasks : tasks2}, {id:"2" , tasks : tasks3}]);
-  
-  const getItemStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: "none",
-    padding: grid * 2,
-    margin: `0 0 ${grid}px 0`,
-  
-    // change background colour if dragging
-    background: isDragging ? "lightgreen" : "grey",
-  
-    // styles we need to apply on draggables
-    ...draggableStyle
-  });
 
+  const [state, setState] = useState([ { id: "0", tasks : tasks1 }, {id:"1" , tasks : tasks2}, {id:"2" , tasks : tasks3},{id:"3" , tasks : tasks4}]);
+  
   const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? "lightblue" : "lightgrey",
     padding: grid,
-    width: 250
+    width: 250,
+    overflow: "scroll"
   });
 
   const reorder = (list, startIndex, endIndex) => {
@@ -102,7 +101,7 @@ const Taskboard = () => {
 
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className='taskboard d-flex justify-content-around'>
     <DragDropContext onDragEnd={handleOnDragEnd}>
       {state.map((el, ind) => (
        <Droppable key={ind} droppableId={el.id}>
