@@ -34,13 +34,15 @@ const Taskboard = () => {
   ]);
 
 
-  const [state, setState] = useState([ { id: "0", tasks : tasks1 }, {id:"1" , tasks : tasks2}, {id:"2" , tasks : tasks3},{id:"3" , tasks : tasks4}]);
+  const [state, setState] = useState([ { id: "0", name:"Nuevas", tasks : tasks1 }, {id:"1" , name:"En Progreso", tasks : tasks2}, {id:"2" ,  name:"Resueltas", tasks : tasks3},{id:"3" ,  name:"Finalizadas", tasks : tasks4}]);
   
   const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? "lightblue" : "lightgrey",
     padding: grid,
-    width: 250,
-    overflow: "scroll"
+    width: "85%",
+    overflowY: "scroll",
+    overflowX:"auto",
+    maxHeight: "inherit"
   });
 
   const reorder = (list, startIndex, endIndex) => {
@@ -104,16 +106,28 @@ const Taskboard = () => {
     <div className='taskboard d-flex justify-content-around'>
     <DragDropContext onDragEnd={handleOnDragEnd}>
       {state.map((el, ind) => (
+        <div className='title col g-2'>
+          <div className='row'>
+        <div className='columnTitle'>
+        <h4>{el.name}</h4>
+        <hr></hr>
+        </div>
+        </div>
+
+        <div className='list row'>
        <Droppable key={ind} droppableId={el.id}>
     
        {(provided, snapshot) => (
          <div {...provided.droppableProps} ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}
          {...provided.droppableProps}>
+          
            <TaskList tasks={el.tasks} onDragHandler={handleOnDragEnd} />
            {provided.placeholder}
          </div>
        )}
      </Droppable>
+     </div>
+     </div>
     ))}
     </DragDropContext>
     </div>
