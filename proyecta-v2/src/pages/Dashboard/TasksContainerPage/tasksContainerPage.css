@@ -1,5 +1,34 @@
 /* 
  */
+ .descriptionTask{
+	text-align: left;
+	padding-left: 24px !important;
+	padding-right: 8px !important;
+ }
+
+ .task{
+
+	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+	background: #FFFFFF;
+	border: 2px solid #FFFFFF;
+	border-radius: 8px;
+	padding: 8px;
+ }
+
+ .task:hover{
+
+	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+	background: #F6EBF9;
+	border: 2px solid #FFFFFF;
+	border-radius: 8px;
+	padding: 8px;
+ }
+
+
+ .titleTask{
+	padding-top: 8px;
+ }
+
  .col{
     width: 80%;
 

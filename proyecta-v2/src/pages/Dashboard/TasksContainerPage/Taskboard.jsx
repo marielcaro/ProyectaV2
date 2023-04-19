@@ -37,11 +37,12 @@ const Taskboard = () => {
   const [state, setState] = useState([ { id: "0", name:"Nuevas", tasks : tasks1 }, {id:"1" , name:"En Progreso", tasks : tasks2}, {id:"2" ,  name:"Resueltas", tasks : tasks3},{id:"3" ,  name:"Finalizadas", tasks : tasks4}]);
   
   const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? "lightblue" : "lightgrey",
+    background: isDraggingOver ? "lightsalmon" : "white",
+    borderRadius: "15px",
     padding: grid,
-    width: "85%",
-    overflowY: "scroll",
-    overflowX:"auto",
+    width: "90%",
+    overflowY: "auto",
+    overflowX:"hidden",
     maxHeight: "inherit"
   });
 
@@ -70,7 +71,7 @@ const Taskboard = () => {
   
     return result;
   };
-  const grid = 8;
+  const grid = 4;
 
   const handleOnDragEnd = (result)  => {
    

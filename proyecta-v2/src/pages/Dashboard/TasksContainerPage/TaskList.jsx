@@ -19,7 +19,7 @@ const reorder = (list, startIndex, endIndex) => {
     return value;
 
   }
-  const grid = 8;
+  const grid = 4;
 
   const getItemStyle = (isDragging, draggableStyle) => ({
     // some basic styles to make the items look a bit nicer
@@ -28,7 +28,7 @@ const reorder = (list, startIndex, endIndex) => {
     margin: `8px 16px ${grid}px 8px`,
   
     // change background colour if dragging
-    background: isDragging ? "lightgreen" : "grey",
+    background: isDragging ? "lightgreen" : "white",
   
     // styles we need to apply on draggables
     ...draggableStyle
