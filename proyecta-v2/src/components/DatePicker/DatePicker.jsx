@@ -10,14 +10,14 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 import './DatePicker.css';
 
-export default function BasicDatePicker() {
+export default function BasicDatePicker(props) {
   const [locale, setLocale] = React.useState('es');
   const [value, setValue] = React.useState(dayjs(''));
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
       <DesktopDatePicker
-        label="Fecha de Nacimiento"
+        label={props.label}
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
@@ -25,7 +25,7 @@ export default function BasicDatePicker() {
         renderInput={({ inputRef, inputProps, InputProps }) => (
             <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
              {InputProps?.endAdornment}
-             <TextField fullWidth  ref={inputRef} {...inputProps}  id="date" label="Fecha de Nacimiento" variant="standard" />
+             <TextField fullWidth  ref={inputRef} {...inputProps}  id="date" label={props.label} variant="standard" />
     
            
           </Box>

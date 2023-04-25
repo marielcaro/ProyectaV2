@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './tasksContainerPage.css';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import image from '../../../assets/images/project-management.png'
+import ModalTask from './ModalTask';
 
 const Task = (props) => {
 
+  const [taskData, setTaskData] = useState({taskName: 'titleTask', taskProject:'titleProject',taskEndDate: '25/08/2023', taskDetail: 'Descripción de la Tarea', taskAuthor: 'Hernán Peinetti', taskMembers:[{label:'Mariel Caro', userId: 1},{label:'Juan Manuel Romano', userId: 2}]})
   return (
-    <div id= {props.task.id} className="task">
+  <>
+    <div id= {props.task.id} className="task" data-bs-toggle="modal" data-bs-target="#exampleModal">
       <div className='row'>
       <Stack direction="row" spacing={2}>
       <Avatar alt="Proyecto 1" src={image} />
@@ -33,6 +36,9 @@ const Task = (props) => {
         </AvatarGroup>
       </div>
     </div>
+<ModalTask taskData={taskData}/>
+</>
+   
   );
 }
 

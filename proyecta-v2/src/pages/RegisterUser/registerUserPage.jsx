@@ -89,7 +89,7 @@ const RegisterUserPage = () => {
 
                                     </Box>
 
-                                  <BasicDatePicker/>
+                                  <BasicDatePicker label="Fecha de Nacimiento"/>
                                   
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={subject} height="24" width="24" alt="User" />
