@@ -42,7 +42,7 @@ const Taskboard = () => {
     padding: grid,
     width: "90%",
     overflowY: "auto",
-    overflowX:"hidden",
+    overflowX:"auto",
     maxHeight: "inherit"
   });
 
