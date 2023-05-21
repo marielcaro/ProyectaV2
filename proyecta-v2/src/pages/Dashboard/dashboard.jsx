@@ -47,7 +47,7 @@ const Dashboard = () => {
             <DashboardSideBar />
 
             <main className='mainContainer'>
-            <div style={{ padding: '16px 24px', color: '#44596e', width: '100%' }}>
+            <div className='styleContainer' >
                 
             {changeContainerUI()}
             </div>

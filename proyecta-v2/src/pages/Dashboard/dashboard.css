@@ -5,7 +5,12 @@
  
   
 }
-
+.styleContainer{
+    padding: 16px 24px;
+     color: #44596e; 
+     width: 100%;
+     height: 100%;
+}
 .mainContainer{
     width: -webkit-fill-available;
     margin: 12px;
