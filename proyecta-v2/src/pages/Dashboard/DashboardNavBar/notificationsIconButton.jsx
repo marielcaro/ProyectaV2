@@ -61,6 +61,7 @@ const NotificationIconButton = () => {
         top: y ?? 0,
         left: x ?? 0,
         width: 'max-content',
+        zIndex: 3
       }}
       {...getFloatingProps()}
     >
