@@ -23,6 +23,7 @@ import { useClick, useInteractions} from '@floating-ui/react';
 import UserIconButton from './userIconButton';
 import NotificationIconButton from './notificationsIconButton';
 
+
 const DashboardNavBar = () => {
 
   const dispatch = useDispatch()
@@ -51,7 +52,7 @@ const DashboardNavBar = () => {
       if(broken === false){
         console.log(broken)
         collapseSidebar()
-     
+       
       
       }else{
         toggleSidebar()

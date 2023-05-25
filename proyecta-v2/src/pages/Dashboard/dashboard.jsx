@@ -47,10 +47,9 @@ const Dashboard = () => {
             <DashboardSideBar />
 
             <main className='mainContainer'>
-            <div className='styleContainer' >
-                
-            {changeContainerUI()}
-            </div>
+                <div className='styleContainer' >
+                    {changeContainerUI()}
+                </div>
             </main>
           
         </div>
