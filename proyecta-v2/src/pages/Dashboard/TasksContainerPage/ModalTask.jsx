@@ -1,9 +1,6 @@
 import React from 'react';
 import './tasksContainerPage.css';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
-import image from '../../../assets/images/project-management.png'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import BasicDatePicker from '../../../components/DatePicker/DatePicker';

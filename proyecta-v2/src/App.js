@@ -1,3 +1,6 @@
+import 'popper.js/dist/umd/popper.min.js'
+;
+ 
 import logo from './logo.svg';
 import './App.css';
 import MainNavBar from './components/mainNavBar/mainNavBar';

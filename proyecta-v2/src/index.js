@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -5,10 +7,12 @@ import App from './App';
 
 import store from './store'
 import { Provider } from 'react-redux'
+import 'bootstrap/dist/js/bootstrap.min.js';
+ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import reportWebVitals from './reportWebVitals';
-import * as bootstrap from 'bootstrap';
- import 'bootstrap/dist/css/bootstrap.min.css';
+
+
  import { ProSidebarProvider } from 'react-pro-sidebar';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
