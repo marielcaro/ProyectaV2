@@ -9,16 +9,14 @@ import bootstrap from 'bootstrap/dist/js/bootstrap.min.js';
 
 
 const CalendarContainerPage = () => {
-  const [myModal, setMyModal] = useState(null);
-  const [selectedInfoDay, setSelectedInfoDay] = useState({dateStr:"", start:"", end:""});
-  const [actionName, setActionName] = useState("dayClick")
-
-    const handleDayClick = (info ) => {
-   setSelectedInfoDay(info)
-       myModal.show()
-
-    };
-  
+  const [dayModal, setDayModal] = useState(null);
+  const [dayRangeModal, setDayRangeModal] = useState(null);
+  const [eventModal, setEventModal] = useState(null);
+  const [selectedInfoDay, setSelectedInfoDay] = useState({dateStr:""});
+  const [selectedInfoDayRange, setSelectedInfoDayRange] = useState({ start:"", end:""});
+  const [selectedInfoEvent, setSelectedInfoEvent] = useState({ event: {title: ""}});
+  const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
+ 
     
   const randomColor= "#"+((1<<24)*Math.random()|0).toString(16) + "";
 
@@ -39,14 +37,32 @@ const CalendarContainerPage = () => {
               }
             ]
 
-    console.log(eventObject);
+    const handleDayClick = (info ) => {
+      setSelectedInfoDay(info)
+      dayModal.show()
+    };
+           
+    const handleMultiDayClick = (info ) => {
+      console.log(info)
+      setSelectedInfoDayRange(info)
+      dayRangeModal.show()
+    };
 
    const eventClick = (info) => {
-      alert('Event: ' + info.event.title)
+    setSelectedInfoEvent(info)
+    eventModal.show()
    }
 
    useEffect(() => {
-    setMyModal(new bootstrap.Modal(document.getElementById('dayModal'), {
+    setDayModal(new bootstrap.Modal(document.getElementById('dayModal'), {
+      keyboard: false
+    }))
+
+    setDayRangeModal(new bootstrap.Modal(document.getElementById('multiDayModal'), {
+      keyboard: false
+    }))
+
+    setEventModal(new bootstrap.Modal(document.getElementById('eventModal'), {
       keyboard: false
     }))
   }, []);
@@ -56,12 +72,12 @@ const CalendarContainerPage = () => {
      <FullCalendar
         plugins={[ dayGridPlugin, interactionPlugin ]}
        locale = {esLocale}
-       timeZone='locale'
+       timeZone='local'
         initialView="dayGridMonth"
         height='100%'
         selectable={true}
-        selected = {handleDayClick}
-      dateClick = {handleDayClick}
+        dateClick = {handleDayClick}
+        select = {handleMultiDayClick}
       events = {eventObject}
       eventClick={eventClick}
       handleWindowResize={true}
@@ -69,24 +85,64 @@ const CalendarContainerPage = () => {
 
 
 
-{/* <!-- Modal --> */}
-<div className="modal fade" id="dayModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{/* <!-- Day Modal --> */}
+<div className="modal fade" id="dayModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div className="modal-dialog">
     <div className="modal-content">
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">
        {'selected ' + selectedInfoDay.dateStr}
       </div>
       <div className="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" className="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
 </div>
+
+
+{/* <!--MultiDay selected Modal --> */}
+<div className="modal fade" id="multiDayModal" tabIndex="-1" aria-labelledby="exampledModalLabel" aria-hidden="true">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="exampleModalLabeld">Modal title</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+       {selectedInfoDayRange.start !== "" &&    selectedInfoDayRange.end!== "" ? 'selected ' + selectedInfoDayRange.start.toLocaleDateString('es-ES',options) + " - to: " + selectedInfoDayRange.end :""}
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" className="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* <!--MultiDay selected Modal --> */}
+<div className="modal fade" id="eventModal" tabIndex="-1" aria-labelledby="exampledModalLabel" aria-hidden="true">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="exampleModalLabeld">Modal title</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+       {'selected ' + selectedInfoEvent.event.title}
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" className="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
  )
 }
