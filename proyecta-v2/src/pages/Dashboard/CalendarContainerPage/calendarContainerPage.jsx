@@ -7,21 +7,67 @@ import { useEffect, useState, useRef } from 'react';
 import bootstrap from 'bootstrap/dist/js/bootstrap.min.js';
 import BasicTimePicker from '../../../components/TimePicker/TimePicker';
 import Stack from '@mui/material/Stack';
+import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 
 const CalendarContainerPage = () => {
   const [dayRangeModal, setDayRangeModal] = useState(null);
   const [eventModal, setEventModal] = useState(null);
-  const [selectedInfoDayRange, setSelectedInfoDayRange] = useState({ start:"", end:""});
+  const [selectedInfoDayRange, setSelectedInfoDayRange] = useState({ start:"", end:""}); //dia de inicio y fin
   const [selectedInfoEvent, setSelectedInfoEvent] = useState({ event: {title: ""}});
   const [defaultDay, setDefaultDay] = useState(null);
   const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'};
- 
-    
   const randomColor= "#"+((1<<24)*Math.random()|0).toString(16) + "";
 
- 
+  const members = ['Mariel Caro', 'Hernán Peinetti', 'Juan Manuel Romano', 'Micaela Chamut'];
+
+  const [project, setProject] = useState('');
+
+  const handleChange = (event) => {
+    setProject(event.target.value);
+  };
+
+ const [newEvent, setNewEvent] = useState({
+              title:'',
+              description:'',
+              projectName:'',
+              participants: ['',''],
+              startRecur: '',
+              endRecur:'',
+              startTime:'2022-04-17T15:30', 
+              endTime:'2022-04-17T15:30'
+            });
+  
+  const handleInputChange = (event) => {
+  // console.log(event.target.name)
+  // console.log(event.target.value)
+  setNewEvent({
+       ...newEvent,
+       [event.target.name] : event.target.value
+      })
+  }
+
+  const handleInputTimeChange = (value, name) => {
+    // console.log(event.target.name)
+    // console.log(event.target.value)
+    setNewEvent({
+         ...newEvent,
+         [name] : value
+        })
+    }
+  
+
+ useEffect(()=>{
+    console.log(newEvent);
+ },[newEvent])
+                
+
+
   const eventObject = [
               { // this object will be "parsed" into an Event Object
                 groupId: 'blueEvents',
@@ -96,11 +142,48 @@ const CalendarContainerPage = () => {
       </div>
       <div className="modal-body">
        <Stack spacing={4}  sx={{padding: '4px'}}>
-             <TextField id="dateRange" label="Fecha" variant="standard" value={defaultDay}  InputProps={{
+             <TextField id="eventTitle" label="Título" variant="standard" name='title' value={newEvent.title} onChange={handleInputChange}/>
+
+             <TextField id="dateRange" label="Fecha" variant="standard"  value={defaultDay}  InputProps={{
             readOnly: true,
           }}/>
-             <BasicTimePicker />
-          </Stack>
+          <Stack direction="row" spacing={2}>
+              <BasicTimePicker label={"Hora de Inicio"} name='startTime' time={newEvent.startTime} handleChange={(value,name) => handleInputTimeChange(value,name)} />
+              <BasicTimePicker label={"Hora de Fin"} name='endTime' time={newEvent.endTime} handleChange={(value,name) => handleInputTimeChange(value,name)} />
+          </Stack>   
+          
+          <TextField id="eventDescription" name='description' placeholder='Escribe una descripción aquí...' multiline rows={4} label="Descripción"  value={newEvent.description} onChange={handleInputChange}/>
+          <FormControl fullWidth>
+                <InputLabel id="projectLabel">Proyecto Vinculado</InputLabel>
+                    <Select
+                      labelId="project-select-Label"
+                      id="project-select"
+                      value={project}
+                      label="Proyecto Vinculado"
+                      onChange={handleChange}
+                    >
+                      <MenuItem value={1}>Proyecto 1</MenuItem>
+                      <MenuItem value={2}>Proyecto 2</MenuItem>
+                      <MenuItem value={3}>Proyecto 3</MenuItem>
+                </Select>
+        </FormControl>
+          <Autocomplete
+                    multiple
+                    id="tags-standard"
+                    options={members}
+                    getOptionLabel={(option) => option}
+                    defaultValue={[members[0]]}
+                    renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        variant="standard"
+                        label="Participantes"
+                        placeholder="Añadir..."
+                    />
+                    )}
+           />
+           
+        </Stack>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

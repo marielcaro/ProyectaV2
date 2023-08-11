@@ -6,15 +6,21 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import TextField from '@mui/material/TextField';
 
-export default function BasicTimePicker() {
+export default function BasicTimePicker(props) {
 
-    const [value, setValue] = useState(null);
+    const [value, setValue] = useState(props.time);
+    const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'};
+    useEffect(()=>{
+         props.handleChange((dayjs(value).format('YYYY-MM-DDTHH:mm:ss')) , props.name)
+    },[value])
+
 
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
-          renderInput={(props) => <TextField {...props} />}
-          label="Selecciona una hora"
+          ampm={false}
+          renderInput={(props) => <TextField  {...props} />}
+          label={props.label}
           value={value}
           onChange={(newValue) => setValue(newValue)}
           />
