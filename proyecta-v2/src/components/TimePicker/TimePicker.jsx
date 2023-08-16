@@ -8,21 +8,51 @@ import TextField from '@mui/material/TextField';
 
 export default function BasicTimePicker(props) {
 
-    const [value, setValue] = useState(props.time);
-    const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'};
+  
+    const [value, setValue] = useState(null);
+
+    const [errorView, setErrorView] = useState(props.error);
     useEffect(()=>{
-         props.handleChange((dayjs(value).format('YYYY-MM-DDTHH:mm:ss')) , props.name)
+   
+      if(props.action === "selectedEvent"){
+            if(props.time === null || props.time==='Invalid Date'){
+              setValue(null)
+            }else{
+              setValue(new Date(props.time))
+            }
+      }else{
+        if(props.time === null || props.time==='Invalid Date'){
+          setValue(null)
+        }
+      }
+  
+ },[props.time, props.action])
+
+    useEffect(()=>{
+       
+         props.handleChange((value) , props.name)
+         if (!value) {
+          setErrorView(true);
+        } else {
+          setErrorView(false);
+        }
+      
+     
     },[value])
+
 
 
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker
+         <TimePicker
+ 
+          renderInput={(props) => <TextField {...props } error={errorView} />}                      
           ampm={false}
-          renderInput={(props) => <TextField  {...props} />}
           label={props.label}
+     
           value={value}
           onChange={(newValue) => setValue(newValue)}
+     
           />
         
       </LocalizationProvider>

@@ -2,6 +2,8 @@ import './calendarContainerPage.css'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import interactionPlugin from '@fullcalendar/interaction'; // for selectable
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
+import dayjs from 'dayjs';
+import { v4 as uuidv4 } from 'uuid';
 import esLocale from '@fullcalendar/core/locales/es';
 import { useEffect, useState, useRef } from 'react';
 import bootstrap from 'bootstrap/dist/js/bootstrap.min.js';
@@ -20,87 +22,255 @@ const CalendarContainerPage = () => {
   const [eventModal, setEventModal] = useState(null);
   const [selectedInfoDayRange, setSelectedInfoDayRange] = useState({ start:"", end:""}); //dia de inicio y fin
   const [selectedInfoEvent, setSelectedInfoEvent] = useState({ event: {title: ""}});
+  const [eventSource, setEventSource] = useState(null);
+  const [disabled,setDisabled] =useState(true);
   const [defaultDay, setDefaultDay] = useState(null);
   const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'};
-  const randomColor= "#"+((1<<24)*Math.random()|0).toString(16) + "";
-
+  const randomColor= () => { return ("#"+((1<<24)*Math.random()|0).toString(16) + "")}
+ const [verifyErrorTitle,setverifyErrorTitle] =useState(false) // 0:title, 1: startTime, 2: endTime, 3:projectName
+ const [verifyStartTime,setverifyStartTime] =useState(false) 
+ const [verifyEndTime, setverifyEndTime] =useState(false) 
+ const [verifyProjectName,setverifyProjectName] =useState(false) 
   const members = ['Mariel Caro', 'Hernán Peinetti', 'Juan Manuel Romano', 'Micaela Chamut'];
-
+const [selectedMembers, setSelectedMembers] = useState([]);
+  const projects =['Proyecto 1','Proyecto 2','Proyecto 3','Proyecto 4'];
   const [project, setProject] = useState('');
 
-  const handleChange = (event) => {
+  const eventObject = [
+    { // this object will be "parsed" into an Event Object
+      id: uuidv4(),
+      title: 'Congress', // a property!
+      description:'Descripcion 1',
+      projectId: 2,
+      projectName:'Proyecto 3',
+      participants: ['Mariel Caro','Hernán Peinetti'],
+      startRecur: '2023-08-18T09:00:00',
+      endRecur: '2023-08-29T18:00:00',
+      startTime: '2023-08-29T12:30:00', // a property!
+      endTime: '2023-08-29T13:30:00', // a property! ** see important note below about 'end' **
+      daysOfWeek: [ '1','2' ],
+      display: 'block',
+      color : randomColor(),
+    }
+  ]
+
+  
+
+  const [eventList, setEventList] = useState([]);
+
+ const items = (elements) => {
+      let listItem = [];
+
+          for(var i=0;i<elements.length;i++){
+            // push the component to elements!
+            listItem.push( <MenuItem value={i}> {elements[i]} </MenuItem>);
+      }
+
+      return listItem;
+ }
+ const [newEvent, setNewEvent] = useState({
+        id: uuidv4(),
+        title:'',
+        description:'',
+        projectId:'',
+        projectName:'',
+        participants: ['',''],
+        startRecur: '',
+        endRecur:'',
+        startTime: null, 
+        endTime: null,
+        display: 'block',
+        color : randomColor(),
+      });
+
+
+  const handleSelectChange = (event) => {
+    
     setProject(event.target.value);
+    
   };
 
- const [newEvent, setNewEvent] = useState({
-              title:'',
-              description:'',
-              projectName:'',
-              participants: ['',''],
-              startRecur: '',
-              endRecur:'',
-              startTime:'2022-04-17T15:30', 
-              endTime:'2022-04-17T15:30'
-            });
+  const handleSaveNewEvent = () => {
+    
+    
+      setEventList([...eventList, newEvent]);
+      setProject('')
+      setSelectedMembers([])
+      setverifyErrorTitle(true);
+      setverifyStartTime(true);
+      setverifyEndTime(true);
+      setverifyProjectName(true);
+      const emptyObject ={
+        title:'',
+      description:'',
+      projectId:'',
+      projectName:'',
+      participants: ['',''],
+      startRecur: '',
+      endRecur:'',
+      startTime: null, 
+      endTime: null,
+      display: 'block',
+      color : randomColor(),
+    }
+      setNewEvent( newEvent => ({...newEvent,
+        ...emptyObject
+      }))
+
+
+  }
+
+
   
   const handleInputChange = (event) => {
-  // console.log(event.target.name)
-  // console.log(event.target.value)
-  setNewEvent({
+   setNewEvent({
        ...newEvent,
        [event.target.name] : event.target.value
       })
   }
+            
+  const handleMultiDayClick = (info ) => {
+    info.end.setHours(info.end.getHours() -1)  
+    setSelectedInfoDayRange(info)
+    const emptyObject ={
+      title:'',
+    description:'',
+    projectId:'',
+    projectName:'',
+    participants: ['',''],
+    startRecur: '',
+    endRecur:'',
+    startTime: null, 
+    endTime: null,
+    display: 'block',
+    color : randomColor(),
+  }
+  setNewEvent( newEvent => ({...newEvent,
+    ...emptyObject
+  }))
+  setProject('')
+  setSelectedMembers([])
+    setEventSource('newEvent')
+    
+  };
+
+ const eventClick = (info) => {
+  console.log(info.event.id)
+  setSelectedInfoEvent(info)
+  
+  const currentEvent = eventList.find(item => item.id === info.event.id);
+  const dayRangeSelected = {start: new Date(currentEvent.startRecur), end: new Date(currentEvent.endRecur)}
+  setSelectedInfoDayRange(dayRangeSelected)
+  setProject(currentEvent.projectId)
+  setSelectedMembers(currentEvent.participants)
+  setNewEvent( newEvent => ({...newEvent,
+    ...currentEvent
+  }))
+  setEventSource(() => "selectedEvent")
+  
+ }
 
   const handleInputTimeChange = (value, name) => {
-    // console.log(event.target.name)
-    // console.log(event.target.value)
+    
+    if(name === 'startTime' || name === 'endTime'){
+      value = dayjs(value).format('HH:mm:ss')
+    }
     setNewEvent({
          ...newEvent,
          [name] : value
         })
     }
   
+    useEffect(()=>{
+      if( eventModal && dayRangeModal){
+      if( eventSource === 'newEvent'){
+        dayRangeModal.show()
+        setEventSource('')
+      }else if(eventSource === 'selectedEvent'){
+        dayRangeModal.show()
+        setEventSource('')
+      }
+    }
 
+   },[eventSource])
+
+
+    useEffect(()=>{
+      
+      setNewEvent({
+        ...newEvent,
+        'projectId':project,
+        'projectName' : projects[project]
+       })
+
+   },[project])
+
+ 
+   useEffect(()=>{
+   
+    setNewEvent({
+      ...newEvent,
+      'participants':selectedMembers,
+     })
+
+ },[selectedMembers])
+   
  useEffect(()=>{
-    console.log(newEvent);
+   if(newEvent.title && newEvent.startTime && newEvent.endTime && newEvent.projectName){
+    setverifyErrorTitle(false);
+    setverifyStartTime(false);
+    setverifyEndTime(false);
+    setverifyProjectName(false);
+    setDisabled(false)
+   }
+   else{
+    
+      if (newEvent.title === null || newEvent.title.trim() === ""){
+         setverifyErrorTitle(true);
+      }else{
+       
+        setverifyErrorTitle(false);
+      }
+      
+       if (newEvent.startTime === null || newEvent.startTime.trim() === ""){
+    
+        setverifyStartTime(true);
+       }else{
+        
+        setverifyStartTime(false);
+       }
+       
+       if (newEvent.endTime === null || newEvent.endTime.trim() === ""){
+        
+        setverifyEndTime(true);
+       }else{
+        
+        setverifyEndTime(false);
+       }
+
+       if (newEvent.projectName === null || newEvent.projectName.trim() === ""){
+     
+        setverifyProjectName(true);
+       }else{
+        
+        setverifyProjectName(false);
+       }
+    
+    }
+  
  },[newEvent])
                 
 
-
-  const eventObject = [
-              { // this object will be "parsed" into an Event Object
-                groupId: 'blueEvents',
-                title: 'Congress', // a property!
-                start: '2023-06-21',
-                end:'2023-06-22',
-                startRecur: '2023-06-18T09:00:00',
-                endRecur: '2023-06-29T18:00:00',
-                startTime: '12:30:00', // a property!
-                endTime: '13:30:00', // a property! ** see important note below about 'end' **
-                daysOfWeek: [ '1','2' ],
-                display: 'block',
-                color : randomColor,
-              }
-            ]
-          
-    const handleMultiDayClick = (info ) => {
-      console.log(info)
-      info.end.setHours(info.end.getHours() -1)  
-      setSelectedInfoDayRange(info)
-     
-      dayRangeModal.show()
-    };
-
-   const eventClick = (info) => {
-    setSelectedInfoEvent(info)
-    eventModal.show()
-   }
 
    useEffect(() => {
     if(selectedInfoDayRange.start !== "" &&    selectedInfoDayRange.end!== "" ){
       let selectedDays = selectedInfoDayRange.start.getDay() !==  selectedInfoDayRange.end.getDay() ? selectedInfoDayRange.start.toLocaleDateString('es-ES',options) + " - " + selectedInfoDayRange.end.toLocaleDateString('es-ES',options) : selectedInfoDayRange.start.toLocaleDateString('es-ES',options);
       setDefaultDay(selectedDays)
+      setNewEvent({
+        ...newEvent,
+        "startRecur" : dayjs(selectedInfoDayRange.start).format('YYYY-MM-DDTHH:mm:ss'),
+        "endRecur" : dayjs(selectedInfoDayRange.end).format('YYYY-MM-DDTHH:mm:ss')
+       })
     }
   }, [selectedInfoDayRange]);
   
@@ -112,6 +282,8 @@ const CalendarContainerPage = () => {
     setEventModal(new bootstrap.Modal(document.getElementById('eventModal'), {
       keyboard: false
     }))
+
+    setEventList(...eventList, eventObject)
   }, []);
 
 
@@ -126,7 +298,7 @@ const CalendarContainerPage = () => {
         height='100%'
         selectable={true}
         select = {handleMultiDayClick}
-      events = {eventObject}
+      events = {eventList}
       eventClick={eventClick}
       handleWindowResize={true}
       />
@@ -142,29 +314,29 @@ const CalendarContainerPage = () => {
       </div>
       <div className="modal-body">
        <Stack spacing={4}  sx={{padding: '4px'}}>
-             <TextField id="eventTitle" label="Título" variant="standard" name='title' value={newEvent.title} onChange={handleInputChange}/>
+             <TextField id="eventTitle" label="Título" variant="standard" name='title' error={verifyErrorTitle} value={newEvent.title} onChange={handleInputChange}/>
 
              <TextField id="dateRange" label="Fecha" variant="standard"  value={defaultDay}  InputProps={{
             readOnly: true,
           }}/>
           <Stack direction="row" spacing={2}>
-              <BasicTimePicker label={"Hora de Inicio"} name='startTime' time={newEvent.startTime} handleChange={(value,name) => handleInputTimeChange(value,name)} />
-              <BasicTimePicker label={"Hora de Fin"} name='endTime' time={newEvent.endTime} handleChange={(value,name) => handleInputTimeChange(value,name)} />
+              <BasicTimePicker error={verifyStartTime} label={"Hora de Inicio"} name='startTime' time={newEvent.startTime} action={eventSource} handleChange={(value,name) => handleInputTimeChange(value,name)} />
+              <BasicTimePicker error={verifyEndTime} label={"Hora de Fin"} name='endTime' time={newEvent.endTime} action={eventSource} handleChange={(value,name) => handleInputTimeChange(value,name)} />
           </Stack>   
           
           <TextField id="eventDescription" name='description' placeholder='Escribe una descripción aquí...' multiline rows={4} label="Descripción"  value={newEvent.description} onChange={handleInputChange}/>
-          <FormControl fullWidth>
+          <FormControl error={verifyProjectName} fullWidth>
                 <InputLabel id="projectLabel">Proyecto Vinculado</InputLabel>
                     <Select
                       labelId="project-select-Label"
                       id="project-select"
                       value={project}
+                      name='projectName'
                       label="Proyecto Vinculado"
-                      onChange={handleChange}
+                      onChange={handleSelectChange}
                     >
-                      <MenuItem value={1}>Proyecto 1</MenuItem>
-                      <MenuItem value={2}>Proyecto 2</MenuItem>
-                      <MenuItem value={3}>Proyecto 3</MenuItem>
+                      {items(projects)}
+                      
                 </Select>
         </FormControl>
           <Autocomplete
@@ -172,7 +344,10 @@ const CalendarContainerPage = () => {
                     id="tags-standard"
                     options={members}
                     getOptionLabel={(option) => option}
-                    defaultValue={[members[0]]}
+                    value={selectedMembers}
+                    onChange={(event, newValue) => {
+                      setSelectedMembers(newValue);
+                    }}
                     renderInput={(params) => (
                     <TextField
                         {...params}
@@ -187,7 +362,7 @@ const CalendarContainerPage = () => {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" className="btn btn-primary">Guardar</button>
+        <button type="button" className="btn btn-primary" disabled={disabled} data-bs-dismiss="modal" onClick={handleSaveNewEvent} >Guardar</button>
       </div>
     </div>
   </div>
@@ -206,7 +381,7 @@ const CalendarContainerPage = () => {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary">Save changes</button>
+        <button type="button" className="btn btn-primary" >Save changes</button>
       </div>
     </div>
   </div>
