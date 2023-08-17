@@ -7,7 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 import esLocale from '@fullcalendar/core/locales/es';
 import { useEffect, useState, useRef } from 'react';
 import bootstrap from 'bootstrap/dist/js/bootstrap.min.js';
-import BasicTimePicker from '../../../components/TimePicker/TimePicker';
+import BasicTimePicker from '../../../components/TimePicker/TimePicker'
+import BasicDateEventPicker from '../../../components/DateEventPicker/DateEventPicker';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -15,27 +16,44 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import EditIcon from '@mui/icons-material/Edit';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 const CalendarContainerPage = () => {
   const [dayRangeModal, setDayRangeModal] = useState(null);
   const [eventModal, setEventModal] = useState(null);
+  const [modalTitle, setModalTitle] = useState('');
   const [selectedInfoDayRange, setSelectedInfoDayRange] = useState({ start:"", end:""}); //dia de inicio y fin
-  const [selectedInfoEvent, setSelectedInfoEvent] = useState({ event: {title: ""}});
   const [eventSource, setEventSource] = useState(null);
   const [disabled,setDisabled] =useState(true);
   const [defaultDay, setDefaultDay] = useState(null);
   const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric'};
-  const randomColor= () => { return ("#"+((1<<24)*Math.random()|0).toString(16) + "")}
- const [verifyErrorTitle,setverifyErrorTitle] =useState(false) // 0:title, 1: startTime, 2: endTime, 3:projectName
- const [verifyStartTime,setverifyStartTime] =useState(false) 
- const [verifyEndTime, setverifyEndTime] =useState(false) 
- const [verifyProjectName,setverifyProjectName] =useState(false) 
+  const randomColor= () => { return ("#"+((1<<24)*Math.random()|0).toString(16) + "")} 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#cce0ff',
+        main: '#99c2ff',
+        dark: ' #003d99',
+        contrastText: '#ffffff',
+      },
+    },
+  });
+  const [verifyErrorTitle,setverifyErrorTitle] =useState(false) // 0:title, 1: startTime, 2: endTime, 3:projectName
+  const [verifyStartTime,setverifyStartTime] =useState(false) 
+  const [verifyEndTime, setverifyEndTime] =useState(false) 
+  const [verifyProjectName,setverifyProjectName] =useState(false) 
   const members = ['Mariel Caro', 'Hernán Peinetti', 'Juan Manuel Romano', 'Micaela Chamut'];
-const [selectedMembers, setSelectedMembers] = useState([]);
+  const [selectedMembers, setSelectedMembers] = useState([]);
   const projects =['Proyecto 1','Proyecto 2','Proyecto 3','Proyecto 4'];
   const [project, setProject] = useState('');
-
+  const [eventList, setEventList] = useState([]);
   const eventObject = [
     { // this object will be "parsed" into an Event Object
       id: uuidv4(),
@@ -54,9 +72,59 @@ const [selectedMembers, setSelectedMembers] = useState([]);
     }
   ]
 
-  
+  const [weekDays, setWeekDays] = useState(()=>[]);
+  const [weekNumberDays, setWeekNumberDays] = useState(()=>[]);
 
-  const [eventList, setEventList] = useState([]);
+  const handleSelectedWeekDays = (event, newWeekDays) => {
+    console.log(newWeekDays)
+ 
+    setWeekDays(newWeekDays);
+
+  };
+
+const handleSaveDateEdition = ()=> {
+  
+    if(weekDays.length > 0){
+      let numbers = []
+      for(let i=0; i<weekDays.length; i++){
+        
+         switch (weekDays[i]) {
+            case "L":
+              numbers.push(1)
+              break;
+              case "M":
+                numbers.push(2)
+                break;
+                case "Mi":
+                  numbers.push(3)
+                  break;
+                  case "J":
+                    numbers.push(4)
+                    break;
+                    case "V":
+                      numbers.push(5)
+                      break;
+                      case "S":
+                        numbers.push(6)
+                      break;
+                      case "D":
+                        numbers.push(0)
+                      break;
+          }
+        setWeekNumberDays(numbers)
+      }
+
+    }
+  }
+
+ useEffect (()=> {
+  if(weekNumberDays.length > 0){
+    setNewEvent( newEvent => ({
+      ...newEvent,
+      ['daysOfWeek']: weekNumberDays || ''
+    }))
+  }
+ },[weekNumberDays])
 
  const items = (elements) => {
       let listItem = [];
@@ -68,6 +136,7 @@ const [selectedMembers, setSelectedMembers] = useState([]);
 
       return listItem;
  }
+
  const [newEvent, setNewEvent] = useState({
         id: uuidv4(),
         title:'',
@@ -120,8 +189,10 @@ const [selectedMembers, setSelectedMembers] = useState([]);
 
   }
 
+  const handleEditDateClick = () => {
+      eventModal.show()
+  }
 
-  
   const handleInputChange = (event) => {
    setNewEvent({
        ...newEvent,
@@ -134,44 +205,57 @@ const [selectedMembers, setSelectedMembers] = useState([]);
     setSelectedInfoDayRange(info)
     const emptyObject ={
       title:'',
-    description:'',
-    projectId:'',
-    projectName:'',
-    participants: ['',''],
-    startRecur: '',
-    endRecur:'',
-    startTime: null, 
-    endTime: null,
-    display: 'block',
-    color : randomColor(),
-  }
-  setNewEvent( newEvent => ({...newEvent,
-    ...emptyObject
-  }))
-  setProject('')
-  setSelectedMembers([])
+      description:'',
+      projectId:'',
+      projectName:'',
+      participants: ['',''],
+      startRecur: '',
+      endRecur:'',
+      startTime: null, 
+      endTime: null,
+      display: 'block',
+      color : randomColor(),
+    }
+    setNewEvent( newEvent => ({...newEvent,
+      ...emptyObject
+    }))
+ 
+    setProject('')
+    setSelectedMembers([])
+    setWeekDays([])
+    setModalTitle("Crear Nuevo Evento");
     setEventSource('newEvent')
     
   };
 
  const eventClick = (info) => {
-  console.log(info.event.id)
-  setSelectedInfoEvent(info)
-  
-  const currentEvent = eventList.find(item => item.id === info.event.id);
-  const dayRangeSelected = {start: new Date(currentEvent.startRecur), end: new Date(currentEvent.endRecur)}
-  setSelectedInfoDayRange(dayRangeSelected)
-  setProject(currentEvent.projectId)
-  setSelectedMembers(currentEvent.participants)
-  setNewEvent( newEvent => ({...newEvent,
-    ...currentEvent
-  }))
-  setEventSource(() => "selectedEvent")
-  
+      console.log(info.event.id)
+      
+      const currentEvent = eventList.find(item => item.id === info.event.id);
+      const dayRangeSelected = {start: new Date(currentEvent.startRecur), end: new Date(currentEvent.endRecur)}
+      setSelectedInfoDayRange(dayRangeSelected)
+      setProject(currentEvent.projectId)
+      setSelectedMembers(currentEvent.participants)
+      setNewEvent( newEvent => ({...newEvent,
+              ...currentEvent
+            }))
+      setModalTitle("Editar Evento");
+      setEventSource(() => "selectedEvent")
+    
  }
 
+ const handleInputDateChange = (value, name) => {
+  if(name === 'start' || name === 'end'){
+    value = dayjs(value).toDate()
+  }
+  setSelectedInfoDayRange({
+       ...selectedInfoDayRange,
+       [name] : value
+      })
+}
+
+
   const handleInputTimeChange = (value, name) => {
-    
     if(name === 'startTime' || name === 'endTime'){
       value = dayjs(value).format('HH:mm:ss')
     }
@@ -179,20 +263,20 @@ const [selectedMembers, setSelectedMembers] = useState([]);
          ...newEvent,
          [name] : value
         })
-    }
+  }
   
+ 
     useEffect(()=>{
       if( eventModal && dayRangeModal){
-      if( eventSource === 'newEvent'){
-        dayRangeModal.show()
-        setEventSource('')
-      }else if(eventSource === 'selectedEvent'){
-        dayRangeModal.show()
-        setEventSource('')
+        if( eventSource === 'newEvent'){
+          dayRangeModal.show()
+          setEventSource('')
+        }else if(eventSource === 'selectedEvent'){
+            dayRangeModal.show()
+            setEventSource('')
+        }
       }
-    }
-
-   },[eventSource])
+    },[eventSource])
 
 
     useEffect(()=>{
@@ -216,6 +300,9 @@ const [selectedMembers, setSelectedMembers] = useState([]);
  },[selectedMembers])
    
  useEffect(()=>{
+
+  console.log(newEvent)
+
    if(newEvent.title && newEvent.startTime && newEvent.endTime && newEvent.projectName){
     setverifyErrorTitle(false);
     setverifyStartTime(false);
@@ -257,6 +344,7 @@ const [selectedMembers, setSelectedMembers] = useState([]);
        }
     
     }
+   
   
  },[newEvent])
                 
@@ -292,15 +380,15 @@ const [selectedMembers, setSelectedMembers] = useState([]);
     <div className='calendarBoard'>
      <FullCalendar
         plugins={[ dayGridPlugin, interactionPlugin ]}
-       locale = {esLocale}
-       timeZone='local'
+        locale = {esLocale}
+        timeZone='local'
         initialView="dayGridMonth"
         height='100%'
         selectable={true}
         select = {handleMultiDayClick}
-      events = {eventList}
-      eventClick={eventClick}
-      handleWindowResize={true}
+        events = {eventList}
+        eventClick={eventClick}
+        handleWindowResize={true}
       />
 
 
@@ -309,16 +397,36 @@ const [selectedMembers, setSelectedMembers] = useState([]);
   <div className="modal-dialog">
     <div className="modal-content">
       <div className="modal-header">
-        <h5 className="modal-title" id="multiDayModalLabelId">Crear Nuevo Evento</h5>
+        <h5 className="modal-title" id="multiDayModalLabelId">{modalTitle}</h5>
         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">
        <Stack spacing={4}  sx={{padding: '4px'}}>
              <TextField id="eventTitle" label="Título" variant="standard" name='title' error={verifyErrorTitle} value={newEvent.title} onChange={handleInputChange}/>
-
-             <TextField id="dateRange" label="Fecha" variant="standard"  value={defaultDay}  InputProps={{
+             <FormControl  variant="outlined" >
+                  <InputLabel htmlFor="outlined-adornment-dateeditpicker">Fecha</InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-date"
+                    type='text'
+                    readOnly={true} 
+                    value={defaultDay}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          edge="end"
+                          onClick={handleEditDateClick}
+                        >
+                          <EditIcon /> 
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                  />
+              </FormControl>
+             {/* <TextField id="dateRange" label="Fecha" variant="standard"  value={defaultDay}  InputProps={{
             readOnly: true,
-          }}/>
+          }}/> */}
           <Stack direction="row" spacing={2}>
               <BasicTimePicker error={verifyStartTime} label={"Hora de Inicio"} name='startTime' time={newEvent.startTime} action={eventSource} handleChange={(value,name) => handleInputTimeChange(value,name)} />
               <BasicTimePicker error={verifyEndTime} label={"Hora de Fin"} name='endTime' time={newEvent.endTime} action={eventSource} handleChange={(value,name) => handleInputTimeChange(value,name)} />
@@ -368,20 +476,64 @@ const [selectedMembers, setSelectedMembers] = useState([]);
   </div>
 </div>
 
-{/* <!--MultiDay selected Modal --> */}
+{/* <!--Day Edit Modal --> */}
 <div className="modal fade" id="eventModal" tabIndex="-1" aria-labelledby="exampledModalLabel" aria-hidden="true">
   <div className="modal-dialog">
     <div className="modal-content">
       <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabeld">Modal title</h5>
+        <h5 className="modal-title" id="exampleModalLabeld">Seleccionar Fechas</h5>
         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">
-       {'selected ' + selectedInfoEvent.event.title}
-      </div>
+      <Stack spacing={4}  sx={{padding: '4px'}}>
+       <BasicDateEventPicker label="Fecha de Inicio" setSelectedInfoDayRange={setSelectedInfoDayRange} name='start' date={selectedInfoDayRange.start} action={eventSource} handleChange={(value,name) => handleInputDateChange(value,name)} />
+       <BasicDateEventPicker label="Fecha de Fin" setSelectedInfoDayRange={setSelectedInfoDayRange}  name='end' date={selectedInfoDayRange.end} action={eventSource} handleChange={(value,name) => handleInputDateChange(value,name)}/>
+       <Stack spacing={2}  sx={{padding: '4px'}}>
+       <label> Días de la Semana </label>
+          <Stack
+            direction="row"
+            spacing={2}
+          >
+          <ThemeProvider theme={theme}>
+          <ToggleButtonGroup
+              className="toggleGroup"
+              color="primary"
+                value={weekDays}
+                onChange={handleSelectedWeekDays}
+                aria-label="week-day"
+                
+            >
+              <ToggleButton className="toggleButton" value="L" aria-label="lunes">
+                 L
+              </ToggleButton>
+              <ToggleButton className="toggleButton" value="M" aria-label="martes">
+                 M
+              </ToggleButton>
+              <ToggleButton className="toggleButton" value="Mi" aria-label="miercoles">
+                 Mi
+              </ToggleButton>
+              <ToggleButton className="toggleButton" value="J" aria-label="jueves" >
+                J
+              </ToggleButton>
+              <ToggleButton className="toggleButton" value="V" aria-label="viernes" >
+                V
+              </ToggleButton>
+              <ToggleButton className="toggleButton" value="S" aria-label="sabado" >
+                S
+              </ToggleButton>
+              <ToggleButton className="toggleButton" value="D" aria-label="domingo" >
+                D
+              </ToggleButton>
+            </ToggleButtonGroup>
+            </ThemeProvider>
+          </Stack>
+          </Stack>
+       
+       </Stack>
+       </div>
       <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary" >Save changes</button>
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handleSaveDateEdition}>Guardar</button>
       </div>
     </div>
   </div>
