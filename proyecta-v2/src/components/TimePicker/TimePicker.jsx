@@ -10,20 +10,29 @@ export default function BasicTimePicker(props) {
 
   
     const [value, setValue] = useState(null);
-
+    const [minValueTime, setMinValueTime] = useState(null);
     const [errorView, setErrorView] = useState(props.error);
+
+    useEffect(()=>{
+      if(props.name==="endTime" && props.minTime!==null && props.minTime!==""){
+        setMinValueTime(dayjs(new Date("08/08/2008 "+ props.minTime)))
+      }
+    },[props.name, value, props.minTime])
+
     useEffect(()=>{
    
       if(props.action === "selectedEvent"){
             if(props.time === null || props.time==='Invalid Date'){
               setValue(null)
             }else{
-              setValue(new Date(props.time))
+              setValue(new Date("08/08/2008 "+ props.time))
             }
       }else{
-        if(props.time === null || props.time==='Invalid Date'){
-          setValue(null)
-        }
+      
+            if(props.time === null || props.time==='Invalid Date'){
+              setValue(null)
+            }
+        
       }
   
  },[props.time, props.action])
@@ -49,7 +58,7 @@ export default function BasicTimePicker(props) {
           renderInput={(props) => <TextField {...props } error={errorView} />}                      
           ampm={false}
           label={props.label}
-     
+          minTime={minValueTime}
           value={value}
           onChange={(newValue) => setValue(newValue)}
      

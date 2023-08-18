@@ -4,6 +4,13 @@
 .calendarBoard{
     height:100%;
 }
+.saveBtn:hover{
+background-color:#00bcd4 !important;
+}
+
+.fc-toolbar-title::first-letter{
+text-transform: capitalize;
+}
 
 .modal {
     position: fixed;
@@ -14,7 +21,9 @@
     background: rgba(0, 0, 0, 0.6);
   }
   
-
+  .deleteBtn{
+      border-radius: 100% !important;
+  }
   .toggleGroup{
     align-items: center;
     margin: auto;

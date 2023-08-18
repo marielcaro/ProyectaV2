@@ -22,7 +22,9 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
 
 
 const CalendarContainerPage = () => {
@@ -64,8 +66,8 @@ const CalendarContainerPage = () => {
       participants: ['Mariel Caro','Hernán Peinetti'],
       startRecur: '2023-08-18T09:00:00',
       endRecur: '2023-08-29T18:00:00',
-      startTime: '2023-08-29T12:30:00', // a property!
-      endTime: '2023-08-29T13:30:00', // a property! ** see important note below about 'end' **
+      startTime: '12:30:00', // a property!
+      endTime: '13:30:00', // a property! ** see important note below about 'end' **
       daysOfWeek: [ '1','2' ],
       display: 'block',
       color : randomColor(),
@@ -76,10 +78,7 @@ const CalendarContainerPage = () => {
   const [weekNumberDays, setWeekNumberDays] = useState(()=>[]);
 
   const handleSelectedWeekDays = (event, newWeekDays) => {
-    console.log(newWeekDays)
- 
-    setWeekDays(newWeekDays);
-
+      setWeekDays(newWeekDays);
   };
 
 const handleSaveDateEdition = ()=> {
@@ -111,9 +110,11 @@ const handleSaveDateEdition = ()=> {
                         numbers.push(0)
                       break;
           }
-        setWeekNumberDays(numbers)
+        setWeekNumberDays(numbers.sort())
       }
 
+    }else{
+      setWeekNumberDays([])
     }
   }
 
@@ -123,6 +124,16 @@ const handleSaveDateEdition = ()=> {
       ...newEvent,
       ['daysOfWeek']: weekNumberDays || ''
     }))
+  }else{
+    if(newEvent['daysOfWeek']){
+      let deletedWeekObject = newEvent ;
+      delete deletedWeekObject['daysOfWeek'];
+      setNewEvent( newEvent => ({
+        ...newEvent,
+        ...deletedWeekObject
+      }))
+    }
+
   }
  },[weekNumberDays])
 
@@ -159,17 +170,24 @@ const handleSaveDateEdition = ()=> {
     
   };
 
-  const handleSaveNewEvent = () => {
-    
-    
-      setEventList([...eventList, newEvent]);
-      setProject('')
+  const handleDeleteEvent =() =>{
+
+    let auxEventList = [...eventList]
+    let index =  eventList.findIndex(item => item.id === newEvent.id);
+    auxEventList = auxEventList.slice(0, index).concat(auxEventList.slice(index + 1));
+       
+      setEventList(auxEventList);
+
+       setProject('')
+      setWeekDays([])
+      setWeekNumberDays([])
       setSelectedMembers([])
       setverifyErrorTitle(true);
       setverifyStartTime(true);
       setverifyEndTime(true);
       setverifyProjectName(true);
       const emptyObject ={
+        id: uuidv4(),
         title:'',
       description:'',
       projectId:'',
@@ -186,10 +204,61 @@ const handleSaveDateEdition = ()=> {
         ...emptyObject
       }))
 
+      dayRangeModal.hide()
+
+  }
+
+  const handleSaveNewEvent = () => {
+    
+    if(eventSource=== "newEvent"){
+      let auxEventList = [...eventList]
+       auxEventList.push(newEvent)
+      setEventList(auxEventList);
+      
+
+    }else{
+      if(eventSource==="selectedEvent"){
+        let auxEventList = [...eventList]
+        let index =  eventList.findIndex(item => item.id === newEvent.id);
+        auxEventList[index] = newEvent;
+        setEventList(auxEventList);
+        
+      }
+
+    }
+      setProject('')
+      setWeekDays([])
+      setWeekNumberDays([])
+      setSelectedMembers([])
+      setverifyErrorTitle(true);
+      setverifyStartTime(true);
+      setverifyEndTime(true);
+      setverifyProjectName(true);
+      const emptyObject ={
+        id: uuidv4(),
+        title:'',
+      description:'',
+      projectId:'',
+      projectName:'',
+      participants: ['',''],
+      startRecur: '',
+      endRecur:'',
+      startTime: null, 
+      endTime: null,
+      display: 'block',
+      color : randomColor(),
+    }
+      setNewEvent( newEvent => ({...newEvent,
+        ...emptyObject
+      }))
+
+      dayRangeModal.hide()
 
   }
 
   const handleEditDateClick = () => {
+    console.log(weekDays)
+    setWeekDays(weekDays)
       eventModal.show()
   }
 
@@ -229,13 +298,43 @@ const handleSaveDateEdition = ()=> {
   };
 
  const eventClick = (info) => {
-      console.log(info.event.id)
       
       const currentEvent = eventList.find(item => item.id === info.event.id);
       const dayRangeSelected = {start: new Date(currentEvent.startRecur), end: new Date(currentEvent.endRecur)}
       setSelectedInfoDayRange(dayRangeSelected)
       setProject(currentEvent.projectId)
       setSelectedMembers(currentEvent.participants)
+      if( currentEvent["daysOfWeek"] ){
+          let daysWeek = []
+          for(let i=0; i<currentEvent.daysOfWeek.length; i++){
+            
+            switch (currentEvent.daysOfWeek[i]) {
+                case "1":
+                  daysWeek.push("L")
+                  break;
+                  case "2":
+                    daysWeek.push("M")
+                    break;
+                    case "3":
+                      daysWeek.push("Mi")
+                      break;
+                      case "4":
+                        daysWeek.push("J")
+                        break;
+                        case "5":
+                          daysWeek.push("V")
+                          break;
+                          case "6":
+                            daysWeek.push("S")
+                          break;
+                          case "0":
+                            daysWeek.push("D")
+                          break;
+              }
+            }
+        setWeekDays(daysWeek)
+      }
+      
       setNewEvent( newEvent => ({...newEvent,
               ...currentEvent
             }))
@@ -265,15 +364,19 @@ const handleSaveDateEdition = ()=> {
         })
   }
   
- 
+//  const handleLostFocusModal = () => {
+//   setEventSource('') 
+//  }
+
+
     useEffect(()=>{
       if( eventModal && dayRangeModal){
         if( eventSource === 'newEvent'){
           dayRangeModal.show()
-          setEventSource('')
+          
         }else if(eventSource === 'selectedEvent'){
             dayRangeModal.show()
-            setEventSource('')
+            
         }
       }
     },[eventSource])
@@ -300,8 +403,6 @@ const handleSaveDateEdition = ()=> {
  },[selectedMembers])
    
  useEffect(()=>{
-
-  console.log(newEvent)
 
    if(newEvent.title && newEvent.startTime && newEvent.endTime && newEvent.projectName){
     setverifyErrorTitle(false);
@@ -363,9 +464,21 @@ const handleSaveDateEdition = ()=> {
   }, [selectedInfoDayRange]);
   
    useEffect(() => {
-    setDayRangeModal(new bootstrap.Modal(document.getElementById('multiDayModal'), {
+    const modalElement = document.getElementById('multiDayModal');
+    const modal = new bootstrap.Modal(modalElement, {
       keyboard: false
-    }))
+    });
+
+    modalElement.addEventListener('hide.bs.modal', function (event) {
+      // Aquí puedes llamar a la función que deseas ejecutar cuando se oculta el modal
+      setEventSource('') 
+    });
+
+    setDayRangeModal(modal);
+
+    // setDayRangeModal(new bootstrap.Modal(document.getElementById('multiDayModal'), {
+    //   keyboard: false
+    // }))
 
     setEventModal(new bootstrap.Modal(document.getElementById('eventModal'), {
       keyboard: false
@@ -393,7 +506,7 @@ const handleSaveDateEdition = ()=> {
 
 
 {/* <!--MultiDay selected Modal --> */}
-<div className="modal fade" id="multiDayModal" tabIndex="-1" aria-labelledby="multiDayModalLabel" aria-hidden="true">
+<div className="modal fade" id="multiDayModal" tabIndex="-1" aria-labelledby="multiDayModalLabel" aria-hidden="true" >
   <div className="modal-dialog">
     <div className="modal-content">
       <div className="modal-header">
@@ -428,8 +541,8 @@ const handleSaveDateEdition = ()=> {
             readOnly: true,
           }}/> */}
           <Stack direction="row" spacing={2}>
-              <BasicTimePicker error={verifyStartTime} label={"Hora de Inicio"} name='startTime' time={newEvent.startTime} action={eventSource} handleChange={(value,name) => handleInputTimeChange(value,name)} />
-              <BasicTimePicker error={verifyEndTime} label={"Hora de Fin"} name='endTime' time={newEvent.endTime} action={eventSource} handleChange={(value,name) => handleInputTimeChange(value,name)} />
+              <BasicTimePicker error={verifyStartTime} label={"Hora de Inicio"} name='startTime'  minTime={""} time={newEvent.startTime} action={eventSource} handleChange={(value,name) => handleInputTimeChange(value,name)} />
+              <BasicTimePicker error={verifyEndTime} label={"Hora de Fin"} name='endTime'  minTime={newEvent.startTime}  time={newEvent.endTime} action={eventSource} handleChange={(value,name) => handleInputTimeChange(value,name)} />
           </Stack>   
           
           <TextField id="eventDescription" name='description' placeholder='Escribe una descripción aquí...' multiline rows={4} label="Descripción"  value={newEvent.description} onChange={handleInputChange}/>
@@ -468,9 +581,12 @@ const handleSaveDateEdition = ()=> {
            
         </Stack>
       </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" className="btn btn-primary" disabled={disabled} data-bs-dismiss="modal" onClick={handleSaveNewEvent} >Guardar</button>
+      <div className="modal-footer ">
+       {eventSource === "selectedEvent" ? <button type="button" class="deleteBtn p-2 btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><DeleteIcon sx={{ color: grey[50] }}/> </button> : <></>}
+      <div className='ms-auto p-2'>
+        <button type="button" className="btn btn-secondary me-2" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" className="saveBtn btn btn-primary" disabled={disabled}  onClick={handleSaveNewEvent} >Guardar</button>
+        </div>
       </div>
     </div>
   </div>
@@ -486,8 +602,8 @@ const handleSaveDateEdition = ()=> {
       </div>
       <div className="modal-body">
       <Stack spacing={4}  sx={{padding: '4px'}}>
-       <BasicDateEventPicker label="Fecha de Inicio" setSelectedInfoDayRange={setSelectedInfoDayRange} name='start' date={selectedInfoDayRange.start} action={eventSource} handleChange={(value,name) => handleInputDateChange(value,name)} />
-       <BasicDateEventPicker label="Fecha de Fin" setSelectedInfoDayRange={setSelectedInfoDayRange}  name='end' date={selectedInfoDayRange.end} action={eventSource} handleChange={(value,name) => handleInputDateChange(value,name)}/>
+       <BasicDateEventPicker label="Fecha de Inicio" setSelectedInfoDayRange={setSelectedInfoDayRange} name='start'  minDate={""} date={selectedInfoDayRange.start} action={eventSource} handleChange={(value,name) => handleInputDateChange(value,name)} />
+       <BasicDateEventPicker label="Fecha de Fin" setSelectedInfoDayRange={setSelectedInfoDayRange}  name='end'   minDate={selectedInfoDayRange.start} date={selectedInfoDayRange.end} action={eventSource} handleChange={(value,name) => handleInputDateChange(value,name)}/>
        <Stack spacing={2}  sx={{padding: '4px'}}>
        <label> Días de la Semana </label>
           <Stack
@@ -532,8 +648,29 @@ const handleSaveDateEdition = ()=> {
        </Stack>
        </div>
       <div className="modal-footer">
+       
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handleSaveDateEdition}>Guardar</button>
+        <button type="button" className="saveBtn btn btn-primary" data-bs-dismiss="modal" onClick={handleSaveDateEdition}>Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* <!-- Delete Modal --> */}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Evento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Está por eliminar un evento permanentamente. 
+        ¿Desea continuar?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger"   onClick={handleDeleteEvent} data-bs-dismiss="modal">Confirmar</button>
       </div>
     </div>
   </div>

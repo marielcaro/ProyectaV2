@@ -14,6 +14,13 @@ import { SevenKSharp } from '@mui/icons-material';
 export default function BasicDateEventPicker(props) {
   const [locale, setLocale] = React.useState('es');
   const [value, setValue] = React.useState(props.date);
+  const [minValueDate, setMinValueDate] = useState(null);
+
+  useEffect(()=>{
+    if(props.name==="end" && props.minDate!==null && props.minDate!==""){
+      setMinValueDate(dayjs(new Date(props.minDate)))
+    }
+  },[props.name, value, props.minDate])
 
   useEffect(()=>{
     
@@ -35,6 +42,7 @@ useEffect(() => {
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
       <DesktopDatePicker
         label={props.label}
+        minDate={minValueDate}
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
