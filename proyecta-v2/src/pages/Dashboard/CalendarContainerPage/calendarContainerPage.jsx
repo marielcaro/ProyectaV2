@@ -619,25 +619,25 @@ const handleSaveDateEdition = ()=> {
                 aria-label="week-day"
                 
             >
-              <ToggleButton className="toggleButton" value="L" aria-label="lunes">
+              <ToggleButton className="toggleButtonCalendar" value="L" aria-label="lunes">
                  L
               </ToggleButton>
-              <ToggleButton className="toggleButton" value="M" aria-label="martes">
+              <ToggleButton className="toggleButtonCalendar" value="M" aria-label="martes">
                  M
               </ToggleButton>
-              <ToggleButton className="toggleButton" value="Mi" aria-label="miercoles">
+              <ToggleButton className="toggleButtonCalendar" value="Mi" aria-label="miercoles">
                  Mi
               </ToggleButton>
-              <ToggleButton className="toggleButton" value="J" aria-label="jueves" >
+              <ToggleButton className="toggleButtonCalendar" value="J" aria-label="jueves" >
                 J
               </ToggleButton>
-              <ToggleButton className="toggleButton" value="V" aria-label="viernes" >
+              <ToggleButton className="toggleButtonCalendar" value="V" aria-label="viernes" >
                 V
               </ToggleButton>
-              <ToggleButton className="toggleButton" value="S" aria-label="sabado" >
+              <ToggleButton className="toggleButtonCalendar" value="S" aria-label="sabado" >
                 S
               </ToggleButton>
-              <ToggleButton className="toggleButton" value="D" aria-label="domingo" >
+              <ToggleButton className="toggleButtonCalendar" value="D" aria-label="domingo" >
                 D
               </ToggleButton>
             </ToggleButtonGroup>
