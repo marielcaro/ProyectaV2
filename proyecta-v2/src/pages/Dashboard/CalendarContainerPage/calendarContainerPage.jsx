@@ -363,11 +363,6 @@ const handleSaveDateEdition = ()=> {
          [name] : value
         })
   }
-  
-//  const handleLostFocusModal = () => {
-//   setEventSource('') 
-//  }
-
 
     useEffect(()=>{
       if( eventModal && dayRangeModal){
@@ -476,10 +471,6 @@ const handleSaveDateEdition = ()=> {
 
     setDayRangeModal(modal);
 
-    // setDayRangeModal(new bootstrap.Modal(document.getElementById('multiDayModal'), {
-    //   keyboard: false
-    // }))
-
     setEventModal(new bootstrap.Modal(document.getElementById('eventModal'), {
       keyboard: false
     }))
@@ -537,9 +528,7 @@ const handleSaveDateEdition = ()=> {
                     label="Password"
                   />
               </FormControl>
-             {/* <TextField id="dateRange" label="Fecha" variant="standard"  value={defaultDay}  InputProps={{
-            readOnly: true,
-          }}/> */}
+         
           <Stack direction="row" spacing={2}>
               <BasicTimePicker error={verifyStartTime} label={"Hora de Inicio"} name='startTime'  minTime={""} time={newEvent.startTime} action={eventSource} handleChange={(value,name) => handleInputTimeChange(value,name)} />
               <BasicTimePicker error={verifyEndTime} label={"Hora de Fin"} name='endTime'  minTime={newEvent.startTime}  time={newEvent.endTime} action={eventSource} handleChange={(value,name) => handleInputTimeChange(value,name)} />

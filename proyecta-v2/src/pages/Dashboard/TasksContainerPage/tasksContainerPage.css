@@ -1,5 +1,15 @@
 /* 
  */
+ .newTask{
+background-color: #EB5401;
+ }
+
+ .selectProjectBar{
+	background-color:  #fff0e6
+
+	;
+	border-radius: 12px;
+ }
  .descriptionTask{
 	text-align: left;
 	padding-left: 24px !important;
@@ -59,11 +69,20 @@
 }
 
 .list{
-    max-height: 76vh;
+
+		max-height: 68vh;
+
+		@media(max-height: 768px) {
+			max-height: 60vh;
+		}
+    
+	@media(max-height: 650px) {
+		max-height: 56vh;
+	}
 }
 .taskboard{
   
-    max-height: 85vh;
+    max-height: 75vh;
     overflow: hidden;
 
 }
