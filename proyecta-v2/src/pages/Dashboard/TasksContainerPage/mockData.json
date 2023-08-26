@@ -15,6 +15,7 @@
         {
          "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
          "title": "Task 1",
+         "projectName" : "Proyecto 1",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 1: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -27,8 +28,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "7fecb42f-36e6-45b2-9839-96ccfde168f7", 
             "title": "Task 2",
+            "projectName" : "Proyecto 1",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 2: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -43,8 +45,9 @@
     ],
     "inProgressTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "25eeb6b0-007a-4272-9e61-d1b7e2f1f525", 
          "title": "Task 3",
+         "projectName" : "Proyecto 1",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 3: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -57,8 +60,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "a5c21989-79be-4815-9cf2-00af957ad06d", 
             "title": "Task 4",
+            "projectName" : "Proyecto 1",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 4: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -73,8 +77,9 @@
     ],
     "resolvedTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "fb8f8105-d561-4f63-9ae4-c81610c8ab99", 
          "title": "Task 5",
+         "projectName" : "Proyecto 1",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 5: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -87,8 +92,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "9c9d94ca-5c34-4e60-915c-f419106c0df5", 
             "title": "Task 6",
+            "projectName" : "Proyecto 1",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 6: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -103,8 +109,9 @@
     ],
     "endedTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "60ddbdb3-1e5a-475a-833b-2acc62df859b", 
          "title": "Task 7",
+         "projectName" : "Proyecto 1",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 7: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -117,8 +124,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "5986cfc8-4685-4bf4-bfa6-394506a0c21d", 
             "title": "Task 8",
+            "projectName" : "Proyecto 1",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 8: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -148,8 +156,9 @@
     ],
     "newTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "dbcdb463-7aee-462f-ad75-cf65084d32ca", 
          "title": "Task 1",
+         "projectName" : "Proyecto 2",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 1: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -162,8 +171,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "0655e280-dc01-41b6-899b-a7c972ba899f", 
             "title": "Task 2",
+            "projectName" : "Proyecto 2",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 2: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -178,8 +188,9 @@
     ],
     "inProgressTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "655f2555-3ae5-4d40-a1d8-24ae449c37bf", 
          "title": "Task 3",
+         "projectName" : "Proyecto 2",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 3: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -192,8 +203,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "0e3db55b-6ed6-4597-abaa-4fa943d3ac6d", 
             "title": "Task 4",
+            "projectName" : "Proyecto 2",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 4: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -208,8 +220,9 @@
     ],
     "resolvedTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "71ba859a-81a7-4eaa-b783-8ccf23e12e4d", 
          "title": "Task 5",
+         "projectName" : "Proyecto 2",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 5: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -222,8 +235,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "d708050b-7ca5-48a2-a150-b53759ec8a95", 
             "title": "Task 6",
+            "projectName" : "Proyecto 2",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 6: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -238,8 +252,9 @@
     ],
     "endedTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "a4696fd9-7a02-4eb3-8712-2cab1beb3a56", 
          "title": "Task 7",
+         "projectName" : "Proyecto 2",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 7: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -252,8 +267,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "0119ef36-a88c-41eb-b72c-90c23dbc9c38", 
             "title": "Task 8",
+            "projectName" : "Proyecto 2",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 8: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -283,8 +299,9 @@
     ],
     "newTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "1378497c-3c20-4d24-8014-7d62251b1907", 
          "title": "Task 1",
+         "projectName" : "Proyecto 3",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 1: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -297,8 +314,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "d92eeea4-5fc8-4f93-ad8b-e6d98897865f", 
             "title": "Task 2",
+            "projectName" : "Proyecto 3",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 2: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -313,8 +331,9 @@
     ],
     "inProgressTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "11527a4a-d3a7-4656-bf5e-e5fbfa47f4f9", 
          "title": "Task 3",
+         "projectName" : "Proyecto 3",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 3: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -327,8 +346,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "aa94a8f4-d498-44eb-91a0-31da313c15a8", 
             "title": "Task 4",
+            "projectName" : "Proyecto 3",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 4: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -343,8 +363,9 @@
     ],
     "resolvedTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "f8c3b7fe-58ca-442c-a7d6-9ed549b0dfb7", 
          "title": "Task 5",
+         "projectName" : "Proyecto 3",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 5: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -357,8 +378,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "dbc605d1-628f-41bb-a12a-c6127934b2e3", 
             "title": "Task 6",
+            "projectName" : "Proyecto 3",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 6: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -373,8 +395,9 @@
     ],
     "endedTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "1866fc4b-d582-4c39-9bc2-5aeda88063bb", 
          "title": "Task 7",
+         "projectName" : "Proyecto 3",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 7: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -387,8 +410,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "ddeec276-d72d-4406-a831-67bbaab895a8", 
             "title": "Task 8",
+            "projectName" : "Proyecto 3",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 8: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -418,8 +442,9 @@
     ],
     "newTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "b8020c80-8a4f-4ffb-829a-96c6c40f4d48", 
          "title": "Task 1",
+         "projectName" : "Proyecto 4",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 1: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -432,8 +457,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "0c6f67c6-db74-4746-98c2-b358ecacde25", 
             "title": "Task 2",
+            "projectName" : "Proyecto 4",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 2: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -448,8 +474,9 @@
     ],
     "inProgressTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "42fd154f-62a8-415c-a0cd-cd7e6b208b68", 
          "title": "Task 3",
+         "projectName" : "Proyecto 4",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 3: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -462,8 +489,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "b7da6e77-7bfd-4a16-9c34-060f2e368c18", 
             "title": "Task 4",
+            "projectName" : "Proyecto 4",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 4: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -478,8 +506,9 @@
     ],
     "resolvedTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "d048a0f9-7696-4ede-9127-3f524f35d483", 
          "title": "Task 5",
+         "projectName" : "Proyecto 4",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 5: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -492,8 +521,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "d89bb035-cfa4-4c94-a750-4cc852c2b99b", 
             "title": "Task 6",
+            "projectName" : "Proyecto 4",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 6: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -508,8 +538,9 @@
     ],
     "endedTasks":[
         {
-         "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+         "id": "e39ec78c-45d1-4094-8d5b-dd11775125a3", 
          "title": "Task 7",
+         "projectName" : "Proyecto 4",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 7: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -522,8 +553,9 @@
 
         },
         {
-            "id": "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+            "id": "050251e9-17be-4c00-b6c9-4059da55c78b", 
             "title": "Task 8",
+            "projectName" : "Proyecto 4",
             "author":"Hernan Peinetti",
             "endDate":"2023-08-30T18:00:00",
             "description": "Descripción 8: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",

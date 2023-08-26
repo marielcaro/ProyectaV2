@@ -1,41 +1,84 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext, Droppable,Draggable } from 'react-beautiful-dnd';
 import TaskList from './TaskList';
-
+import ModalTask from './ModalTask';
 import './tasksContainerPage.css';
+import data from "./mockData.json"
 
-const Taskboard = () => {
-  const [tasks1, setTasks1] = useState([
-    { id: uuidv4(), content: 'Task 1' },
-    { id: uuidv4(), content: 'Task 2' },
-    { id: uuidv4(), content: 'Task 3' },
-  ]);
+const Taskboard = (props) => {
+  const [newTaskList, setNewTaskList] = useState(props.projectAllInfo.newTasks);
 
-  const [tasks2, setTasks2] = useState([
-    { id: uuidv4(), content: 'Task 4' },
-    { id: uuidv4(), content: 'Task 5' },
-    { id: uuidv4(), content: 'Task 6' },
-  ]);
+  const [inProgressTaskList, setInProgressTaskList] = useState(props.projectAllInfo.inProgressTasks);
 
-  const [tasks3, setTasks3] = useState([
-    { id: uuidv4(), content: 'Task 7' },
-    { id: uuidv4(), content: 'Task 8' },
-    { id: uuidv4(), content: 'Task 9' },
-  ]);
+  const [resolvedTaskList, setResolvedTaskList] = useState(props.projectAllInfo.resolvedTasks);
 
-  const [tasks4, setTasks4] = useState([
-    { id: uuidv4(), content: 'Task 10' },
-    { id: uuidv4(), content: 'Task 11' },
-    { id: uuidv4(), content: 'Task 12' },
-    { id: uuidv4(), content: 'Task 13' },
-    { id: uuidv4(), content: 'Task 14' },
-    { id: uuidv4(), content: 'Task 15' },
-  ]);
+  const [completedTaskList, setCompletedTaskList] = useState(props.projectAllInfo.endedTasks);
 
 
-  const [state, setState] = useState([ { id: "0", name:"Nuevas", tasks : tasks1 }, {id:"1" , name:"En Progreso", tasks : tasks2}, {id:"2" ,  name:"Resueltas", tasks : tasks3},{id:"3" ,  name:"Finalizadas", tasks : tasks4}]);
+  const [state, setState] = useState([ { id: "0", name:"Nuevas", tasks : newTaskList }, {id:"1" , name:"En Progreso", tasks : inProgressTaskList}, {id:"2" ,  name:"Resueltas", tasks : resolvedTaskList},{id:"3" ,  name:"Finalizadas", tasks : completedTaskList}]);
+
+  const [taskData, setTaskData] = useState( {
+    id: "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
+    title: "Task 1",
+    projectName : "Proyecto 1",
+    author:"Hernan Peinetti",
+    endDate:"2023-08-30T18:00:00",
+    description: "Descripción 1: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
+    members: [
+       {label:"Mariel Caro", 
+       userId: 1},
+       {label:"Mica Chamut", 
+       userId: 2}
+    ] }) 
+
+  const [selectedTaskId, setSelectedTaskId] =useState('');
+  const [allAllowedMembers, setAllowedMembers] =useState(props.projectAllInfo.allProjectMembers);
+ 
+
+  const handleClickCard= (id) => {
+    console.log("click")
+    setSelectedTaskId(id)
+  }
+
+  const searchTask = (id) => {
+    let allTasks = [];
+    data.projects.forEach(project => {
+      allTasks= allTasks.concat(project.newTasks).concat(project.inProgressTasks).concat(project.resolvedTasks).concat(project.endedTasks);
+    });
+    
+    let task = allTasks.find(task => task.id === id)
+
+    return task
+  }
+
+  useEffect(()=> {
+    let selectedTask=searchTask(selectedTaskId)
+    setTaskData((taskData)=>({...taskData,...selectedTask}))
+    
+  },[selectedTaskId])
   
+useEffect(()=> {
+  
+  setNewTaskList(props.projectAllInfo.newTasks)
+  setInProgressTaskList(props.projectAllInfo.inProgressTasks)
+  setResolvedTaskList(props.projectAllInfo.resolvedTasks)
+  setCompletedTaskList(props.projectAllInfo.endedTasks)
+
+},[props.projectAllInfo])
+
+useEffect(()=>{
+  // console.log("newTaskList")
+  // console.log(newTaskList)
+  let newState = [ { id: "0", name:"Nuevas", tasks : newTaskList }, {id:"1" , name:"En Progreso", tasks : inProgressTaskList}, {id:"2" ,  name:"Resueltas", tasks : resolvedTaskList},{id:"3" ,  name:"Finalizadas", tasks : completedTaskList}]
+  setState(newState)
+},[newTaskList,inProgressTaskList,resolvedTaskList,completedTaskList])
+
+useEffect(()=>{
+  // console.log("cambio")
+  // console.log(state)
+},[state])
+
   const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? "lightsalmon" : "white",
     borderRadius: "15px",
@@ -122,7 +165,7 @@ const Taskboard = () => {
          <div {...provided.droppableProps} ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}
          {...provided.droppableProps}>
           
-           <TaskList tasks={el.tasks} onDragHandler={handleOnDragEnd} />
+           <TaskList tasks={el.tasks} handleClickTask={(id) => handleClickCard(id)}  target="#exampleModal" onDragHandler={handleOnDragEnd} />
            {provided.placeholder}
          </div>
        )}
@@ -131,6 +174,7 @@ const Taskboard = () => {
      </div>
     ))}
     </DragDropContext>
+    <ModalTask taskData={taskData} taskId={selectedTaskId} allAllowedMembers={allAllowedMembers} />
     </div>
   );
 }

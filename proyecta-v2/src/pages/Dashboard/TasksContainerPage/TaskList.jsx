@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Task from './Task';
 import { DragDropContext, Droppable,Draggable } from 'react-beautiful-dnd';
 import './tasksContainerPage.css';
 
 const TaskList = (props) => {
   const [tasks, setTasks] = useState(props.tasks)
+
+  useEffect(()=> {
+    setTasks(props.tasks)
+  },[props.tasks])
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -53,7 +57,7 @@ const reorder = (list, startIndex, endIndex) => {
                        provided.draggableProps.style
                      )}
                    >
-                            <Task task={task}/>
+                            <Task task={task} target={props.target} handleClickTask={props.handleClickTask}  />
                    </div>
            ) }
            </Draggable>
