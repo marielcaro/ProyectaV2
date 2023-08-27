@@ -37,7 +37,6 @@ const Taskboard = (props) => {
  
 
   const handleClickCard= (id) => {
-    console.log("click")
     setSelectedTaskId(id)
   }
 
