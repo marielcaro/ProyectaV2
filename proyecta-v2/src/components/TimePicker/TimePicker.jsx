@@ -17,6 +17,7 @@ export default function BasicTimePicker(props) {
       if(props.name==="endTime" && props.minTime!==null && props.minTime!==""){
         setMinValueTime(dayjs(new Date("08/08/2008 "+ props.minTime)))
       }
+      console.log("sadas")
     },[props.name, value, props.minTime])
 
     useEffect(()=>{
@@ -25,7 +26,7 @@ export default function BasicTimePicker(props) {
             if(props.time === null || props.time==='Invalid Date'){
               setValue(null)
             }else{
-              setValue(new Date("08/08/2008 "+ props.time))
+              setValue(dayjs(new Date("08/08/2008 "+ props.time)))
             }
       }else{
       

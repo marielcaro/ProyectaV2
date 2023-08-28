@@ -13,30 +13,45 @@ import { SevenKSharp } from '@mui/icons-material';
 
 export default function BasicDateEventPicker(props) {
   const [locale, setLocale] = React.useState('es');
-  const [value, setValue] = React.useState(props.date);
+  const [value, setValue] = React.useState(dayjs(new Date(props.date)));
   const [minValueDate, setMinValueDate] = useState(null);
+  const [name, setName] = useState(props.name);
 
   useEffect(()=>{
     if(props.name==="end" && props.minDate!==null && props.minDate!==""){
       setMinValueDate(dayjs(new Date(props.minDate)))
     }
-  },[props.name, value, props.minDate])
+    console.log("sadas")
+  },[props.name,  props.minDate])
+
+  
+
+  const handleChangeDate = (date)=>{
+    props.handleChange(date,name);
+  }
 
   useEffect(()=>{
-    
-        if(props.date === null || props.date==='Invalid Date'){
-            setValue(null)
-          }else{
-            setValue(props.date)
-    }         
+    setName(props.name)
+    console.log(props.name)
+  }, [props.name])
+  
+  useEffect(() => {
+    const newValue = dayjs(new Date(props.date));
 
-},[props.date])
+    // Actualiza el valor del estado solo si ha cambiado
+    if (!newValue.isSame(value)) {
+      setValue(newValue);
+    }
 
-useEffect(() => {
-    if (value !== props.date) {
-        props.handleChange(value, props.name);
-      }
-  }, [value,  props.name]);
+    // Llamada a la función de cambio solo cuando el valor de `value` cambia
+    if (!newValue.isSame(props.date)) {
+      props.handleChange(newValue, props.name);
+    }
+          console.log("sadas2")
+
+  }, [props.date, props.name, value, props.handleChange]);
+
+
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
@@ -44,9 +59,7 @@ useEffect(() => {
         label={props.label}
         minDate={minValueDate}
         value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
+         onChange={(newValue) => handleChangeDate(newValue)}
         renderInput={({ inputRef, inputProps, InputProps }) => (
             <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
              {InputProps?.endAdornment}

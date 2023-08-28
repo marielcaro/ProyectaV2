@@ -455,7 +455,11 @@ const handleSaveDateEdition = ()=> {
         "startRecur" : dayjs(selectedInfoDayRange.start).format('YYYY-MM-DDTHH:mm:ss'),
         "endRecur" : dayjs(selectedInfoDayRange.end).format('YYYY-MM-DDTHH:mm:ss')
        })
+
     }
+
+    console.log(selectedInfoDayRange.start)
+    console.log(selectedInfoDayRange.end)
   }, [selectedInfoDayRange]);
   
    useEffect(() => {
@@ -591,8 +595,8 @@ const handleSaveDateEdition = ()=> {
       </div>
       <div className="modal-body">
       <Stack spacing={4}  sx={{padding: '4px'}}>
-       <BasicDateEventPicker label="Fecha de Inicio" setSelectedInfoDayRange={setSelectedInfoDayRange} name='start'  minDate={""} date={selectedInfoDayRange.start} action={eventSource} handleChange={(value,name) => handleInputDateChange(value,name)} />
-       <BasicDateEventPicker label="Fecha de Fin" setSelectedInfoDayRange={setSelectedInfoDayRange}  name='end'   minDate={selectedInfoDayRange.start} date={selectedInfoDayRange.end} action={eventSource} handleChange={(value,name) => handleInputDateChange(value,name)}/>
+       <BasicDateEventPicker label="Fecha de Inicio" setSelectedInfoDayRange={setSelectedInfoDayRange} name='start'  minDate={""} date={selectedInfoDayRange.start ?selectedInfoDayRange.start : null } action={eventSource} handleChange={(value,name) => handleInputDateChange(value,name)} />
+       <BasicDateEventPicker label="Fecha de Fin" setSelectedInfoDayRange={setSelectedInfoDayRange}  name='end'   minDate={selectedInfoDayRange.start} date={selectedInfoDayRange.end ? selectedInfoDayRange.end : null} action={eventSource} handleChange={(value,name) => handleInputDateChange(value,name)}/>
        <Stack spacing={2}  sx={{padding: '4px'}}>
        <label> Días de la Semana </label>
           <Stack

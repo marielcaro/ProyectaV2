@@ -12,8 +12,13 @@ const allAllowedMembers = props.allAllowedMembers;
 const [members, setMembers] = useState(props.taskData.members);
 const [key, setKey] = useState(0); // Clave temporal
 const [taskEndDate, setTaskEndDate]=useState(props.taskData.endDate);
+const [readonly, setReadonly] = useState(true);
+const [descriptionTask, setDescriptionTask] = useState(props.taskData.description)
 
 
+const handleDescritionChange = (event) => {
+  setDescriptionTask(event.target.value)
+}
 
 const handleInputDateChange = (value) => {
   value = dayjs(value).toDate()
@@ -60,8 +65,10 @@ useEffect( ()=>{
           <div className="modal-body px-4">
           <Stack spacing={4}  sx={{padding: '4px'}}>
              <TextField id="projectName" label="Proyecto" variant="standard" value={props.taskData.projectName}/>
-             <BasicDateField label="Fecha de Finalización" date={taskEndDate} readOnly={true} handleChange={(value) => handleInputDateChange(value)}/>
-             <TextField id="taskDetail" multiline label="Descripción" variant="standard" value={props.taskData.description}/>
+             <BasicDateField label="Fecha de Finalización" date={taskEndDate} readOnly={readonly} handleChange={(value) => handleInputDateChange(value)}/>
+             <TextField id="taskDetail" multiline label="Descripción" variant="standard" value={descriptionTask} onChange={handleDescritionChange}  InputProps={{
+            readOnly: {readonly},
+          }}/>
              <Autocomplete
                     key={key}
                     multiple

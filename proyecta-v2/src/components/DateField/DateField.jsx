@@ -34,6 +34,7 @@ export default function BasicDateField(props) {
           label={props.label}
           value={value}
           onChange={(newValue) => handleChangeDate(newValue)}
+          readOnly={props.readOnly}
         />
     </LocalizationProvider>
   );
