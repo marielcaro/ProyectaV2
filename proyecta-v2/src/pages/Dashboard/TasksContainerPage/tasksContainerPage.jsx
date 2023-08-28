@@ -50,10 +50,70 @@ const TasksContainerPage = () => {
     setProject(event.target.value);
   };
 
+  const searchTask = (id) => {
+    let allTasks = [];
+    data.projects.forEach(project => {
+      allTasks= allTasks.concat(projectInfo.newTasks).concat(projectInfo.inProgressTasks).concat(projectInfo.resolvedTasks).concat(projectInfo.endedTasks);
+    });
+    
+    let task = allTasks.find(task => task.id === id)
+
+    return task
+  }
+
+  const handleDeleteTask = (id) => {
+    let selectedTask=searchTask(id)
+
+    switch(selectedTask.status){
+      case "new":
+        let auxNewTaskList = [...projectInfo.newTasks]
+        let newTaskIndex =  projectInfo.newTasks.findIndex(item => item.id === selectedTask.id);
+        auxNewTaskList = auxNewTaskList.slice(0, newTaskIndex).concat(auxNewTaskList.slice(newTaskIndex + 1));
+        setProjectInfo({...projectInfo, 
+          'newTasks': auxNewTaskList})
+
+      break;
+
+      case "inProgress":
+        let auxInProgressTaskList = [...projectInfo.inProgressTasks]
+        let inProgressIndex =  projectInfo.inProgressTasks.findIndex(item => item.id === selectedTask.id);
+        auxInProgressTaskList = auxInProgressTaskList.slice(0, inProgressIndex).concat(auxInProgressTaskList.slice(inProgressIndex + 1));
+        setProjectInfo({...projectInfo, 
+          'inProgressTasks': auxInProgressTaskList})
+
+      break;
+
+      case "resolved":
+        let auxResolvedTaskList = [...projectInfo.resolvedTasks]
+        let resolvedIndex =  projectInfo.resolvedTasks.findIndex(item => item.id === selectedTask.id);
+        auxResolvedTaskList = auxResolvedTaskList.slice(0, resolvedIndex).concat(auxResolvedTaskList.slice(resolvedIndex + 1));
+        setProjectInfo({...projectInfo, 
+          'resolvedTasks': auxResolvedTaskList})
+
+      break;
+
+      case "ended":
+        let auxEndedTaskList = [...projectInfo.endedTasks]
+        let endedIndex =  projectInfo.endedTasks.findIndex(item => item.id === selectedTask.id);
+        auxEndedTaskList = auxEndedTaskList.slice(0, endedIndex).concat(auxEndedTaskList.slice(endedIndex + 1));
+        setProjectInfo({...projectInfo, 
+          'endedTasks': auxEndedTaskList})
+
+      break;
+
+    }
+    
+  }
+
+
   const handleAddTask = () =>{
     const newTasktoAdd = {
          "id":  uuidv4(), 
          "title": "Task N",
+         "projectName" : "Proyecto 4",
+         "lastUpdatedUser":"Mariel Caro",
+         "lastUpdatedDate":"2023-08-23T18:00:00",
+         "status": "new",
          "author":"Hernan Peinetti",
          "endDate":"2023-08-30T18:00:00",
          "description": "Descripción 1: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -118,7 +178,7 @@ const TasksContainerPage = () => {
             </div>
             
             <div>
-              <Taskboard projectAllInfo={projectInfo} />
+              <Taskboard projectAllInfo={projectInfo} handleDelete={(id) => handleDeleteTask(id)} />
             </div>
    
          </div>

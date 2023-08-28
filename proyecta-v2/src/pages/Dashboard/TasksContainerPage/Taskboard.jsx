@@ -22,6 +22,9 @@ const Taskboard = (props) => {
     id: "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
     title: "Task 1",
     projectName : "Proyecto 1",
+   lastUpdatedUser: "Mariel Caro",
+    lastUpdatedDate:"2023-08-23T18:00:00",
+    status: "ended",
     author:"Hernan Peinetti",
     endDate:"2023-08-30T18:00:00",
     description: "Descripción 1: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
@@ -39,6 +42,8 @@ const Taskboard = (props) => {
   const handleClickCard= (id) => {
     setSelectedTaskId(id)
   }
+  
+
 
   const searchTask = (id) => {
     let allTasks = [];
@@ -173,7 +178,7 @@ useEffect(()=>{
      </div>
     ))}
     </DragDropContext>
-    <ModalTask taskData={taskData} taskId={selectedTaskId} allAllowedMembers={allAllowedMembers} />
+    <ModalTask taskData={taskData} taskId={selectedTaskId} handleDelete={(id) => props.handleDelete(id)}  allAllowedMembers={allAllowedMembers} />
     </div>
   );
 }

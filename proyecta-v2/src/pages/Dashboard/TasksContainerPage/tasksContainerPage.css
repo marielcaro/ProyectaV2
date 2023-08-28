@@ -1,5 +1,22 @@
 /* 
  */
+ .deleteBtn{
+	border-radius: 100% !important;
+}
+
+.saveBtn:hover{
+	background-color:#00bcd4 !important;
+	}
+
+ .lastUpdatedLabel:hover{
+	color:gray;
+ }
+ .lastUpdatedLabel{
+	font-size: 12px;
+	text-align: left;
+	color:gray;
+ }
+
  .newTask{
 background-color: #EB5401;
  }
