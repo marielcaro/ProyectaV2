@@ -31,9 +31,10 @@ const handleInputDateChange = (value) => {
 }
 
 const handleDeleteTask = () =>{
-  const modal = new window.bootstrap.Modal(modalRef.current); // Accede al objeto Modal de Bootstrap
-  modal.hide(); // Oculta el modal
+ 
   props.handleDelete(props.taskId);
+  // const modal = new window.bootstrap.Modal(modalRef.current); // Accede al objeto Modal de Bootstrap
+  // modal.hide(); // Oculta el modal
 }
 
 const handleMembersChange = (event, newMembers) => {

@@ -170,6 +170,11 @@ const handleSaveDateEdition = ()=> {
     
   };
 
+  const handleCancelDeleteEvent = () => {
+    setEventSource('selectedEvent')
+    dayRangeModal.show()
+  }
+
   const handleDeleteEvent =() =>{
 
     let auxEventList = [...eventList]
@@ -204,7 +209,7 @@ const handleSaveDateEdition = ()=> {
         ...emptyObject
       }))
 
-      dayRangeModal.hide()
+       dayRangeModal.hide()
 
   }
 
@@ -575,7 +580,7 @@ const handleSaveDateEdition = ()=> {
         </Stack>
       </div>
       <div className="modal-footer ">
-       {eventSource === "selectedEvent" ? <button type="button" class="deleteBtn p-2 btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><DeleteIcon sx={{ color: grey[50] }}/> </button> : <></>}
+       {eventSource === "selectedEvent" ? <button type="button" class="deleteBtn p-2 btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" >  <DeleteIcon sx={{ color: grey[50] }}/> </button> : <></>}
       <div className='ms-auto p-2'>
         <button type="button" className="btn btn-secondary me-2" data-bs-dismiss="modal">Cerrar</button>
         <button type="button" className="saveBtn btn btn-primary" disabled={disabled}  onClick={handleSaveNewEvent} >Guardar</button>
@@ -662,7 +667,7 @@ const handleSaveDateEdition = ()=> {
         ¿Desea continuar?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={handleCancelDeleteEvent}>Cancelar</button>
         <button type="button" class="btn btn-danger"   onClick={handleDeleteEvent} data-bs-dismiss="modal">Confirmar</button>
       </div>
     </div>
