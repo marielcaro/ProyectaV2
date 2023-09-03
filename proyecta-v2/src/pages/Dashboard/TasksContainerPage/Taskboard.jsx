@@ -178,7 +178,7 @@ useEffect(()=>{
      </div>
     ))}
     </DragDropContext>
-    <ModalTask taskData={taskData} taskId={selectedTaskId} modalEditState={showEditModal}  handleShow={()=> handleShow()}  handleClose={()=> handleClose()} handleDelete={(id) => props.handleDelete(id)}  allAllowedMembers={allAllowedMembers} />
+    <ModalTask taskData={taskData} taskId={selectedTaskId} modalEditState={showEditModal}  handleShow={()=> handleShow()}  handleClose={()=> handleClose()} handleDelete={(id) => props.handleDelete(id)} handleSave={(id, task) => props.handleSave(id, task)}  allAllowedMembers={allAllowedMembers} />
     </div>
   );
 }

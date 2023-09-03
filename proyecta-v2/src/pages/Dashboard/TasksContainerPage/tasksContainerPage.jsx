@@ -105,6 +105,50 @@ const TasksContainerPage = () => {
     
   }
 
+  const handleSaveTask = (id, taskDataChange) => {
+    let selectedTask=searchTask(id)
+
+    switch(selectedTask.status){
+      case "new":
+        let auxNewTaskList = [...projectInfo.newTasks]
+        let newTaskIndex =  projectInfo.newTasks.findIndex(item => item.id === selectedTask.id);
+        auxNewTaskList[newTaskIndex] = taskDataChange;
+        setProjectInfo({...projectInfo, 
+          'newTasks': auxNewTaskList})
+
+      break;
+
+      case "inProgress":
+        let auxInProgressTaskList = [...projectInfo.inProgressTasks]
+        let inProgressIndex =  projectInfo.inProgressTasks.findIndex(item => item.id === selectedTask.id);
+        auxInProgressTaskList[inProgressIndex] = taskDataChange;
+        setProjectInfo({...projectInfo, 
+          'inProgressTasks': auxInProgressTaskList})
+
+      break;
+
+      case "resolved":
+        let auxResolvedTaskList = [...projectInfo.resolvedTasks]
+        let resolvedIndex =  projectInfo.resolvedTasks.findIndex(item => item.id === selectedTask.id);
+        auxResolvedTaskList[resolvedIndex] = taskDataChange;
+        setProjectInfo({...projectInfo, 
+          'resolvedTasks': auxResolvedTaskList})
+
+      break;
+
+      case "ended":
+        let auxEndedTaskList = [...projectInfo.endedTasks]
+        let endedIndex =  projectInfo.endedTasks.findIndex(item => item.id === selectedTask.id);
+        auxEndedTaskList[endedIndex] = taskDataChange;
+        setProjectInfo({...projectInfo, 
+          'endedTasks': auxEndedTaskList})
+
+      break;
+
+    }
+    
+  }
+
 
   const handleAddTask = () =>{
     const newTasktoAdd = {
@@ -178,7 +222,7 @@ const TasksContainerPage = () => {
             </div>
             
             <div>
-              <Taskboard projectAllInfo={projectInfo} handleDelete={(id) => handleDeleteTask(id)} />
+              <Taskboard projectAllInfo={projectInfo} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)} />
             </div>
    
          </div>

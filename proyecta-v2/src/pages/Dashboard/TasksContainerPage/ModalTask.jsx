@@ -15,7 +15,7 @@ const allAllowedMembers = props.allAllowedMembers;
 const [members, setMembers] = useState(props.taskData.members);
 const [key, setKey] = useState(0); // Clave temporal
 const [taskEndDate, setTaskEndDate]=useState(props.taskData.endDate);
-const [readonly, setReadonly] = useState(true);
+const [readonly, setReadonly] = useState(false);
 const [descriptionTask, setDescriptionTask] = useState(props.taskData.description)
 const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -31,6 +31,7 @@ const handleDeleteClick = () => {
 
 const handleDescritionChange = (event) => {
   setDescriptionTask(event.target.value)
+  console.log("ok")
 }
 
 const handleInputDateChange = (value) => {
@@ -39,6 +40,15 @@ const handleInputDateChange = (value) => {
 }
 
 const handleHideEditModal = () => {
+  props.handleClose()
+}
+
+const handleSaveEditModal = () => {
+ let task = props.taskData;
+ task.members = members;
+ task.endDate = taskEndDate;
+ task.description = descriptionTask;
+  props.handleSave(props.taskId,task);
   props.handleClose()
 }
 
@@ -71,9 +81,9 @@ useEffect(()=>{
 
 
 useEffect( ()=>{
-  console.log(props.taskId)
+  console.log("asd")
  
-},[props.taskId, props.modalEditState])
+},[descriptionTask])
 
 
     return (
@@ -87,7 +97,7 @@ useEffect( ()=>{
                       <TextField id="projectName" label="Proyecto" variant="standard" value={props.taskData.projectName}/>
                       <BasicDateField label="Fecha de Finalización" date={taskEndDate} readOnly={readonly} handleChange={(value) => handleInputDateChange(value)}/>
                       <TextField id="taskDetail" multiline label="Descripción" variant="standard" value={descriptionTask} onChange={handleDescritionChange}  InputProps={{
-                      readOnly: {readonly},
+                       readOnly: readonly
                     }}/>
                       <Autocomplete
                               key={key}
@@ -119,7 +129,7 @@ useEffect( ()=>{
                   <Button variant="secondary" className="btn btn-secondary me-2" onClick={handleHideEditModal}>
                     Cerrar
                   </Button>
-                  <Button variant="primary" onClick={handleHideEditModal}>
+                  <Button variant="primary" onClick={handleSaveEditModal}>
                     Guardar Cambios
                   </Button>
               </div>
