@@ -8,8 +8,7 @@ import App from './App';
 import store from './store'
 import { Provider } from 'react-redux'
 import 'bootstrap/dist/js/bootstrap.min.js';
- import 'bootstrap/dist/css/bootstrap.min.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 
 

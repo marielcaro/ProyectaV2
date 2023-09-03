@@ -15,6 +15,10 @@ const Taskboard = (props) => {
 
   const [completedTaskList, setCompletedTaskList] = useState(props.projectAllInfo.endedTasks);
 
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleClose = () => setShowEditModal(false);
+  const handleShow = () => setShowEditModal(true);
 
   const [state, setState] = useState([ { id: "0", name:"Nuevas", tasks : newTaskList }, {id:"1" , name:"En Progreso", tasks : inProgressTaskList}, {id:"2" ,  name:"Resueltas", tasks : resolvedTaskList},{id:"3" ,  name:"Finalizadas", tasks : completedTaskList}]);
 
@@ -41,6 +45,7 @@ const Taskboard = (props) => {
 
   const handleClickCard= (id) => {
     setSelectedTaskId(id)
+    handleShow()
   }
   
 
@@ -59,7 +64,6 @@ const Taskboard = (props) => {
   useEffect(()=> {
     let selectedTask=searchTask(selectedTaskId)
     setTaskData((taskData)=>({...taskData,...selectedTask}))
-    
   },[selectedTaskId])
   
 useEffect(()=> {
@@ -72,16 +76,12 @@ useEffect(()=> {
 },[props.projectAllInfo])
 
 useEffect(()=>{
-  // console.log("newTaskList")
-  // console.log(newTaskList)
+  
   let newState = [ { id: "0", name:"Nuevas", tasks : newTaskList }, {id:"1" , name:"En Progreso", tasks : inProgressTaskList}, {id:"2" ,  name:"Resueltas", tasks : resolvedTaskList},{id:"3" ,  name:"Finalizadas", tasks : completedTaskList}]
   setState(newState)
 },[newTaskList,inProgressTaskList,resolvedTaskList,completedTaskList])
 
-useEffect(()=>{
-  // console.log("cambio")
-  // console.log(state)
-},[state])
+
 
   const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? "lightsalmon" : "white",
@@ -169,7 +169,7 @@ useEffect(()=>{
          <div {...provided.droppableProps} ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}
          {...provided.droppableProps}>
           
-           <TaskList tasks={el.tasks} handleClickTask={(id) => handleClickCard(id)}  target="#exampleModal" onDragHandler={handleOnDragEnd} />
+           <TaskList tasks={el.tasks} handleClickTask={(id) => handleClickCard(id)}  target="#editTaskModal" onDragHandler={handleOnDragEnd} />
            {provided.placeholder}
          </div>
        )}
@@ -178,7 +178,7 @@ useEffect(()=>{
      </div>
     ))}
     </DragDropContext>
-    <ModalTask taskData={taskData} taskId={selectedTaskId} handleDelete={(id) => props.handleDelete(id)}  allAllowedMembers={allAllowedMembers} />
+    <ModalTask taskData={taskData} taskId={selectedTaskId} modalEditState={showEditModal}  handleShow={()=> handleShow()}  handleClose={()=> handleClose()} handleDelete={(id) => props.handleDelete(id)}  allAllowedMembers={allAllowedMembers} />
     </div>
   );
 }
