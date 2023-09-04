@@ -52,7 +52,7 @@ const Taskboard = (props) => {
 
   const searchTask = (id) => {
     let allTasks = [];
-    data.projects.forEach(project => {
+    props.data.projects.forEach(project => {
       allTasks= allTasks.concat(project.newTasks).concat(project.inProgressTasks).concat(project.resolvedTasks).concat(project.endedTasks);
     });
     
@@ -64,6 +64,7 @@ const Taskboard = (props) => {
   useEffect(()=> {
     let selectedTask=searchTask(selectedTaskId)
     setTaskData((taskData)=>({...taskData,...selectedTask}))
+    console.log(selectedTaskId)
   },[selectedTaskId])
   
 useEffect(()=> {
@@ -178,7 +179,7 @@ useEffect(()=>{
      </div>
     ))}
     </DragDropContext>
-    <ModalTask taskData={taskData} taskId={selectedTaskId} modalEditState={showEditModal}  handleShow={()=> handleShow()}  handleClose={()=> handleClose()} handleDelete={(id) => props.handleDelete(id)} handleSave={(id, task) => props.handleSave(id, task)}  allAllowedMembers={allAllowedMembers} />
+    <ModalTask taskData={taskData} taskId={selectedTaskId} modalEditState={showEditModal}  action="edit" handleShow={()=> handleShow()}  handleClose={()=> handleClose()} handleDelete={(id) => props.handleDelete(id)} handleSave={(id, task) => props.handleSave(id, task)}  allAllowedMembers={allAllowedMembers} />
     </div>
   );
 }

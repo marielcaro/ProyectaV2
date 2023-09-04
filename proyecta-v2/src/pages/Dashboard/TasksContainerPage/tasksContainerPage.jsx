@@ -13,7 +13,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { grey } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { v4 as uuidv4 } from 'uuid';
-
+import ModalTask from './ModalTask';
 import data from "./mockData.json"
 
 const TasksContainerPage = () => {
@@ -21,6 +21,12 @@ const TasksContainerPage = () => {
 
   const [project, setProject] = useState(projects[0].id);
   const [projectInfo, setProjectInfo] = useState(data.projects.find(x => x.projectId === projects[0].id));
+ const [dataAux, setDataAux] = useState(data);
+  const [showNewTaskModal, setShowNewTaskModal] = useState(false);
+  const [newTask, setNewTask] = useState(null);
+
+  const handleClose = () => setShowNewTaskModal(false);
+  const handleShow = () => setShowNewTaskModal(true);
 
   const items = (elements) => {
     let listItem = [];
@@ -149,37 +155,66 @@ const TasksContainerPage = () => {
     
   }
 
-
-  const handleAddTask = () =>{
-    const newTasktoAdd = {
-         "id":  uuidv4(), 
-         "title": "Task N",
-         "projectName" : "Proyecto 4",
-         "lastUpdatedUser":"Mariel Caro",
-         "lastUpdatedDate":"2023-08-23T18:00:00",
-         "status": "new",
-         "author":"Hernan Peinetti",
-         "endDate":"2023-08-30T18:00:00",
-         "description": "Descripción 1: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
-         "members": [
-            {"label":"Mariel Caro", 
-            "userId": 1},
-            {"label":"Mica Chamut", 
-            "userId": 2}
-         ]
-
-        };
-    
+  const handleSaveNewTask = (task) => {
     let newTasks = [...projectInfo.newTasks]
-    newTasks.push(newTasktoAdd)
+    newTasks.push(task)
     
     setProjectInfo({...projectInfo, 
         'newTasks': newTasks})
-      
+
+          let index = projects.findIndex( x => x.id ===project);
+        const newTasktoAdd = {
+          "id":  uuidv4(), 
+          "title": "",
+          "projectName" : projects[index].projectName,
+          "lastUpdatedUser":"",
+          "lastUpdatedDate":"",
+          "status": "new",
+          "author":"Hernan Peinetti",
+          "endDate":"",
+          "description": "",
+          "members": [ ]
+ 
+         };
+         setNewTask(newTask => ({...newTask,
+           ...newTasktoAdd
+         }))
+
+  }
+
+  const handleAddTask = () =>{
+    let index = projects.findIndex( x => x.id ===project);
+    
+    const newTasktoAdd = {
+         "id":  uuidv4(), 
+         "title": "",
+         "projectName" : projects[index].projectName,
+         "lastUpdatedUser":"",
+         "lastUpdatedDate":"",
+         "status": "new",
+         "author":"Hernan Peinetti",
+         "endDate":"",
+         "description": "",
+         "members": [ ]
+
+        };
+        setNewTask(newTask => ({...newTask,
+          ...newTasktoAdd
+        }))
+
+        setShowNewTaskModal(true)
   }
 
   useEffect(()=>{
     console.log(projectInfo)
+    let auxDataList = [...dataAux.projects]
+    let index =  dataAux.projects.findIndex(item => item.id === projectInfo.id);
+    auxDataList[index] = projectInfo;
+
+    setDataAux(data => ({...data,
+      ...{"projects":auxDataList}}
+    ))
+
   },[projectInfo])
 
   useEffect(()=>{
@@ -222,9 +257,10 @@ const TasksContainerPage = () => {
             </div>
             
             <div>
-              <Taskboard projectAllInfo={projectInfo} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)} />
+              <Taskboard projectAllInfo={projectInfo} data={dataAux} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)} />
             </div>
    
+            <ModalTask taskData={newTask} taskId={null} modalEditState={showNewTaskModal} action="new" handleShow={()=> handleShow()}  handleClose={()=> handleClose()} handleDelete={(id) => handleDeleteTask(id)} handleSave={(id, task) => handleSaveTask(id, task)} handleSaveNew={(task) => handleSaveNewTask(task)} allAllowedMembers={projectInfo.allProjectMembers} />
          </div>
      )
 }

@@ -12,11 +12,12 @@ import { Button, Modal } from 'react-bootstrap';
 
 const ModalTask = (props) => {
 const allAllowedMembers = props.allAllowedMembers;
-const [members, setMembers] = useState(props.taskData.members);
+const [members, setMembers] = useState(props.taskData ? props.taskData.members : []);
 const [key, setKey] = useState(0); // Clave temporal
-const [taskEndDate, setTaskEndDate]=useState(props.taskData.endDate);
+const [taskEndDate, setTaskEndDate]=useState(props.taskData ? props.taskData.endDate: "");
 const [readonly, setReadonly] = useState(false);
-const [descriptionTask, setDescriptionTask] = useState(props.taskData.description)
+const [descriptionTask, setDescriptionTask] = useState(props.taskData ? props.taskData.description : "")
+const [titleTask, setTitleTask] = useState(props.taskData ? props.taskData.title : "")
 const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 const handleCloseDeleteModal = () => {
@@ -31,7 +32,11 @@ const handleDeleteClick = () => {
 
 const handleDescritionChange = (event) => {
   setDescriptionTask(event.target.value)
-  console.log("ok")
+
+}
+
+const handleTitleChange = (event) => {
+  setTitleTask(event.target.value)
 }
 
 const handleInputDateChange = (value) => {
@@ -44,12 +49,24 @@ const handleHideEditModal = () => {
 }
 
 const handleSaveEditModal = () => {
- let task = props.taskData;
- task.members = members;
- task.endDate = taskEndDate;
- task.description = descriptionTask;
-  props.handleSave(props.taskId,task);
-  props.handleClose()
+  if(props.action === "edit"){
+      let task = props.taskData;
+      task.members = members;
+      task.endDate = taskEndDate;
+      task.description = descriptionTask;
+        props.handleSave(props.taskId,task);
+        props.handleClose()
+  }else{
+    if(props.action === "new"){
+      let newTask = props.taskData;
+      newTask.title = titleTask;
+      newTask.members = members;
+      newTask.endDate = taskEndDate;
+      newTask.description = descriptionTask;
+        props.handleSaveNew(newTask);
+        props.handleClose()
+    }
+  }
 }
 
 const handleDeleteTask = () =>{
@@ -63,38 +80,43 @@ const handleMembersChange = (event, newMembers) => {
   setMembers(newMembers);
 };
 
+// useEffect(()=>{
+
+//   console.log("taskEndDate")
+//   console.log(taskEndDate)
+
+// },[taskEndDate])
+
 useEffect(()=>{
+  if (props.taskData){
+    setMembers(props.taskData.members)
+    setKey(key + 1); // Actualizar la clave temporal
+    // console.log("date")
+    console.log(props.taskData)
+    setDescriptionTask(props.taskData.description)
+    setTitleTask(props.taskData.title)
+    setTaskEndDate(props.taskData.endDate)
 
-  console.log("taskEndDate")
-  console.log(taskEndDate)
-
-},[taskEndDate])
-
-useEffect(()=>{
-  setMembers(props.taskData.members)
-  setKey(key + 1); // Actualizar la clave temporal
-  // console.log("date")
-  // console.log(props.taskData)
-  setDescriptionTask(props.taskData.description)
-  setTaskEndDate(props.taskData.endDate)
+  }
+ 
 },[props.taskData])
 
 
-useEffect( ()=>{
-  console.log("asd")
+// useEffect( ()=>{
+//   console.log("asd")
  
-},[descriptionTask])
+// },[descriptionTask])
 
 
     return (
           <>
              <Modal show={props.modalEditState} onHide={handleHideEditModal}>
             <Modal.Header closeButton>
-              <Modal.Title>{props.taskData.title}</Modal.Title>
+              <Modal.Title>{props.action ==="edit" ? props.taskData.title :   <TextField id="title" label="Título" variant="standard" value={titleTask}  onChange={handleTitleChange}/> }</Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <Stack spacing={4}  sx={{padding: '4px'}}>
-                      <TextField id="projectName" label="Proyecto" variant="standard" value={props.taskData.projectName}/>
+                      <TextField id="projectName" label="Proyecto" variant="standard" value={props.taskData ? props.taskData.projectName : ""}/>
                       <BasicDateField label="Fecha de Finalización" date={taskEndDate} readOnly={readonly} handleChange={(value) => handleInputDateChange(value)}/>
                       <TextField id="taskDetail" multiline label="Descripción" variant="standard" value={descriptionTask} onChange={handleDescritionChange}  InputProps={{
                        readOnly: readonly
@@ -117,20 +139,20 @@ useEffect( ()=>{
                               />
                               )}
                 />
-                      <TextField id="taskAuthor" label="Creador" value={props.taskData.author} variant="standard"></TextField>
-                      <label className="lastUpdatedLabel"> * Última modificación realizada por: {props.taskData.lastUpdatedUser}, fecha: {props.taskData.lastUpdatedDate ? props.taskData.lastUpdatedDate.replace('T', ' ') : ""} </label>
+                      <TextField id="taskAuthor" label="Creador" value={props.taskData ? props.taskData.author : ""} variant="standard"></TextField>
+                      <label className="lastUpdatedLabel"> { props.action === "edit" ? "* Última modificación realizada por: "+  props.taskData.lastUpdatedUser + ", fecha: "+props.taskData.lastUpdatedDate.replace('T', ' ')  : ""}</label>
                     </Stack>
             </Modal.Body>
             <Modal.Footer>
-              <Button className="deleteBtn p-2 "  variant="danger" onClick={handleDeleteClick}>
+              {props.action==="edit"? <Button className="deleteBtn p-2 "  variant="danger" onClick={handleDeleteClick}>
                    <DeleteIcon sx={{ color: grey[50] }}/>
-              </Button>
+              </Button> : <></>}
               <div className='ms-auto p-2'>
                   <Button variant="secondary" className="btn btn-secondary me-2" onClick={handleHideEditModal}>
                     Cerrar
                   </Button>
                   <Button variant="primary" onClick={handleSaveEditModal}>
-                    Guardar Cambios
+                    {props.action==="edit" ? "Guardar Cambios" : "Crear Tarea"}
                   </Button>
               </div>
             </Modal.Footer>
