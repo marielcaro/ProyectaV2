@@ -18,6 +18,7 @@ import data from "./mockData.json"
 
 const TasksContainerPage = () => {
   const projects =[{id: 1, projectName:'Proyecto 1'},{id: 2, projectName:'Proyecto 2'},{id: 3, projectName:'Proyecto 3'},{id: 4, projectName:'Proyecto 4'}];
+  const listIds =[{id: 0, listName:'newTasks'},{id: 1, listName:'inProgressTasks'},{id: 2, listName:'resolvedTasks'},{id: 3, listName:'endedTasks'}];
 
   const [project, setProject] = useState(projects[0].id);
   const [projectInfo, setProjectInfo] = useState(data.projects.find(x => x.projectId === projects[0].id));
@@ -182,6 +183,25 @@ const TasksContainerPage = () => {
 
   }
 
+  const handleMoveTask = (task, sourceId, destinationId) => {
+    
+    let index =dataAux.projects.findIndex(item => item.id === project.id);
+    let  auxDataList = [...dataAux.projects];
+
+    let source = listIds.find(x => x.id === parseInt(sourceId)).listName;
+    let sourceList = auxDataList[index][source];
+    let taskIndex =  sourceList.findIndex(item => item.id === task.id);
+    auxDataList[index][source] = sourceList.slice(0, taskIndex).concat(sourceList.slice(taskIndex + 1));
+
+    let dest = listIds.find(x => x.id === parseInt(destinationId)).listName;
+     auxDataList[index][dest].push(task);
+
+    setDataAux(data => ({...data,
+      ...{"projects":auxDataList}}
+    ))
+
+  }
+
   const handleAddTask = () =>{
     let index = projects.findIndex( x => x.id ===project);
     
@@ -257,7 +277,7 @@ const TasksContainerPage = () => {
             </div>
             
             <div>
-              <Taskboard projectAllInfo={projectInfo} data={dataAux} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)} />
+              <Taskboard projectAllInfo={projectInfo} data={dataAux} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)}  handleMove={(task,sId, dId) => handleMoveTask(task,sId, dId)}/>
             </div>
    
             <ModalTask taskData={newTask} taskId={null} modalEditState={showNewTaskModal} action="new" handleShow={()=> handleShow()}  handleClose={()=> handleClose()} handleDelete={(id) => handleDeleteTask(id)} handleSave={(id, task) => handleSaveTask(id, task)} handleSaveNew={(task) => handleSaveNewTask(task)} allAllowedMembers={projectInfo.allProjectMembers} />

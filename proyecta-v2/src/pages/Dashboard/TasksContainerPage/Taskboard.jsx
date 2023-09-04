@@ -116,7 +116,9 @@ useEffect(()=>{
     const result = {};
     result[droppableSource.droppableId] = sourceClone;
     result[droppableDestination.droppableId] = destClone;
-  
+
+    
+    props.handleMove(removed,droppableSource.droppableId, droppableDestination.droppableId)
     return result;
   };
   const grid = 4;
@@ -144,7 +146,7 @@ useEffect(()=>{
         const newState = [...state];
       newState[parseInt(sInd, 10)].tasks = result[parseInt(sInd, 10)];
       newState[parseInt(dInd, 10)].tasks = result[parseInt(dInd, 10)];
-
+      console.log(result)
       setState(newState);
     }
   }
