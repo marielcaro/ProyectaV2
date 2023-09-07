@@ -1,0 +1,69 @@
+{"projects":[ {
+    "projectId" : 1,
+    "projectName" : "Proyecto 1",
+    "startDate": "2023-08-01T18:00:00",
+    "icon":"image",
+    "description" : "Description 1",
+    "tags":["tag 1", "tag 2", "tag 3"],
+    "tasks":{
+        "totalNumberOfTasks":24,
+        "numberOfCompletedTasks":16
+    },
+    "allProjectMembers":[
+        {"label":"Mariel Caro", 
+            "userId": 1},
+            {"label":"Mica Chamut", 
+            "userId": 2},
+            {"label":"Juan Manuel Romano", 
+            "userId": 3},
+            {"label":"Hernan Peinetti", 
+            "userId": 4}
+    ]
+},
+{
+    "projectId" : 2,
+    "projectName" : "Proyecto 2",
+    "startDate": "2023-08-01T18:00:00",
+    "icon":"image",
+    "description" : "Description 2",
+    "tags":["tag 1", "tag 2", "tag 3"],
+    "tasks":{
+        "totalNumberOfTasks":24,
+        "numberOfCompletedTasks":16
+    },
+    "allProjectMembers":[
+        {"label":"Mariel Caro", 
+            "userId": 1},
+            {"label":"Mica Chamut", 
+            "userId": 2},
+            {"label":"Juan Manuel Romano", 
+            "userId": 3},
+            {"label":"Hernan Peinetti", 
+            "userId": 4}
+    ]
+},
+{
+    "projectId" : 3,
+    "projectName" : "Proyecto 3",
+    "startDate": "2023-08-01T18:00:00",
+    "icon":"image",
+    "description" : "Description 3",
+    "tags":["tag 1", "tag 2", "tag 3"],
+    "tasks":{
+        "totalNumberOfTasks":24,
+        "numberOfCompletedTasks":16
+    },
+    "allProjectMembers":[
+        {"label":"Mariel Caro", 
+            "userId": 1},
+            {"label":"Mica Chamut", 
+            "userId": 2},
+            {"label":"Juan Manuel Romano", 
+            "userId": 3},
+            {"label":"Hernan Peinetti", 
+            "userId": 4}
+    ]
+}
+
+]
+}
