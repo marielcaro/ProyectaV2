@@ -502,6 +502,7 @@ const handleSaveDateEdition = ()=> {
         events = {eventList}
         eventClick={eventClick}
         handleWindowResize={true}
+        selectLongPressDelay={100}
       />
 
 

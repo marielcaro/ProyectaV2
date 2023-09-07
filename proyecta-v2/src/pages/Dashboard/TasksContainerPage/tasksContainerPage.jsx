@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import Taskboard from './Taskboard';
+import TaskboardMobile from './TaskboardMobile';
 import Grid from '@mui/material/Unstable_Grid2';
 import { grey } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -25,6 +26,12 @@ const TasksContainerPage = () => {
  const [dataAux, setDataAux] = useState(data);
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
   const [newTask, setNewTask] = useState(null);
+  const [mobile, setMobile] = useState(window.innerWidth <= 500);
+
+const handleWindowSizeChange = () => {
+  setMobile(window.innerWidth <= 500);
+}
+
 
   const handleClose = () => setShowNewTaskModal(false);
   const handleShow = () => setShowNewTaskModal(true);
@@ -245,6 +252,13 @@ const TasksContainerPage = () => {
 
   },[project])
 
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    }
+  }, []);
+
     return(
         <div>
 
@@ -268,7 +282,7 @@ const TasksContainerPage = () => {
                       </Grid>
                       <Grid className="gridButton py-2" xs={4}>
                       <ThemeProvider theme={theme}>
-                        <Button className="newTask ms-0 my-2" variant="contained" color="primary" onClick={handleAddTask}> <AddIcon sx={{ color: grey[50] }}/>Nueva Tarea</Button>
+                        <Button className="newTask ms-0 my-2" variant="contained" color="primary" onClick={handleAddTask}> { mobile === false ? <> <AddIcon sx={{ color: grey[50] }}/> Nueva Tarea </> :  <AddIcon sx={{ color: grey[50] }}/>}</Button>
                         </ThemeProvider>
                       </Grid>
                     </Grid>
@@ -277,7 +291,8 @@ const TasksContainerPage = () => {
             </div>
             
             <div>
-              <Taskboard projectAllInfo={projectInfo} data={dataAux} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)}  handleMove={(task,sId, dId) => handleMoveTask(task,sId, dId)}/>
+             { mobile === false? <Taskboard projectAllInfo={projectInfo} data={dataAux} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)}  handleMove={(task,sId, dId) => handleMoveTask(task,sId, dId)}/> : 
+            <TaskboardMobile projectAllInfo={projectInfo} data={dataAux} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)}  handleMove={(task,sId, dId) => handleMoveTask(task,sId, dId)}/> }
             </div>
    
             <ModalTask taskData={newTask} taskId={null} modalEditState={showNewTaskModal} action="new" handleShow={()=> handleShow()}  handleClose={()=> handleClose()} handleDelete={(id) => handleDeleteTask(id)} handleSave={(id, task) => handleSaveTask(id, task)} handleSaveNew={(task) => handleSaveNewTask(task)} allAllowedMembers={projectInfo.allProjectMembers} />
