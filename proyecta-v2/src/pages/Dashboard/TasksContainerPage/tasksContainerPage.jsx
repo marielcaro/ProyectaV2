@@ -122,6 +122,7 @@ const handleWindowSizeChange = () => {
   const handleSaveTask = (id, taskDataChange) => {
     let selectedTask=searchTask(id)
 
+    if(selectedTask.status === taskDataChange.status){
     switch(selectedTask.status){
       case "new":
         let auxNewTaskList = [...projectInfo.newTasks]
@@ -160,6 +161,13 @@ const handleWindowSizeChange = () => {
       break;
 
     }
+  }else{
+    let sourceId = listIds.find(x => x.listName === selectedTask.status+"Tasks").id;
+    let destId = listIds.find(x => x.listName === taskDataChange.status+"Tasks").id;
+    handleMoveTask(taskDataChange,sourceId,destId)
+
+    setProjectInfo(dataAux.projects.find(x => x.projectId === project))
+  }
     
   }
 

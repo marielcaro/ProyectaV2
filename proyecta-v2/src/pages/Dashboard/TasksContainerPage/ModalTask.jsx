@@ -9,6 +9,10 @@ import BasicDateField from '../../../components/DateField/DateField';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { grey } from '@mui/material/colors';
 import { Button, Modal } from 'react-bootstrap';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const ModalTask = (props) => {
 const allAllowedMembers = props.allAllowedMembers;
@@ -19,6 +23,12 @@ const [readonly, setReadonly] = useState(false);
 const [descriptionTask, setDescriptionTask] = useState(props.taskData ? props.taskData.description : "")
 const [titleTask, setTitleTask] = useState(props.taskData ? props.taskData.title : "")
 const [showDeleteModal, setShowDeleteModal] = useState(false);
+const [status, setStatus] = React.useState(props.taskData ? props.taskData.status : "new");
+
+const handleChange = (event) => {
+  setStatus(event.target.value);
+};
+
 
 const handleCloseDeleteModal = () => {
   setShowDeleteModal(false);
@@ -54,6 +64,7 @@ const handleSaveEditModal = () => {
       task.members = members;
       task.endDate = taskEndDate;
       task.description = descriptionTask;
+      task.status = status;
         props.handleSave(props.taskId,task);
         props.handleClose()
   }else{
@@ -96,6 +107,8 @@ useEffect(()=>{
     setDescriptionTask(props.taskData.description)
     setTitleTask(props.taskData.title)
     setTaskEndDate(props.taskData.endDate)
+    setStatus(props.taskData.status)
+
 
   }
  
@@ -116,6 +129,22 @@ useEffect(()=>{
             </Modal.Header>
             <Modal.Body>
             <Stack spacing={4}  sx={{padding: '4px'}}>
+                      {props.mobile === true ?    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">Cambiar de estado</InputLabel>
+                                        <Select
+                                          labelId="demo-simple-select-label"
+                                          id="demo-simple-select"
+                                          value={status}
+                                          label="Cambiar de estado"
+                                          onChange={handleChange}
+                                        >
+                                          <MenuItem value='new'>Nueva</MenuItem>
+                                          <MenuItem value='inProgress'>En Progreso</MenuItem>
+                                          <MenuItem value='resolved'>Resuelta</MenuItem>
+                                          <MenuItem value='ended'>Finalizada</MenuItem>
+
+                                        </Select>
+                                      </FormControl> : <></>}
                       <TextField id="projectName" label="Proyecto" variant="standard" value={props.taskData ? props.taskData.projectName : ""}/>
                       <BasicDateField label="Fecha de Finalización" date={taskEndDate} readOnly={readonly} handleChange={(value) => handleInputDateChange(value)}/>
                       <TextField id="taskDetail" multiline label="Descripción" variant="standard" value={descriptionTask} onChange={handleDescritionChange}  InputProps={{
