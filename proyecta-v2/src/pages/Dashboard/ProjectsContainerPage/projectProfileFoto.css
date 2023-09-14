@@ -1,0 +1,34 @@
+/* UserProfile.css */
+
+.user-profile {
+    display: flex;
+    width: 150px; /* Establece el tamaño deseado para la imagen */
+    height: 150px; /* Establece el tamaño deseado para la imagen */
+    flex-direction: column;
+    margin-left: 24px;
+
+@media(max-width: 650px) {
+    margin-left: auto;
+margin-right: auto;
+}
+
+  }
+  
+  .profile-image {
+    position: relative;
+    width: 150px; /* Establece el tamaño deseado para la imagen */
+    height: 150px; /* Establece el tamaño deseado para la imagen */
+    border-radius: 50%; /* Hace que el contenedor sea circular */
+    overflow: hidden; /* Oculta cualquier parte de la imagen que se extienda más allá del círculo */
+  }
+  
+  .profile-image img {
+    width: 100%; /* Ajusta el tamaño de la imagen al tamaño del contenedor circular */
+    height: 100%; /* Ajusta el tamaño de la imagen al tamaño del contenedor circular */
+    object-fit: cover; /* Ajusta la imagen para que se ajuste al círculo sin deformarse */
+  }
+  
+  input[type="file"] {
+    margin-top: 10px; /* Espacio entre la imagen y el input de archivo */
+    display: none; /* Oculta el input de archivo para que no se vea */
+  }

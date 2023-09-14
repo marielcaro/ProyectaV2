@@ -17,6 +17,8 @@
  }
 
  .projectCardList{
-    max-height: 75vh;
+    max-height: 78vh;
     overflow-y: auto;
+
+
  }

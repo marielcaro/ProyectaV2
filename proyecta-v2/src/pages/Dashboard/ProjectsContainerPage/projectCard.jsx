@@ -8,8 +8,14 @@ import image from '../../../assets/images/project-management.png'
 import Chip from '@mui/material/Chip';
 import { orange } from '@mui/material/colors';
 
-const ProjectCard = () => {
-  const membersList = [{id:1, label:"Mariel Caro"},{id:2, label:"Juan Manuel Romano"},{id:3, label:"Mica Chamut"},]
+const ProjectCard = (props) => {
+  const [membersList, setMembersList] = useState(props.proyecto.allProjectMembers);
+  const tagList = props.proyecto.tags;
+
+  const handleClick = (event) => {
+   props.handleClickProject(event.currentTarget.id)
+ }
+
     const iconsMembers = (elements) => {
         let listItem = [];
     
@@ -21,15 +27,19 @@ const ProjectCard = () => {
         return listItem;
     }
 
+    useEffect(() => {
+      setMembersList(props.proyecto.allProjectMembers)
+    }, [props.proyecto.allProjectMembers])
+
     return(
      <div>
-        <Card className="projectCard shadow p-3 mb-3 bg-body rounded" >
+        <Card id={props.proyecto.projectId} className="projectCard shadow p-3 mb-3 bg-body rounded"  onClick={handleClick}>
       <Card.Body>
         <Card.Title className="projectCardTitle">
         <div className='row'>
         <Stack direction="row" spacing={2}>
-        <Avatar alt="Proyecto 1" src={image} />
-        <h5 >    Proyecto 1</h5>
+        <Avatar alt="Proyecto 1" src={props.proyecto.icon} />
+        <h5 >    {props.proyecto.projectName} </h5>
     
         </Stack>
 
@@ -37,11 +47,12 @@ const ProjectCard = () => {
         </Card.Title>
         <Card.Text className="ps-5">       
             <Stack spacing={1} >
-                <h6 className='taskNumber'> Tareas Cumplidas: 16/24 </h6>
+                <h6 className='taskNumber'> Tareas Cumplidas: {props.proyecto.tasks.numberOfCompletedTasks} / {props.proyecto.tasks.totalNumberOfTasks}  </h6>
                     
                 <Stack direction="row" spacing={1}>
-                    <Chip label="# TAG 1" sx={{ backgroundColor: orange[200] }} />
-                    <Chip label="# TAG 2"sx={{ backgroundColor: orange[200] }}  />
+                {tagList.map((tag, index) => (
+                <Chip label={tag.label} sx={{ backgroundColor: orange[200] }} key={index} p />
+            ))}
                 </Stack>
                     
                 <AvatarGroup  max={6}>
