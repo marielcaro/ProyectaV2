@@ -47,7 +47,7 @@ const Dashboard = () => {
             <DashboardSideBar />
 
             <main className='mainContainer'>
-                <div className='styleContainer' >
+                <div className={`styleContainer ${dashboardItem === 'Projects' ? 'proyectoVisible' : ''}`} >
                     {changeContainerUI()}
                 </div>
             </main>

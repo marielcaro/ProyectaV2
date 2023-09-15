@@ -59,7 +59,7 @@ const allAllowedTags = [
 ]
 
     return(
-      <>
+      <div className="selectProject">
             <Box display="flex" flexDirection="column">
                   <Box mx={'auto'} mb={2} alignSelf="flex-end">
                <Button variant="contained"  aria-label="add" sx={{ borderRadius: '20px' }} onClick={handleClickAdd}>
@@ -76,7 +76,7 @@ const allAllowedTags = [
       
          </Box>
          <ModalAddProject modalShow={showAdd} allAllowedMembers={allAllowedMembers} allAllowedLeaders={allAllowedLeaders} allTags={allAllowedTags} handleShowAdd ={handleClickAdd} handleCloseAdd ={handleCloseAdd} handleAddProject={(obj) => handleAddProject(obj)}/>
-   </>
+   </div>
      )
 
 }

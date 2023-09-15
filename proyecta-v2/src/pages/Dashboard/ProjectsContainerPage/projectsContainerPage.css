@@ -16,9 +16,35 @@
 	padding: 8px;
  }
 
+ .project-Title{
+    margin-top: auto!important;
+    margin-bottom: auto!important;
+    margin-left: 36px!important;
+    font-weight: bold;
+ }
+
+ .titleBox{
+    padding: 24px;
+    padding-bottom: 8px;
+    border-radius: 8px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+ }
+
  .projectCardList{
     max-height: 78vh;
     overflow-y: auto;
 
 
  }
+
+ .selectProject{
+    padding:16px;
+ }
+
+ .styleContainer.proyectoVisible{
+    padding:0px;
+     color: #44596e; 
+     width: 100%;
+     height: 100%;
+}

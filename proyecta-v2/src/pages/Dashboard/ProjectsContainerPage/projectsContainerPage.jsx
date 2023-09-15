@@ -14,6 +14,11 @@ const ProjectsContainerPage = () => {
         setSelectedCard(card);
     }
 
+    const handleBackTrack = () =>{
+        setShowList(true)
+        setSelectedCard(null);
+    }
+
     useEffect(() => {
         if(selectedCard){
             setShowList(false)
@@ -23,7 +28,7 @@ const ProjectsContainerPage = () => {
 
     return(
         <div>
-        {showList ? <SelectProjectPage projectList={projectList} handleClickProject={(id) => handleClickProject(id)}/> : <ProjectPage project={selectedCard} />}
+        {showList ? <SelectProjectPage projectList={projectList} handleClickProject={(id) => handleClickProject(id)}/> : <ProjectPage project={selectedCard} backTrack={handleBackTrack} />}
      </div>
      )
 
