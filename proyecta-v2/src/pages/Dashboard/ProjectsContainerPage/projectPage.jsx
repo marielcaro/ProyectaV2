@@ -100,6 +100,7 @@ return(
               position: 'absolute',
               top: '16px',
               right: '8px',
+              zIndex: 2,
             }}
           >
             <ArrowBackIcon  />
@@ -114,6 +115,7 @@ return(
               position: 'absolute',
               bottom: '16px',
               right: '8px',
+              zIndex: 2,
             }}
           >
             <EditIcon />
