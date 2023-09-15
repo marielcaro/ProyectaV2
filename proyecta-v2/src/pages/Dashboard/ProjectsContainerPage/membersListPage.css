@@ -1,0 +1,5 @@
+.listContainer{
+    align-items: left;
+    overflow-y: auto;
+    max-height: 56vh !important;
+}

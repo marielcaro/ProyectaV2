@@ -20,7 +20,8 @@ import {useDismiss} from '@floating-ui/react'
 import EditProjectMenu from './editProjectMenu';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Tooltip from '@mui/material/Tooltip';
-
+import InformationProjectPage from './informationProjectPage.jsx'
+import MembersListPage from './membersListPage';
 
 const ProjectPage = (props) => {
     const [value, setValue] = React.useState('1');
@@ -83,10 +84,14 @@ return(
       <div className="row">
           <Stack className="col" direction="row" spacing={2} >
             <ProjectProfileFoto image={image} />
+            <Stack className="titleStack" >
             <div className='project-Title' style={{color: textColor }}>
              {props.project.projectName}
             </div>
-           
+            <div className='project-Subtitle' style={{color: textColor }}>
+             Resol. 1234/567
+            </div>
+            </Stack>
           </Stack>
         
           <div className="col" style={{ position: 'relative' }}>
@@ -143,15 +148,17 @@ return(
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
+          <TabList onChange={handleChange} aria-label="lab API tabs example"   variant="scrollable"
+  scrollButtons
+  allowScrollButtonsMobile centered>
             <Tab label="Información General" value="1" />
-            <Tab label="Presupuesto" value="2" />
-            <Tab label="Comunicaciones" value="3" />
+            <Tab label="Integrantes" value="2" />
+          
           </TabList>
         </Box>
-        <TabPanel value="1">Información General</TabPanel>
-        <TabPanel value="2">Presupuesto</TabPanel>
-        <TabPanel value="3">Comunicaciones</TabPanel>
+        <TabPanel value="1"><InformationProjectPage /></TabPanel>
+        <TabPanel value="2">< MembersListPage /></TabPanel>
+  
       </TabContext>
     </Box>
 </div>

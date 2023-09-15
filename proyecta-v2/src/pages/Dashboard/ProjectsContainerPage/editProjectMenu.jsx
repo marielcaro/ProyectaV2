@@ -38,7 +38,7 @@ return(
           <Divider sx={{ my: 0.5 , borderColor: '#212529'}} />
           <MenuItem onClick={() => dispatch(exit())}><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         
-                                          Administrar Integrantes
+                                         Dar de baja el Proyecto
 
                                     </Box></MenuItem>
         </MenuList>

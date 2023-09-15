@@ -16,10 +16,20 @@
 	padding: 8px;
  }
 
+ .titleStack{
+ margin-top:auto!important;
+ margin-bottom:auto!important;
+ margin-left: 36px!important;
+ }
+ 
+ .project-Subtitle{
+   text-align: left;
+   font-weight: normal;
+   
+ }
+
  .project-Title{
-    margin-top: auto!important;
-    margin-bottom: auto!important;
-    margin-left: 36px!important;
+   text-align: left;
     font-weight: bold;
  }
 

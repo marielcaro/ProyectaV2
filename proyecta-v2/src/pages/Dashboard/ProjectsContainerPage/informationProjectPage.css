@@ -1,0 +1,32 @@
+.Description, .linksToDocumentationProject, .repositorios{
+    text-indent: 1rem;
+    text-align: justify;
+    padding: 4px;
+    font-size: 14px;
+}
+.card{
+    border-radius: 16px;
+    background: #F6EBF9 !important;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
+    
+}
+.repoTitle{
+    font-family: nunitoBold !important;
+    font-size: 16px !important;
+}
+
+.linkListContainer{
+    margin-top:4px;
+}
+.titleDesc{
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 0;
+    margin-right: 24px;
+}
+
+.infoProjectContainer{
+    align-items: left;
+    overflow-y: auto;
+    max-height: 56vh !important;
+}
