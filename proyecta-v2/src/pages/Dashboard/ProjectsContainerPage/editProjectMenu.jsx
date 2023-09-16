@@ -9,12 +9,12 @@ import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { access, exit, create, recover, init } from '../../../features/login/loginAction'
 
-const EditProjectMenu = () => {
+const EditProjectMenu = (props) => {
   const dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
+    const handleClickFotoEdit = (event) => {
+      props.handleShowFoto()
     };
     const handleClose = () => {
       setAnchorEl(null);
@@ -24,7 +24,7 @@ return(
     <div> 
        <Paper>
         <MenuList>
-          <MenuItem>
+          <MenuItem onClick={handleClickFotoEdit}>
           <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                        
                                           Editar Foto
@@ -36,7 +36,7 @@ return(
 
                                     </Box></MenuItem>
           <Divider sx={{ my: 0.5 , borderColor: '#212529'}} />
-          <MenuItem onClick={() => dispatch(exit())}><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <MenuItem ><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         
                                          Dar de baja el Proyecto
 

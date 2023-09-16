@@ -19,9 +19,7 @@ const handleCloseAdd = () => {
 }
 
 const handleAddProject = (obj) => {
-   let aux = [...proyectos]
-   aux.push(obj)
-   setProyectos(aux)
+   props.addProject(obj)
    setShowAdd(false)
 }
 
@@ -57,6 +55,11 @@ const allAllowedTags = [
        {"label":"Videojuegos", 
        "userId": 4}
 ]
+
+useEffect(()=> {
+   if(props.projectList)
+      setProyectos(props.projectList)
+},[props.projectList])
 
     return(
       <div className="selectProject">

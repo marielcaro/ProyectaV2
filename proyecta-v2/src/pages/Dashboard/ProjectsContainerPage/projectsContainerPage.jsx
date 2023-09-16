@@ -10,13 +10,28 @@ const ProjectsContainerPage = () => {
     const [selectedCard, setSelectedCard] = useState(null);
     const [showList, setShowList] = useState(true);
     const handleClickProject = (id) => {
-        let card = data.projects.find( x => x.projectId === parseInt(id))
+        let card = projectList.find( x => x.projectId === parseInt(id))
         setSelectedCard(card);
     }
 
     const handleBackTrack = () =>{
         setShowList(true)
         setSelectedCard(null);
+    }
+
+    const handleEditFotoData = (id, img) =>{
+        let aux = [...projectList]
+        let py = projectList.find( x => x.projectId === parseInt(id))
+        let pyIndex = projectList.findIndex( x => x.projectId === parseInt(id))
+        py.icon = img
+        aux[pyIndex]= py
+        setProjectList(aux)
+
+    }
+    const addProjectMethod = (obj) =>{
+        let aux = [...projectList]
+        aux.push(obj)
+        setProjectList(aux)
     }
 
     useEffect(() => {
@@ -28,7 +43,8 @@ const ProjectsContainerPage = () => {
 
     return(
         <div>
-        {showList ? <SelectProjectPage projectList={projectList} handleClickProject={(id) => handleClickProject(id)}/> : <ProjectPage project={selectedCard} backTrack={handleBackTrack} />}
+        {showList ? <SelectProjectPage projectList={projectList} handleClickProject={(id) => handleClickProject(id)} addProject={(obj) => addProjectMethod(obj)}/> : 
+        <ProjectPage project={selectedCard} backTrack={handleBackTrack} editFoto={(id,img) => handleEditFotoData(id,img)} />}
      </div>
      )
 

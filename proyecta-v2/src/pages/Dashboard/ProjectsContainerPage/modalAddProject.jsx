@@ -4,10 +4,8 @@ import './projectsContainerPage.css';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import BasicDatePicker from '../../../components/DatePicker/DatePicker';
 import BasicDateField from '../../../components/DateField/DateField';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { grey } from '@mui/material/colors';
+
 import { Button, Modal } from 'react-bootstrap';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';

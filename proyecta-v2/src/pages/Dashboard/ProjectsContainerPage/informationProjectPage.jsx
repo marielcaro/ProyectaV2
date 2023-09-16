@@ -6,7 +6,14 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
 const InformationProjectPage = (props) => {
+const [project, setProject] = useState(props.project);
 
+
+
+useEffect(()=> {
+    if(props.project)
+        setProject(props.project)
+},[props.project])
 
 return(
     <div className="infoProjectContainer">
@@ -16,7 +23,7 @@ return(
          
         </div>     
             <div className="descriptionText"> 
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                {props.project.description}
             </div>
             <hr></hr>
         </div>
@@ -32,9 +39,10 @@ return(
             </div>
             <div className="linkListContainer">
                 <ul>
-                    <li><a href="./">Documento de Resolución</a></li>
-                    <li><a href="./">Documento de Presentación</a></li>
-                    <li><a href="./">Informe</a></li>
+                {project.documentLinks.map((doc, index) =>( 
+                    <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
+                ))}
+                   
                 </ul>
             </div>
             <hr></hr>
@@ -66,9 +74,9 @@ return(
                 <Card.Text>
                     <div className="linkListContainer">
                     <ul>
-                        <li><a href="./">Libro 1</a></li>
-                        <li><a href="./">Libro 2</a></li>
-                        <li><a href="./">Libro 3</a></li>
+                    {project.bibliografy.map((doc, index) =>( 
+                    <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
+                ))}
                     </ul>
                 </div>
                 </Card.Text>
@@ -91,9 +99,9 @@ return(
                 <Card.Text>
                     <div className="linkListContainer">
                     <ul>
-                        <li><a href="./">Libro 1</a></li>
-                        <li><a href="./">Libro 2</a></li>
-                        <li><a href="./">Libro 3</a></li>
+                    {project.laboratory.map((doc, index) =>( 
+                    <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
+                ))}
                     </ul>
                 </div>
                 </Card.Text>
@@ -116,9 +124,9 @@ return(
                 <Card.Text>
                     <div className="linkListContainer">
                     <ul>
-                        <li><a href="./">Libro 1</a></li>
-                        <li><a href="./">Libro 2</a></li>
-                        <li><a href="./">Libro 3</a></li>
+                    {project.production.map((doc, index) =>( 
+                    <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
+                ))}
                     </ul>
                 </div>
                 </Card.Text>

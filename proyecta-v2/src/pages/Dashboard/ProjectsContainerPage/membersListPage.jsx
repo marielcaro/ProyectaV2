@@ -11,58 +11,38 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 const MembersListPage = (props) => {
+    const [allMembers, setAllMembers] = useState(props.members);
 
+    useEffect(()=>{
+        if(props.members){
+            setAllMembers(props.members)
+        }
+    },[props.members])
     return(
         <div className="listContainer">
              <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar sx={{ bgcolor: deepOrange[500] }}
-                alt="Integrante"
-                src="/broken-image.jpg">
-            
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Nombre Apellido" secondary="Rol" />
-        <IconButton aria-label="Eliminar" color="error">
-            <DeleteIcon />
-          </IconButton>
-          <IconButton aria-label="Editar" color="primary">
-            <EditIcon />
-          </IconButton>
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar sx={{ bgcolor: deepOrange[500] }}
-                alt="Integrante"
-                src="/broken-image.jpg">
-            
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Nombre Apellido" secondary="Rol" />
-        <IconButton aria-label="Eliminar" color="error">
-            <DeleteIcon />
-          </IconButton>
-          <IconButton aria-label="Editar" color="primary">
-            <EditIcon />
-          </IconButton>
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar sx={{ bgcolor: deepOrange[500] }}
-                alt="Integrante"
-                src="/broken-image.jpg">
-            
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Nombre Apellido" secondary="Rol" />
-        <IconButton aria-label="Eliminar" color="error">
-            <DeleteIcon />
-          </IconButton>
-          <IconButton aria-label="Editar" color="primary">
-            <EditIcon />
-          </IconButton>
-      </ListItem>
+        {allMembers.map((member, index) => (
+                    <ListItem id={member.userId}>
+                    <ListItemAvatar>
+                        
+                    <Avatar sx={{ bgcolor: deepOrange[500] }}
+                            alt={member.label}
+                            src={member.icon}>
+                        
+                    </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={member.label} secondary={member.role.charAt(0).toUpperCase() + member.role.slice(1)} />
+                    <IconButton aria-label="Eliminar" color="error">
+                        <DeleteIcon />
+                    </IconButton>
+                    <IconButton aria-label="Editar" color="primary">
+                        <EditIcon />
+                    </IconButton>
+                    </ListItem>
+        ))}
+
+     
+    
     </List>
         </div>
     )
