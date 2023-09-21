@@ -1,5 +1,12 @@
 .listContainer{
     align-items: left;
     overflow-y: auto;
-    max-height: 56vh !important;
+    max-height: 52vh !important;
 }
+
+.fab-button {
+    position: fixed !important;
+    bottom: 32px; /* Ajusta la distancia desde el borde inferior */
+    right: 48px; /* Ajusta la distancia desde el borde derecho */
+    z-index: 1 !important; /* Establece el z-index deseado para estar por encima del contenido */
+  }

@@ -139,8 +139,8 @@ const LinksManagerModal = (props) => {
                 value={newLink.link}
                 onChange={(e) => setNewLink({ ...newLink, link: e.target.value })}
               />
-              <Button variant={editingIndex === -1 ? "success" : "primary"} onClick={handleAddLink}>
-                {editingIndex === -1 ? "Agregar " : "Guardar "}
+              <Button variant={editingIndex === -1 ? "success" : "info"} onClick={handleAddLink}>
+                {editingIndex === -1 ? "Agregar " : "Editar "}
               </Button>
             </Stack>
           </Stack>
@@ -150,7 +150,7 @@ const LinksManagerModal = (props) => {
             Cancelar
           </Button>
           <Button variant="primary" onClick={handleSave}>
-            Guardar
+            Guardar Cambios
           </Button>
         </Modal.Footer>
       </Modal>
