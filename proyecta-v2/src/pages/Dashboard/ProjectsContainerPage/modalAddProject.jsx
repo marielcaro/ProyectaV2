@@ -5,12 +5,13 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import BasicDateField from '../../../components/DateField/DateField';
-
+import defaultImage from '../../../assets/icons/default.png'
 import { Button, Modal } from 'react-bootstrap';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { v4 as uuidv4 } from 'uuid';
 
 const ModalAddProject = (props) => {
     const [showModal, setShowModal] = useState(props.modalShow ?? false);
@@ -21,6 +22,7 @@ const ModalAddProject = (props) => {
     const [department, setDepartment] = useState( "")
     const allAllowedMembers = props.allAllowedMembers;
     const [members, setMembers] = useState( []);
+    const [disabled, setDisabled] = useState(true)
     const handleMembersChange = (event, newMembers) => {
         setMembers(newMembers);
       };
@@ -75,10 +77,10 @@ const ModalAddProject = (props) => {
 
 
         let obj = {
-            projectId : 9,
+            projectId : uuidv4(),
             projectName : title,
             startDate: taskStartDate.toISOString(),
-            icon: "",
+            icon: defaultImage,
             description : description,
     tags:tags,
     tasks:{
@@ -103,6 +105,16 @@ const ModalAddProject = (props) => {
       useEffect(()=>{
         setShowModal(props.modalShow)
       },[props.modalShow])
+
+      useEffect(()=>{
+        if(taskStartDate && taskStartDate<= Date.now()&& title && description &&leaders.length>0 && tags.length>0 && members.length>0 && faculty && department){
+          setDisabled(false)
+        }else{
+           setDisabled(true)
+          }
+    
+      },[taskStartDate,title, description,leaders,tags,members,faculty,department])
+
 return (
 <Modal show={showModal} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -112,7 +124,7 @@ return (
            
             <Stack spacing={4}  sx={{padding: '4px'}}>
             <TextField id="projectName" label="Nombre del Proyecto" variant="standard" value={title} onChange={handleTitleChange}/>
-                      <BasicDateField label="Fecha de Alta" date={taskStartDate} handleChange={(value) => handleInputDateChange(value)}/>
+                      <BasicDateField label="Fecha de Alta" date={taskStartDate} handleChange={(value) => handleInputDateChange(value)} disableFuture={true} />
                       <TextField id="description" multiline label="Descripción" variant="standard" value={description} onChange={handleDescriptionChange}  />
                        <FormControl fullWidth>
                                         <InputLabel id="demo-simple-select-label">Facultad</InputLabel>
@@ -196,7 +208,7 @@ return (
                   <Button variant="secondary" className="btn btn-secondary me-2" onClick={handleClose}>
                     Cerrar
                   </Button>
-                  <Button variant="primary" onClick={handleCreateProject}>
+                  <Button variant="primary"  onClick={handleCreateProject} disabled={disabled}>
                     Crear Proyecto
                   </Button>
               </div>

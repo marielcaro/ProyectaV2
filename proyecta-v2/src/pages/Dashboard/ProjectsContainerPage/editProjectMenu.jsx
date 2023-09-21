@@ -16,6 +16,14 @@ const EditProjectMenu = (props) => {
     const handleClickFotoEdit = (event) => {
       props.handleShowFoto()
     };
+    const handleClickEditInfo = (event) => {
+      props.handleShowEditInfo()
+    };
+
+    const handleClickDelete = (event) => {
+      props.handleShowDelete()
+    };
+
     const handleClose = () => {
       setAnchorEl(null);
     };
@@ -30,13 +38,13 @@ return(
                                           Editar Foto
 
                                     </Box></MenuItem>
-          <MenuItem><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <MenuItem onClick={handleClickEditInfo}><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         
                                           Editar Información del Proyecto
 
                                     </Box></MenuItem>
           <Divider sx={{ my: 0.5 , borderColor: '#212529'}} />
-          <MenuItem ><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <MenuItem onClick={handleClickDelete}><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         
                                          Dar de baja el Proyecto
 

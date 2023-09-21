@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import BasicDateField from '../../../components/DateField/DateField';
-import ImageUploader from '../../../components/imageUploader/imageUploader';
+import FotoUploader from './fotoUploader';
 import { Button, Modal } from 'react-bootstrap';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,7 +19,8 @@ const EditFotoModal = (props) => {
     const handleClose = () => props.handleHide();
   
     const handleSave = () => {
-        props.EditFotoModal(foto)
+        props.editFoto(props.fotoId, foto)
+        props.handleHide()
     }
 
     const changeFoto = (img) => {
@@ -40,7 +41,7 @@ const EditFotoModal = (props) => {
         <Modal.Body> <Stack spacing={2}>
                                     <div>
                                       <p style={{marginBottom:0}}>Subí una foto para representar a tu proyecto:</p>
-                                    <ImageUploader changeFoto={(img) => changeFoto(img)}/>
+                                    <FotoUploader changeFoto={(img) => changeFoto(img)}/>
                                     </div>                                  
                                     
                                   </Stack>
@@ -49,7 +50,7 @@ const EditFotoModal = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSave}>
             Guardar Cambios
           </Button>
         </Modal.Footer>

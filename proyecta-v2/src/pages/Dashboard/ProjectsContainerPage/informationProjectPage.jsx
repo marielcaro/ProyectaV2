@@ -4,16 +4,35 @@ import Stack from '@mui/material/Stack';
 import Card from 'react-bootstrap/Card';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
+import LinksManagerModal from './linksManagerModal';
 
 const InformationProjectPage = (props) => {
 const [project, setProject] = useState(props.project);
+const [showModal, setShowModal] = useState(false);
+const [sectionClicked, setSectionClicked] = useState("")
+const [linkList, setLinkList] = useState([])
 
+const handleLinkManagerModal =(name, list)=>{
+    if(name && list && list.length>0){
+    setSectionClicked(name)
+    setLinkList(list)
+    }
+  }
 
+  const handleHideLinkManager =()=>{
+    setShowModal(false)
+  }
 
 useEffect(()=> {
     if(props.project)
         setProject(props.project)
 },[props.project])
+
+useEffect(()=> {
+    if(sectionClicked)
+        setShowModal(true)
+},[sectionClicked, linkList])
+
 
 return(
     <div className="infoProjectContainer">
@@ -29,8 +48,9 @@ return(
         </div>
         <div className="linksToDocumentationProject">
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-        <h4 className='titleDesc'> Documentación del Proyecto:</h4>      
-        <IconButton aria-label="Editar" color="primary">
+        <h4 className='titleDesc'> Documentación del Proyecto:</h4> 
+        <IconButton aria-label="Editar" color="primary" onClick={() => handleLinkManagerModal("documentLinks",project.documentLinks ?? [] )}>     
+        {/* <IconButton aria-label="Editar" color="primary" > */}
             <EditIcon />
           </IconButton>
         </div> 
@@ -39,7 +59,7 @@ return(
             </div>
             <div className="linkListContainer">
                 <ul>
-                {project.documentLinks.map((doc, index) =>( 
+                {project.documentLinks?.map((doc, index) =>( 
                     <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
                 ))}
                    
@@ -58,7 +78,8 @@ return(
         justifyContent: 'space-between', // Distribuye elementos equitativamente
       }}>
         <Card className="shadow" style={{width:'100%', position: 'relative'}}>
-        <IconButton
+        {/* <IconButton onClick={handleLinkManagerModal("bibliografy",project.bibliografy)} */}
+        <IconButton 
     aria-label="Editar"
     color="primary"
     style={{
@@ -74,7 +95,7 @@ return(
                 <Card.Text>
                     <div className="linkListContainer">
                     <ul>
-                    {project.bibliografy.map((doc, index) =>( 
+                    {project.bibliografy?.map((doc, index) =>( 
                     <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
                 ))}
                     </ul>
@@ -83,6 +104,7 @@ return(
             </Card.Body>
          </Card>
          <Card className="shadow" style={{width:'100%', position: 'relative'}}>
+         {/* <IconButton onClick={handleLinkManagerModal("laboratory",project.laboratory)} */}
         <IconButton
     aria-label="Editar"
     color="primary"
@@ -99,7 +121,7 @@ return(
                 <Card.Text>
                     <div className="linkListContainer">
                     <ul>
-                    {project.laboratory.map((doc, index) =>( 
+                    {project.laboratory?.map((doc, index) =>( 
                     <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
                 ))}
                     </ul>
@@ -108,7 +130,8 @@ return(
             </Card.Body>
          </Card>
          <Card className="shadow" style={{width:'100%', position: 'relative'}}>
-        <IconButton
+         {/* <IconButton onClick={handleLinkManagerModal("production",project.production)} */}
+        <IconButton 
     aria-label="Editar"
     color="primary"
     style={{
@@ -124,7 +147,7 @@ return(
                 <Card.Text>
                     <div className="linkListContainer">
                     <ul>
-                    {project.production.map((doc, index) =>( 
+                    {project.production?.map((doc, index) =>( 
                     <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
                 ))}
                     </ul>
@@ -152,6 +175,8 @@ return(
             <hr></hr>
         </div> */}
         </div>
+
+        <LinksManagerModal show={showModal} handleHide={handleHideLinkManager}/>
     </div>
 )
 

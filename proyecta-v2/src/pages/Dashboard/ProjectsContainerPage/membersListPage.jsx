@@ -31,7 +31,7 @@ const MembersListPage = (props) => {
                         
                     </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={member.label} secondary={member.role.charAt(0).toUpperCase() + member.role.slice(1)} />
+                    <ListItemText primary={member.label} secondary={member.role?.charAt(0).toUpperCase() + member.role?.slice(1)} />
                     <IconButton aria-label="Eliminar" color="error">
                         <DeleteIcon />
                     </IconButton>

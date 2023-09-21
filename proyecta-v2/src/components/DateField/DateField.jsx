@@ -8,6 +8,7 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 export default function BasicDateField(props) {
     const [locale, setLocale] = React.useState('es');
   const [value, setValue] = React.useState(dayjs(new Date(props.date)));
+  const [disableFuture, setDisableFuture] = useState(props.disableFuture ?? false)
 
   const handleChangeDate = (date)=>{
     props.handleChange(date);
@@ -27,7 +28,14 @@ export default function BasicDateField(props) {
     }
   }, [props.date, value, props.handleChange]);
 
-
+ useEffect(() => {
+  if(disableFuture){
+    setDisableFuture(props.disableFuture)
+  }else{
+    setDisableFuture(false)
+  }
+  
+ },[props.disableFuture])
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
         <DateField
@@ -35,6 +43,7 @@ export default function BasicDateField(props) {
           value={value}
           onChange={(newValue) => handleChangeDate(newValue)}
           readOnly={props.readOnly}
+          disableFuture={disableFuture}
         />
     </LocalizationProvider>
   );

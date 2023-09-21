@@ -5,7 +5,7 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import ModalAddProject from './modalAddProject';
+import EditProjectModal from './editProjectModal';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -23,13 +23,19 @@ import Tooltip from '@mui/material/Tooltip';
 import InformationProjectPage from './informationProjectPage.jsx'
 import MembersListPage from './membersListPage';
 import EditFotoModal from './editFotoModal';
+import DeleteModal from './deleteModal';
+
 
 const ProjectPage = (props) => {
     const [value, setValue] = React.useState('1');
+    const [id,setId] = useState(props.project.projectId)
  const [image, setImage] = useState(props.project.icon)
  const [dominantColor, setDominantColor] = useState(null);
  const [textColor, setTextColor] = useState(null);
  const [editFotoModalShow, setEditFotoModalShow] =useState(false);
+ const [editInfoModalShow, setEditInfoModalShow] =useState(false);
+ const [deleteModalShow, setDeleteModalShow] =useState(false);
+
 
  const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -42,11 +48,30 @@ const ProjectPage = (props) => {
 
     const handleEditFoto =()=>{
       setEditFotoModalShow(true)
+
+    }
+
+    const handleEditInfo =()=>{
+      setEditInfoModalShow(true)
+
+    }
+
+    const handleDeleteModal =()=>{
+      setDeleteModalShow(true)
+
     }
 
     const handleHideEditFoto =()=>{
       setEditFotoModalShow(false)
     }
+
+       const handleHideEditInfo =()=>{
+        setEditInfoModalShow(false)
+    }
+
+    const handleHideDeleteModal =()=>{
+      setDeleteModalShow(false)
+  }
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -82,11 +107,16 @@ const ProjectPage = (props) => {
     },[image])
 
     useEffect(()=> {
-      if(props.project.icon)
+      if(props.project.icon){
         setImage(props.project.icon)
+      
+      }
     },[props.project.icon])
       
-
+    useEffect(()=> {
+      if(props.project.projectId)
+      setId(props.project.projectId)
+    },[props.project.projectId])
 
     useEffect(()=> {
       if(dominantColor)
@@ -154,7 +184,7 @@ return(
           }}
           {...getFloatingProps()}
         >
-          <EditProjectMenu   handleShowFoto={handleEditFoto}/>
+          <EditProjectMenu   handleShowFoto={handleEditFoto} handleShowEditInfo={handleEditInfo} handleShowDelete={handleDeleteModal}/>
 
 
         </div> )}
@@ -179,7 +209,10 @@ return(
       </TabContext>
     </Box>
 
-  <EditFotoModal show={editFotoModalShow}  handleHide={handleHideEditFoto} editFoto={(id,img) => props.editFoto(id,img)}  />
+   
+    <DeleteModal show={deleteModalShow} projectId={id} handleHide={handleHideDeleteModal} deleteData={(id) => props.deleteProject(id)}/>
+     <EditProjectModal show={editInfoModalShow} projectId={id}  project={props.project} handleHide={handleHideEditInfo} editInfo={(id,obj) => props.editInfo(id,obj)}  />
+  <EditFotoModal show={editFotoModalShow}  fotoId={id} handleHide={handleHideEditFoto} editFoto={(id,img) => props.editFoto(id,img)}  />
 </div>
 )
 

@@ -19,7 +19,15 @@ const [image, setImage ]=useState(props.image)
     }
   };
 
-  useEffect(() => { setImage(props.image)},[props.image])
+  useEffect(() => { 
+    setImage(props.image)
+  
+  },[props.image])
+
+  useEffect(() => { 
+    setProfileImage(image)
+  
+  },[image])
 
   return (
     <div className="user-profile">
