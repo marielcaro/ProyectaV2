@@ -19,6 +19,15 @@ const ProjectsContainerPage = () => {
         setSelectedCard(null);
     }
 
+    const handleEditLinks = (id,section, linkList) =>{
+        let aux = [...projectList]
+        let py = projectList.find( x => x.projectId === parseInt(id) || x.projectId === id)
+        let pyIndex = projectList.findIndex( x => x.projectId === parseInt(id) || x.projectId === id)
+        py[section] = linkList;
+        aux[pyIndex]= py
+        setProjectList(aux)
+    }
+
     const handleEditData = (id, obj) => {
         let aux = [...projectList]
         let py = projectList.find( x => x.projectId === parseInt(id) || x.projectId === id)
@@ -67,7 +76,7 @@ const ProjectsContainerPage = () => {
     return(
         <div>
         {showList ? <SelectProjectPage projectList={projectList} handleClickProject={(id) => handleClickProject(id)} addProject={(obj) => addProjectMethod(obj)}/> : 
-        <ProjectPage project={selectedCard} backTrack={handleBackTrack} deleteProject={(id)=>handleDeleteData(id)} editFoto={(id,img) => handleEditFotoData(id,img)} editInfo= {(id,obj) => handleEditData(id,obj)}/>}
+        <ProjectPage project={selectedCard} backTrack={handleBackTrack} deleteProject={(id)=>handleDeleteData(id)} editFoto={(id,img) => handleEditFotoData(id,img)} editInfo= {(id,obj) => handleEditData(id,obj)} editLinks={(id,section, list) =>handleEditLinks(id,section,list)} />}
      </div>
      )
 

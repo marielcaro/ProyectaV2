@@ -9,6 +9,7 @@ import { deepOrange, red, blue } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { v4 as uuidv4 } from 'uuid';
 
 const MembersListPage = (props) => {
     const [allMembers, setAllMembers] = useState(props.members);

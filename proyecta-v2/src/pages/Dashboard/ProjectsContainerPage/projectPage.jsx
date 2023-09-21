@@ -203,7 +203,7 @@ return(
           
           </TabList>
         </Box>
-        <TabPanel value="1"><InformationProjectPage project={props.project} /></TabPanel>
+        <TabPanel value="1"><InformationProjectPage project={props.project} editLinks={(id,section, list) =>props.editLinks(id,section,list)}/></TabPanel>
         <TabPanel value="2">< MembersListPage members={props.project.allProjectMembers}/></TabPanel>
   
       </TabContext>

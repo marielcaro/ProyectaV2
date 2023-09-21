@@ -30,3 +30,8 @@
     overflow-y: auto;
     max-height: 56vh !important;
 }
+
+.link-list-container {
+    max-height: 360px; /* Cambia esto al valor de altura máximo deseado */
+    overflow-y: auto; /* Habilita el desbordamiento vertical con una barra de desplazamiento */
+  }

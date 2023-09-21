@@ -15,7 +15,7 @@ const [linkList, setLinkList] = useState([])
 const handleLinkManagerModal =(name, list)=>{
     if(name && list && list.length>0){
     setSectionClicked(name)
-    setLinkList(list)
+    setLinkList([...list])
     }
   }
 
@@ -78,8 +78,8 @@ return(
         justifyContent: 'space-between', // Distribuye elementos equitativamente
       }}>
         <Card className="shadow" style={{width:'100%', position: 'relative'}}>
-        {/* <IconButton onClick={handleLinkManagerModal("bibliografy",project.bibliografy)} */}
-        <IconButton 
+         <IconButton onClick={() => handleLinkManagerModal("bibliografy",project.bibliografy ?? [] )} 
+        // <IconButton 
     aria-label="Editar"
     color="primary"
     style={{
@@ -104,8 +104,8 @@ return(
             </Card.Body>
          </Card>
          <Card className="shadow" style={{width:'100%', position: 'relative'}}>
-         {/* <IconButton onClick={handleLinkManagerModal("laboratory",project.laboratory)} */}
-        <IconButton
+         <IconButton onClick={() => handleLinkManagerModal("laboratory",project.laboratory ?? [] )}
+        // <IconButton
     aria-label="Editar"
     color="primary"
     style={{
@@ -130,8 +130,8 @@ return(
             </Card.Body>
          </Card>
          <Card className="shadow" style={{width:'100%', position: 'relative'}}>
-         {/* <IconButton onClick={handleLinkManagerModal("production",project.production)} */}
-        <IconButton 
+         <IconButton onClick={() => handleLinkManagerModal("production",project.production ?? [] )}
+        // <IconButton 
     aria-label="Editar"
     color="primary"
     style={{
@@ -176,7 +176,7 @@ return(
         </div> */}
         </div>
 
-        <LinksManagerModal show={showModal} handleHide={handleHideLinkManager}/>
+        <LinksManagerModal projectId={props.project.projectId} show={showModal} handleHide={handleHideLinkManager} section={sectionClicked} list={linkList}  editLinks={(id,section, list) =>props.editLinks(id,section,list)}/>
     </div>
 )
 
