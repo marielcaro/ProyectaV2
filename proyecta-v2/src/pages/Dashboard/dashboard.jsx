@@ -46,8 +46,8 @@ const Dashboard = () => {
         <div style={{ display: 'flex', height: '100%', direction: isRTL ? 'rtl' : 'ltr', backgroundColor: '#F2F2F2'}}>
             <DashboardSideBar />
 
-            <main className='mainContainer'>
-                <div className={`styleContainer ${dashboardItem === 'Projects' ? 'proyectoVisible' : ''}`} >
+            <main className={`mainContainer ${dashboardItem === 'Dashboard' ? 'dashboardContainer' : ''}`}>
+                <div className={`styleContainer ${dashboardItem === 'Projects' ? 'proyectoVisible' : ''} ${dashboardItem === 'Dashboard' ? 'dashboardContainer' : ''}`} >
                     {changeContainerUI()}
                 </div>
             </main>

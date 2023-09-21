@@ -1,0 +1,20 @@
+.dashboardCard{
+    background-color: white !important;
+    font-family: nunitoRegular;
+    padding: 12px;
+}
+
+.dashboardCardTitle{
+    font-family: nunitoMedium !important;
+}
+.styleContainer.dashboardContainer{
+    padding:0px;
+     color: #44596e; 
+     width: 100%;
+     height: 100%;
+}
+
+.mainContainer.dashboardContainer{
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
