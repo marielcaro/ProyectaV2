@@ -9,7 +9,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -32,7 +33,7 @@ import email from '../../assets/icons/mail.png'
 import repeat from '../../assets/icons/repeat.png'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { access, recover, exit, create, init } from '../../features/login/loginAction'
+import { access, recover, exit, create, init, register} from '../../features/login/loginAction'
 
 import MainNavBar from '../../components/mainNavBar/mainNavBar';
 
@@ -50,9 +51,12 @@ const RegisterUserPage = () => {
                <MainNavBar />
 
         <div className='registerUser container-fluid  d-flex flex-grow-1 flex-column'>
-      <div className='row  d-flex my-4 flex-grow-1  align-items-center' >
+      <div className='row  registerUserRow d-flex  flex-grow-1  align-items-center' >
       <div className='registerPage col  col-12 '>
                 <div className="card">
+                <IconButton onClick={() => dispatch(init())}  className="backButton" aria-label="back">
+              <ArrowBackIcon />
+            </IconButton>
                 <div className="card-body py-5">
                     <h5 className="card-title my-3">¡Bienvenid@!</h5>
                     <h6 className="card-subtitle mb-5  text-muted">

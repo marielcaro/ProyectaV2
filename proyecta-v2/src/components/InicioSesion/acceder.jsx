@@ -16,7 +16,7 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import KeyIcon from '@mui/icons-material/Key';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { access, exit, create, recover } from '../../features/login/loginAction'
+import { access, exit, create, recover,register } from '../../features/login/loginAction'
 
 const Acceder = () => {
     const dispatch = useDispatch()
@@ -64,7 +64,8 @@ const Acceder = () => {
          <button onClick={() => dispatch(access())} type="button" className="access shadow-sm btn btn-primary px-4 rounded-pill  ">Ingresar</button>
 
             <h6> ¿Aún no tienes una cuenta?</h6>
-         <button onClick={() => dispatch(create())} type="button" className="create btn btn-link">Crear una Cuenta</button>
+            <button type="button" onClick={() => dispatch(register())} className="createBtn shadow-sm btn btn-primary px-4 rounded-pill  ">Crear Cuenta</button>
+
          </Stack>
         </div>
        

@@ -1,0 +1,20 @@
+@media (min-width: 900px) {
+    .formColumn.modalView{
+        font-family: nunitoRegular;
+        width: 50% !important;
+    }
+
+     
+
+ }
+
+ @media (max-width: 900px) {
+    .formColumn.modalView{
+        font-family: nunitoRegular;
+        margin-bottom: 1rem;
+        width: 90% !important;
+    }
+
+      
+
+ }

@@ -2,7 +2,11 @@
     width: 100% !important;
 }
 
-
+.row.registerUserRow{
+    width: 100% !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
 
 .icons
 {
@@ -29,10 +33,15 @@
     max-height: 60% !important;
 }
 
+.registerPage{
+    padding:12px
+}
 .registerUser{
     background: rgb(255,255,255);
     background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,251,215,1) 62%, rgba(250,165,7,1) 100%);
- 
+    width: 100%;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
   
 }
 

@@ -1,4 +1,7 @@
 import './userMenu.css'
+
+import * as React from 'react';
+import { useEffect, useState, useRef } from 'react';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
@@ -10,11 +13,34 @@ import ajustes from '../../../assets/icons/ajustes.png'
 import logout from '../../../assets/icons/logout.png'
 import user from '../../../assets/icons/user.png'
 
-import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { access, exit, create, recover, init } from '../../../features/login/loginAction'
 
+import ChangeProfileModal from './changeProfile';
+import ChangeUserInfoModal from './changeUserInfo';
+
 const UserMenu = () => {
+  const [showProfileModal, setShowProfileModal] =useState(false);
+  const [showUserInfoModal, setShowUserInfoModal] =useState(false);
+
+  const handleShowUserInfoModal = () =>{
+    setShowUserInfoModal(true)
+  }
+
+  const handleHideUserInfoModal = () =>{
+    setShowUserInfoModal(false)
+  }
+
+
+
+  const handleShowProfileModal = () =>{
+    setShowProfileModal(true)
+  }
+
+  const handleHideProfileModal = () =>{
+    setShowProfileModal(false)
+  }
+
   const dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -29,13 +55,13 @@ return(
     <div> 
        <Paper>
         <MenuList>
-          <MenuItem>
+          <MenuItem onClick={handleShowProfileModal}>
           <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={user} height="16" width="16" alt="User" />
                                           Mi Perfil
 
                                     </Box></MenuItem>
-          <MenuItem><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <MenuItem onClick={handleShowUserInfoModal}><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={ajustes} height="16" width="16" alt="User" />
                                           Mi Cuenta
 
@@ -48,6 +74,9 @@ return(
                                     </Box></MenuItem>
         </MenuList>
       </Paper>
+
+      <ChangeProfileModal show={showProfileModal} handleHide={handleHideProfileModal} />
+      <ChangeUserInfoModal show={showUserInfoModal} handleHide={handleHideUserInfoModal} />
     </div>
 )
 }
