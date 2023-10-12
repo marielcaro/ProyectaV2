@@ -34,7 +34,7 @@ const ProjectsContainerPage = () => {
         let pyIndex = projectList.findIndex( x => x.projectId === parseInt(id) || x.projectId === id)
         py.projectName = obj.projectName;
         py.description = obj.description;
-        py.tags = obj.tags;
+        // py.tags = obj.tags;
 
         aux[pyIndex]= py
         setProjectList(aux)

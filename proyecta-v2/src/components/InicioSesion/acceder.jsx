@@ -4,22 +4,59 @@ import TextField from '@mui/material/TextField';
 import user from '../../assets/icons/user.png'
 import key from '../../assets/icons/key.png'
 import Box from '@mui/material/Box';
-
-
-import IconButton from '@mui/material/IconButton';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import KeyIcon from '@mui/icons-material/Key';
-
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { access, exit, create, recover,register } from '../../features/login/loginAction'
+import axios from 'axios';
+
 
 const Acceder = () => {
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
+
     const dispatch = useDispatch()
+    const [formData, setFormData] = useState({
+      username: '',
+      password: '',
+  });
+
+  const [userData, setUserData] = useState({
+    userId: null,
+    userName: '',
+    token: '',
+    refreshToken:''
+});
+
+
+  const handleLogin = async () => {
+    try {
+        const response = await axios.post(`${apiEndpoint}/Authentication/login`, formData);
+          setUserData({
+            userId: response.data.userId,
+            userName: response.data.userName,
+            token: response.data.token,
+            refreshToken: response.refreshToken
+        });
+     
+          localStorage.setItem('userId', response.data.userId);
+          localStorage.setItem('refreshToken', response.data.refreshToken);
+          localStorage.setItem('userName', formData.username);
+          localStorage.setItem('token', response.data.token);
+        // Aquí debes manejar la respuesta de la API, por ejemplo, almacenar el token de autenticación en el estado de tu aplicación o redirigir al usuario a la página principal.
+        console.log(response.data);
+        dispatch(access())
+   
+    } catch (error) {
+        // Manejar errores, por ejemplo, mostrar un mensaje de error al usuario.
+        console.error(error);
+    }
+};
+
+const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+};
+
 
     return(
         <div className="inicioSesion card mx-auto my-1   p-5">
@@ -44,9 +81,8 @@ const Acceder = () => {
 
 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
       <img className='icons' src={user} height="24" width="24" alt="User" />
-         <TextField fullWidth  
-                   
-          id="standard-user" label="Usuario" variant="standard" />
+         <TextField fullWidth                     
+          id="username" label="Usuario" variant="standard"  onChange={handleChange}/>
 
 </Box>
 
@@ -54,14 +90,13 @@ const Acceder = () => {
 
 <img className='icons' src={key} height="24" width="24" alt="User" />
 
-         <TextField fullWidth  
-               
-          id="standard-password" label="Contraseña"  type="password" variant="standard" />
+         <TextField fullWidth                 
+          id="password" label="Contraseña"  type="password" variant="standard"  onChange={handleChange}/>
 </Box>
 
          <button onClick={() => dispatch(recover())} type="button" className="recover btn btn-link">¿Olvidaste tu Contraseña?</button>
 
-         <button onClick={() => dispatch(access())} type="button" className="access shadow-sm btn btn-primary px-4 rounded-pill  ">Ingresar</button>
+         <button onClick={handleLogin} type="button" className="access shadow-sm btn btn-primary px-4 rounded-pill  ">Ingresar</button>
 
             <h6> ¿Aún no tienes una cuenta?</h6>
             <button type="button" onClick={() => dispatch(register())} className="createBtn shadow-sm btn btn-primary px-4 rounded-pill  ">Crear Cuenta</button>

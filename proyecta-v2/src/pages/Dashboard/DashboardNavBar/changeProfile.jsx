@@ -61,31 +61,13 @@ const ChangeProfileModal = (props) => {
                                       <p style={{marginBottom:0}}>Subí una foto para tu perfil de usuario:</p>
                                     <ImageUploader />
                                     </div>
-                                  
-                                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                        <img className='icons' src={fullname} height="24" width="24" alt="User" />
-                                          <TextField fullWidth  
-                                                    
-                                            id="standard" label="Nombre y Apellido Completo" variant="standard" />
-
-                                    </Box>
-
-                                   
+                                                                                                     
                                     
                             </Stack>
                           </div>
                           <div className="formColumn modalView col col-12 col-sm-12 col-md-6  col-lg-6 col-xl-6">
                           <Stack spacing={2}>
-                          <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                        <img className='icons' src={nrodni} height="24" width="24" alt="User" />
-                                          <TextField fullWidth  
-                                                    
-                                            id="standard" label="Número de documento" type="number" variant="standard" />
-
-                                    </Box>
-
-                                  <BasicDatePicker label="Fecha de Nacimiento"/>
-                                  
+                                                         
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={subject} height="24" width="24" alt="User" />
                                           <TextField fullWidth  

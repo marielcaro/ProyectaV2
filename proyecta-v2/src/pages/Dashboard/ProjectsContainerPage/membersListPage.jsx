@@ -32,6 +32,7 @@ const MembersListPage = (props) => {
     const [memberToEditIndex, setMemberToEditIndex] = useState(-1);
     const [showAddMember, setShowAddMember] = useState(false);
     const [selectedName, setSelectedName] = useState("");
+    const [selectedEmail, setSelectedEmail] = useState("");
     const [selectedRole, setSelectedRole] = useState("");
 
     const allUsers = [
@@ -42,6 +43,16 @@ const MembersListPage = (props) => {
         { id: 50, label: 'Elías Remedi' },
         { id: 60, label: "Lourdes Gouyot" },
         { id: 70, label: 'Belén Velásquez'},
+    ]
+
+    const allMembersEmails = [
+        { id: 10 , label: 'ignacio.manrique@gmail.com' },
+        { id: 20, label: 'Ramiro.Palferro@gmail.com'},
+        { id: 30, label: 'Leandro.Skyrim@gmail.com' },
+        { id: 40, label: 'Gonzalo.Certo@gmail.com' },
+        { id: 50, label: 'Elias.Remedi@gmail.com' },
+        { id: 60, label: "Lourdes.Gouyot@gmail.com" },
+        { id: 70, label: 'Belen.Velasquez@gmail.com'},
     ]
 
     const getNameEditingRole = (id) => {
@@ -255,6 +266,20 @@ const MembersListPage = (props) => {
                     sx={{ width: '100%' }}
                     renderInput={(params) => <TextField {...params} label="Nombre de nuevo Integrante:" />}
                     />
+
+                <Autocomplete
+                                    disablePortal
+                                    id="emailUser"
+                                    value={selectedEmail}
+                                    onChange={(event, newValue) => {
+                                    setSelectedName(newValue);
+                                    }}
+                            
+                                    options={allMembersEmails}
+                                    sx={{ width: '100%' }}
+                                    renderInput={(params) => <TextField {...params} label="Email de Nuevo Integrante" />}
+                                    />
+
                 <FormControl fullWidth>
                                             <InputLabel id="demo-simple-select-label">Elegir Rol...</InputLabel>
                                             <Select

@@ -51,14 +51,14 @@ const EditProjectModal = (props) => {
         let obj = {
             projectName : title,
             description : description,
-            tags:tags,
+            // tags:tags,
         }
 
         props.editInfo(id, obj)
 
         setTitle("");
         setDescription("");
-        setTags([]);
+        // setTags([]);
 
         props.handleHide()
       }
@@ -93,7 +93,7 @@ return (
             <TextField id="projectName" label="Nombre del Proyecto" variant="standard" value={title} onChange={handleTitleChange}/>
                       <TextField id="description" multiline label="Descripción" variant="standard" value={description} onChange={handleDescriptionChange}  />                 
                     
-                         <Autocomplete
+                         {/* <Autocomplete
                               key={3}
                               multiple
                               id="tags"
@@ -110,7 +110,7 @@ return (
                                   placeholder="Añadir..."
                               />
                               )}
-                />
+                /> */}
                      
                     </Stack>
             </Modal.Body>

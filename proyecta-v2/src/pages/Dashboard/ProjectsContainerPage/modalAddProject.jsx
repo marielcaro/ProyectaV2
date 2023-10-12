@@ -17,7 +17,8 @@ const ModalAddProject = (props) => {
     const [showModal, setShowModal] = useState(props.modalShow ?? false);
     const [title, setTitle] = useState("")
     const [taskStartDate, setTaskStartDate]=useState( "");
-    const [description, setDescription] = useState( "")
+    const [description, setDescription] = useState( "");
+    const [resolucion, setResolucion] = useState( "")
     const [faculty, setFaculty] = React.useState("select");
     const [department, setDepartment] = useState( "")
     const allAllowedMembers = props.allAllowedMembers;
@@ -64,6 +65,12 @@ const ModalAddProject = (props) => {
         setDescription(event.target.value)
       
       }
+
+      const handleResolucionChange = (event) => {
+        setResolucion(event.target.value)
+      
+      }
+
       const handleFacultyChange = (event) => {
         setFaculty(event.target.value);
       };
@@ -95,6 +102,7 @@ const ModalAddProject = (props) => {
         setTitle("");
         setTaskStartDate("");
         setDescription("");
+        setResolucion("");
         setFaculty("");
         setDepartment("");
         setMembers([]);
@@ -124,8 +132,11 @@ return (
            
             <Stack spacing={4}  sx={{padding: '4px'}}>
             <TextField id="projectName" label="Nombre del Proyecto" variant="standard" value={title} onChange={handleTitleChange}/>
+            <TextField id="resolucion" multiline label="Nro. de Resolución" variant="standard" value={resolucion} onChange={handleResolucionChange}  />
                       <BasicDateField label="Fecha de Alta" date={taskStartDate} handleChange={(value) => handleInputDateChange(value)} disableFuture={true} />
                       <TextField id="description" multiline label="Descripción" variant="standard" value={description} onChange={handleDescriptionChange}  />
+                   
+
                        <FormControl fullWidth>
                                         <InputLabel id="demo-simple-select-label">Facultad</InputLabel>
                                         <Select

@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
-
+import axios from 'axios';
 
 import ajustes from '../../../assets/icons/ajustes.png'
 import logout from '../../../assets/icons/logout.png'
@@ -20,8 +20,40 @@ import ChangeProfileModal from './changeProfile';
 import ChangeUserInfoModal from './changeUserInfo';
 
 const UserMenu = () => {
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
   const [showProfileModal, setShowProfileModal] =useState(false);
   const [showUserInfoModal, setShowUserInfoModal] =useState(false);
+
+  const handleLogout = () => {
+    const token = localStorage.getItem('token');
+
+    // Obtiene el userName almacenado en localStorage
+  const userName = localStorage.getItem('userName');
+  const data = {
+    userName: userName
+  };
+  
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    userName: userName
+  };
+
+  axios.post(`${apiEndpoint}/Authentication/logout?userName=${userName}`, data, { headers })
+      .then(response => {
+        // Procesa la respuesta del logout
+        // ...
+        localStorage.removeItem('token');
+
+        // Limpia el userName de localStorage si es necesario
+        localStorage.removeItem('userName');
+        dispatch(exit());
+      })
+      .catch(error => {
+        // Maneja cualquier error que pueda ocurrir durante el logout.
+        console.error(error);
+      });
+  };
 
   const handleShowUserInfoModal = () =>{
     setShowUserInfoModal(true)
@@ -67,7 +99,7 @@ return(
 
                                     </Box></MenuItem>
           <Divider sx={{ my: 0.5 , borderColor: '#212529'}} />
-          <MenuItem onClick={() => dispatch(exit())}><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <MenuItem onClick={handleLogout}><Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={logout} height="16" width="16" alt="User" />
                                           Salir
 
