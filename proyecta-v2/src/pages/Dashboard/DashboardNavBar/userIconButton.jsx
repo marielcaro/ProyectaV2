@@ -1,7 +1,6 @@
 import UserMenu from './userMenu';
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button';
+
+import axios from 'axios';
 
 import { useSelector, useDispatch } from 'react-redux'
 import { access, exit } from '../../../features/login/loginAction'
@@ -17,7 +16,7 @@ import image from '../../../assets/images/sampleImage.jpg';
 import menu from '../../../assets/icons/menu.png';
 import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {useFloating,  offset,  flip,  shift } from '@floating-ui/react';
 import { useClick, useInteractions} from '@floating-ui/react';
 import {useDismiss} from '@floating-ui/react'
@@ -26,11 +25,53 @@ import { foto, initial } from '../../../features/profileImage/profileAction'
 
 const UserIconButton = () => {
 
-  const profile = useSelector((state) => state.profile.value)
-
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+  const [userInfo, setUserInfo] = useState(null);
+  const [profile, setProfile] = useState("");
+  
   const dispatch = useDispatch()
 
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const fetchUserInfo = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      // Obtiene el userName almacenado en localStorage
+    const userId = localStorage.getItem('userId');
+
+    const url = `${apiEndpoint}/User/user-info-by-id/${userId}`;
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      setUserInfo(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+      console.error('Error al obtener las opciones de grado:', error);
+    }
+  };
+
+  const fetchFotoProfile = async () => {
+    try {
+    const token = localStorage.getItem('token');
+
+    const url = `${apiEndpoint}/Perfil/InfoResume/${userInfo.perfilId}`;
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      localStorage.setItem('perfilId', userInfo.perfilId);
+      setProfile(response.data.fotoPerfil); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+      console.error('Error al obtener las opciones de grado:', error);
+    }
+  };
+  
+  // const profile = useSelector((state) => state.profile.value)
 
     const {x, y, strategy, refs, context} = useFloating({
       open: isOpen,
@@ -50,9 +91,26 @@ const UserIconButton = () => {
       click, dismiss
     ]);
 
+    useEffect(() =>{
+      if(profile){
+        dispatch (foto(profile));
+      }
+    },[profile])
+
+    useEffect(()=> {
+      if(userInfo){
+        fetchFotoProfile()
+      }
+
+    },[userInfo]);
+
+    useEffect(() => {
+      fetchUserInfo()
+    },[])
+
     return (
         <>
-         <Avatar  ref={refs.setReference} {...getReferenceProps()} className="AvatarButton" alt="Orianna Queen" src={profile.payload === undefined ? "Orianna Queen" : profile.payload}/>
+         <Avatar  ref={refs.setReference} {...getReferenceProps()} className="AvatarButton" alt="Orianna Queen" src={profile === undefined ? "Orianna Queen" : profile}/>
             {isOpen && (
         <div
           ref={refs.setFloating}

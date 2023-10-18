@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import Box from '@mui/material/Box';
@@ -11,8 +12,16 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import './DatePicker.css';
 
 export default function BasicDatePicker(props) {
-  const [locale, setLocale] = React.useState('es');
-  const [value, setValue] = React.useState(dayjs(''));
+  const [locale, setLocale] = useState('es');
+  const [value, setValue] = useState(dayjs(''));
+
+  const handleChange = () => {
+    props.changeHandler(value)
+  }
+
+  useEffect(() => {
+    handleChange();
+  },[value])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>

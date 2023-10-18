@@ -2,8 +2,7 @@ import './registerUserPage.css';
 
 import Stack from '@mui/material/Stack';
 import ImageUploader from '../../components/imageUploader/imageUploader';
-
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import BasicDatePicker from '../../components/DatePicker/DatePicker';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,21 +10,18 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import axios from 'axios';
+import dayjs from 'dayjs';
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
-
 import fullname from '../../assets/icons/name.png'
 import nrodni from '../../assets/icons/nrodni.png'
-import calendar from '../../assets/icons/calendar.png'
-
 
 import career from '../../assets/icons/career.png'
 import graduado from '../../assets/icons/grado.png'
-import degree from '../../assets/icons/degree.png'
 import subject from '../../assets/icons/subject.png'
-import role from '../../assets/icons/role.png'
 import university from '../../assets/icons/university.png'
 import user from '../../assets/icons/user.png'
 import key from '../../assets/icons/key.png'
@@ -33,18 +29,128 @@ import email from '../../assets/icons/mail.png'
 import repeat from '../../assets/icons/repeat.png'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { access, recover, exit, create, init, register} from '../../features/login/loginAction'
+import { access, recover, exit, create, init, register, login} from '../../features/login/loginAction'
 
 import MainNavBar from '../../components/mainNavBar/mainNavBar';
 
 const RegisterUserPage = () => {
   const dispatch = useDispatch()
+  const profile = useSelector((state) => state.profile.value)
 
-  const [grado, setGrado] = React.useState('');
+  const [grado, setGrado] = useState('');
+  const [gradoOptions, setGradoOptions] = useState([]);
+  const [fecNac, setFecNac] = useState('');
+  const [repeatedPass, setRepeatedPass] =useState("");
+
+
+const handleChangeRepeatPass = (e) => {
+  setRepeatedPass(e.currentTarget.value);
+}
+
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    dni: '',
+    nombreCompleto: '',
+    fechaNacimiento: '',
+    carreraProfesional: '',
+    universidad: '',
+    categoria: '',
+    fotoPerfil: '',
+    principalArea: '',
+    username: '',
+  });
+
+  const handleDateChange = (date) => {
+    setFecNac(dayjs(date).format('YYYY-MM-DDTHH:mm:ss'))
+  }
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.currentTarget;
+    setFormData({
+      ...formData,
+      [id]: value,
+    });
+  };
 
   const handleChange = (event) => {
     setGrado(event.target.value);
   };
+
+   // Función para obtener las opciones de "último grado alcanzado" desde el servidor.
+   const fetchGradoOptions = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      // Obtiene el userName almacenado en localStorage
+    const userName = localStorage.getItem('userName');
+
+
+      const response = await axios.get(`${apiEndpoint}/Categorias/GetAll`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      setGradoOptions(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+      console.error('Error al obtener las opciones de grado:', error);
+    }
+  };
+
+  const registerUserClick = async () => {
+    if(repeatedPass ===formData.password ){
+      const requestData = {
+        email: formData.email,
+        password: formData.password,
+        perfilModel: {
+          dni: formData.dni,
+          nombreCompleto: formData.nombreCompleto,
+          fechaNacimiento: fecNac,
+          carreraProfesional: formData.carreraProfesional,
+          universidad: formData.universidad,
+          fotoPerfil: profile.payload,
+          principalArea: formData.principalArea,
+          categoria: grado
+        },
+        username: formData.username,
+      };
+
+      try {
+        const token = localStorage.getItem('token');
+
+        const response = await axios.post(`${apiEndpoint}/Authentication/registro`, requestData,{
+          headers: {
+            Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+          },
+        });
+        
+        // La respuesta exitosa se encuentra en response.data.
+        console.log('Registro exitoso:', response.data);
+    
+        dispatch(login())
+        // Realiza las acciones que desees después del registro exitoso, como redireccionar a una página de inicio de sesión, mostrar un mensaje de éxito, etc.
+      } catch (error) {
+        // En caso de error, puedes manejarlo aquí.
+        console.error('Error en el registro:', error);
+        // Puedes mostrar un mensaje de error al usuario o realizar otras acciones según tus necesidades.
+      } 
+
+
+    } else{
+      alert("Contraseñas no coincidentes");
+    }
+   
+  }
+  // Llama a la función para obtener las opciones de grado cuando el componente se monta.
+  useEffect(() => {
+    fetchGradoOptions();
+  }, []);
+
+  useEffect(()=> {
+    console.log(fecNac)
+  },[fecNac])
 
     return (
       <>
@@ -75,7 +181,7 @@ const RegisterUserPage = () => {
                                         <img className='icons' src={fullname} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="standard" label="Nombre y Apellido Completo" variant="standard" />
+                                            id="nombreCompleto" label="Nombre y Apellido Completo" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
@@ -89,17 +195,17 @@ const RegisterUserPage = () => {
                                         <img className='icons' src={nrodni} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="standard" label="Número de documento" type="number" variant="standard" />
+                                            id="dni" label="Número de documento" type="number" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
-                                  <BasicDatePicker label="Fecha de Nacimiento"/>
+                                  <BasicDatePicker id='fechaNacimiento' label="Fecha de Nacimiento" changeHandler={(date) => handleDateChange(date)}/>
                                   
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={subject} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="standard" label="Principal Área de Investigación" variant="standard" />
+                                            id="principalArea" label="Principal Área de Investigación" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
@@ -107,7 +213,7 @@ const RegisterUserPage = () => {
                                         <img className='icons' src={career} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="standard" label="Carrera Universitaria" variant="standard" />
+                                            id="carreraProfesional" label="Carrera Universitaria" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
@@ -128,10 +234,11 @@ const RegisterUserPage = () => {
                                         <MenuItem value="">
                                           <em>Último grado alcanzado</em>
                                         </MenuItem>
-                                        <MenuItem value={10}>Estudiante</MenuItem>
-                                        <MenuItem value={20}>Grado Completo</MenuItem>
-                                        <MenuItem value={30}>Pregrado Completo</MenuItem>
-                                        <MenuItem value={30}>Posgrado Completo</MenuItem>
+                                        {gradoOptions.map((option) => (
+                                            <MenuItem key={option.id} value={option.id}>
+                                              {option.nombreCategoria} {/* Asume que "nombre" es el nombre del grado. */}
+                                            </MenuItem>
+                                          ))}
                                       </Select>
                                       </FormControl>
                                       </div>
@@ -142,7 +249,7 @@ const RegisterUserPage = () => {
                                         <img className='icons' src={university} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="standard" label="Universidad" variant="standard" />
+                                            id="universidad" label="Universidad" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
@@ -155,7 +262,7 @@ const RegisterUserPage = () => {
                                         <img className='icons' src={email} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="standard" label="Correo electrónico" type="email" variant="standard" />
+                                            id="email" label="Correo electrónico" type="email" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
@@ -164,7 +271,7 @@ const RegisterUserPage = () => {
                                         <img className='icons' src={user} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="standard" label="Nombre de Usuario" variant="standard" />
+                                            id="username" label="Nombre de Usuario" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
@@ -172,7 +279,7 @@ const RegisterUserPage = () => {
                                         <img className='icons' src={key} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="standard" label="Contraseña" type="password" variant="standard" />
+                                            id="password" label="Contraseña" type="password" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
@@ -181,12 +288,12 @@ const RegisterUserPage = () => {
                                         <img className='icons' src={repeat} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="standard" label="Confirmar Contraseña"  type="password" variant="standard" />
+                                            id="repeat-password" label="Confirmar Contraseña"  type="password" variant="standard" onChange={handleChangeRepeatPass}/>
 
                                     </Box>
 
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                    <button type="button" className="createBtn shadow-sm  btn btn-primary px-4 rounded-pill  " onClick={() => dispatch(access())}>Crear Cuenta</button>
+                                    <button type="button" className="createBtn shadow-sm  btn btn-primary px-4 rounded-pill  " onClick={registerUserClick}>Crear Cuenta</button>
                                     </Box>
                                     </Stack>
                           </div>

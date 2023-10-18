@@ -1,5 +1,7 @@
 import Stack from '@mui/material/Stack';
+import React, { useEffect, useState, useRef } from 'react';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
 
 import user from '../../assets/icons/user.png'
 import key from '../../assets/icons/key.png'
@@ -18,10 +20,57 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import KeyIcon from '@mui/icons-material/Key';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { access, exit, create, recover, init } from '../../features/login/loginAction'
+import { access, exit, create, recover, init, login } from '../../features/login/loginAction'
 
 const RecuperarCuenta = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+    const [repeatedPass, setRepeatedPass] =useState("");
+
+    const [formData, setFormData] = useState({
+      email:"",
+      username: "",
+      newPassword: ""
+    });
+
+    const handleChangeRepeatPass = (e) => {
+      setRepeatedPass(e.currentTarget.value);
+    }
+
+    const handleInputChange = (e) => {
+      const { id, value } = e.currentTarget;
+      setFormData({
+        ...formData,
+        [id]: value,
+      });
+    };
+
+    const clickSaveForm = async () => {
+      if ( formData.email && formData.username && formData.newPassword && (formData.newPassword === repeatedPass)){
+    
+        const requestData = {
+          username: formData.username,
+          email: formData.email,
+          newPassword: formData.newPassword
+        };
+
+        try {
+          const response = await axios.post(`${apiEndpoint}/Authentication/reset-password`, requestData);
+          
+          // La respuesta exitosa se encuentra en response.data.
+          console.log('Contraseña Recuperada correctamente:', response.data);
+          dispatch(login());
+          // Realiza las acciones que desees después del registro exitoso, como redireccionar a una página de inicio de sesión, mostrar un mensaje de éxito, etc.
+        } catch (error) {
+          // En caso de error, puedes manejarlo aquí.
+          console.error('Usuario inexistente', error);
+          // Puedes mostrar un mensaje de error al usuario o realizar otras acciones según tus necesidades.
+        } 
+
+      }else{
+        alert ("Contraseña no coincidente o campos vacíos");
+      }
+    }
 
     return(
         <div className="recuperarCuenta card mx-auto my-1   p-5">
@@ -45,12 +94,20 @@ const RecuperarCuenta = () => {
       noValidate
       autoComplete="off"
     >
+      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+      <img className='icons' src={user} height="24" width="24" alt="User" />
+         <TextField fullWidth  
+                   
+          id="email" label="Correo Electrónico" variant="standard" onChange={handleInputChange}/>
+
+</Box>
+
 
 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
       <img className='icons' src={user} height="24" width="24" alt="User" />
          <TextField fullWidth  
                    
-          id="standard-userrecover" label="Usuario" variant="standard" />
+          id="username" label="Usuario" variant="standard" onChange={handleInputChange}/>
 
 </Box>
 
@@ -60,7 +117,7 @@ const RecuperarCuenta = () => {
 
          <TextField fullWidth  
                
-          id="standard-passwordrecover" label="Contraseña"  type="password" variant="standard" />
+          id="newPassword" label="Contraseña"  type="password" variant="standard" onChange={handleInputChange}/>
 </Box>
 
 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -69,10 +126,10 @@ const RecuperarCuenta = () => {
 
          <TextField fullWidth  
                
-          id="standard-repeatrecover" label="Repetir Contraseña"  type="password" variant="standard" />
+          id="standard-repeatrecover" label="Repetir Contraseña"  type="password" variant="standard" onChange={handleChangeRepeatPass}/>
 </Box>
 
-<button type="button" className="recoverBtn shadow-sm btn btn-primary px-4 rounded-pill  " onClick={() => dispatch(access())} >Recuperar</button>
+<button type="button" className="recoverBtn shadow-sm btn btn-primary px-4 rounded-pill  " onClick={clickSaveForm} >Recuperar</button>
          </Stack>
         </div>
        
