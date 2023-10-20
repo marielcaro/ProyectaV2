@@ -9,8 +9,8 @@ import Chip from '@mui/material/Chip';
 import { orange } from '@mui/material/colors';
 
 const ProjectCard = (props) => {
-  const [membersList, setMembersList] = useState(props.proyecto.allProjectMembers);
-  const tagList = props.proyecto.tags;
+  const [membersList, setMembersList] = useState(props.proyecto.listaIntegrantes);
+  const tagList = props.proyecto.etiquetaModels;
 
   const handleClick = (event) => {
    props.handleClickProject(event.currentTarget.id)
@@ -21,15 +21,15 @@ const ProjectCard = (props) => {
     
             for(var i=0;i<elements.length;i++){
               // push the component to elements!
-              listItem.push( <Avatar  alt={elements[i].label} src="./" />);
+              listItem.push( <Avatar  alt={elements[i].nombreCompleto} src={elements[i].fotoPerfil} />);
         }
     
         return listItem;
     }
 
     useEffect(() => {
-      setMembersList(props.proyecto.allProjectMembers)
-    }, [props.proyecto.allProjectMembers])
+      setMembersList(props.proyecto.listaIntegrantes)
+    }, [props.proyecto.listaIntegrantes])
 
     return(
      <div>
@@ -39,7 +39,7 @@ const ProjectCard = (props) => {
         <div className='row'>
         <Stack direction="row" spacing={2}>
         <Avatar alt="Proyecto 1" src={props.proyecto.icon} />
-        <h5 >    {props.proyecto.projectName} </h5>
+        <h5 >    {props.proyecto.proyectName} </h5>
     
         </Stack>
 
@@ -47,11 +47,11 @@ const ProjectCard = (props) => {
         </Card.Title>
         <Card.Text className="ps-5">       
             <Stack spacing={1} >
-                <h6 className='taskNumber'> Tareas Cumplidas: {props.proyecto.tasks.numberOfCompletedTasks} / {props.proyecto.tasks.totalNumberOfTasks}  </h6>
+                <h6 className='taskNumber'> Tareas Cumplidas: {props.proyecto ? props.proyecto.nroTotalTareas : 0} / {props.proyecto  ? props.proyecto.nroTareasCompletas : 0}  </h6>
                     
                 <Stack direction="row" spacing={1}>
                 {tagList.map((tag, index) => (
-                <Chip label={tag.label} sx={{ backgroundColor: orange[200] }} key={index} p />
+                <Chip label={tag.nombreEtiqueta} sx={{ backgroundColor: orange[200] }} key={index} p />
             ))}
                 </Stack>
                     

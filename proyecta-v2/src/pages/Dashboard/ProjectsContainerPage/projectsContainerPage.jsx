@@ -3,10 +3,14 @@ import SelectProjectPage from './selectProjectPage';
 import './projectsContainerPage.css'
 import data from "./mockDataProject.json"
 import ProjectPage from './projectPage';
+import axios from 'axios';
 
 
 const ProjectsContainerPage = () => {
-    const [projectList, setProjectList] = useState(data.projects);
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+    const [projectList, setProjectList] = useState(null);
+    const [noProyectMessage, setNoProyectMessage] = useState("");
+
     const [selectedCard, setSelectedCard] = useState(null);
     const [showList, setShowList] = useState(true);
     const handleClickProject = (id) => {
@@ -61,10 +65,61 @@ const ProjectsContainerPage = () => {
 
     }
     const addProjectMethod = (obj) =>{
-        let aux = [...projectList]
-        aux.push(obj)
-        setProjectList(aux)
+        // let aux = [...projectList]
+        // aux.push(obj)
+        fetchAddProyect(obj)
+        // setProjectList(aux)
     }
+    const fetchAddProyect = async (obj) => {
+        const requestData = {
+            nombreProyecto: obj.projectName,
+            descripcion: obj.description,
+            nroResolucion: obj.nroResolucion,
+            fechaAlta: obj.startDate,
+            fotoIcon: obj.icon,
+            departamento: obj.departamento,
+            nombreFacultad: obj.facultad,
+            etiquetas: obj.tags,
+            directores: obj.leaders,
+            integrantes: obj.members
+          };
+
+
+        try {
+         const token = localStorage.getItem('token');    
+    
+          const response = await axios.post(`${apiEndpoint}/Proyecto/CrearProyecto`, requestData, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          console.log('Registro exitoso:', response.data);
+          fetchProyectList();
+        } catch (error) {
+            console.log('Error');
+            
+        }
+      };
+
+    const fetchProyectList = async () => {
+        try {
+          const token = localStorage.getItem('token');
+    
+          // Obtiene el userName almacenado en localStorage
+        const perfilId = localStorage.getItem('perfilId');
+    
+    
+          const response = await axios.get(`${apiEndpoint}/Proyecto/ProyectosPorPerfil/${perfilId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          setProjectList(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+        } catch (error) {
+            setNoProyectMessage("Aún no tienes asociado ningún proyecto")
+            
+        }
+      };
 
     useEffect(() => {
         if(selectedCard){
@@ -72,6 +127,10 @@ const ProjectsContainerPage = () => {
         }
 
     },[selectedCard])
+
+    useEffect(()=>{
+        fetchProyectList()
+      },[])
 
     return(
         <div>

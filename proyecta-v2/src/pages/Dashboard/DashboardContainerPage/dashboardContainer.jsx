@@ -9,9 +9,118 @@ import Avatar from '@mui/material/Avatar';
 import ImageIcon from '@mui/icons-material/Image';
 import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
 
 const DashboardContainer = () => {
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+    const [proyectList, setProyectList] = useState([]);
+    const [noProyectMessage, setNoProyectMessage] = useState("");
+    const [tareaList, setTareaList] = useState([]);
+    const [noTareaMessage, setNoTareaMessage] = useState("");
+    const [eventoList, setEventoList] = useState([]);
+    const [noEventoMessage, setNoEventoMessage] = useState("");
 
+    const EventoItem = (props) => {
+        return(
+            <ListItem>
+            <ListItemAvatar>
+            <Avatar alt={props.evento.titulo} src={props.evento.proyectIcon} />
+            </ListItemAvatar>
+            <ListItemText primary={props.evento.titulo - props.evento.proyectName} secondary={props.evento.fechaInicio - props.evento.horaInicio}/>
+            </ListItem>
+        );
+    } 
+
+    const TareaItem = (props) => {
+        return(
+            <ListItem>
+            <ListItemAvatar>
+            <Avatar alt={props.tarea.nombreTarea} src={props.tarea.proyectIcon} />
+            </ListItemAvatar>
+            <ListItemText primary={props.tarea.nombreTarea} secondary={props.tarea.proyectName}/>
+            </ListItem>
+        );
+    } 
+
+    const ProyectItem = (props) => {
+        return(
+            <ListItem>
+            <ListItemAvatar>
+            <Avatar alt={props.proyecto.proyectName} src={props.proyecto.proyectIcon} />
+            </ListItemAvatar>
+            <ListItemText primary={props.proyecto.proyectName}/>
+            </ListItem>
+        );
+    } 
+
+    const fetchProyectList = async () => {
+        try {
+          const token = localStorage.getItem('token');
+    
+          // Obtiene el userName almacenado en localStorage
+        const perfilId = localStorage.getItem('perfilId');
+    
+    
+          const response = await axios.get(`${apiEndpoint}/Proyecto/GetProyectsByProfileIdResume/${perfilId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          setProyectList(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+        } catch (error) {
+            setNoProyectMessage("Aún no tienes asociado ningún proyecto")
+            
+        }
+      };
+      
+      const fetchTareaList = async () => {
+        try {
+          const token = localStorage.getItem('token');
+    
+          // Obtiene el userName almacenado en localStorage
+        const perfilId = localStorage.getItem('perfilId');
+    
+    
+          const response = await axios.get(`${apiEndpoint}/Tarea/ObtenerTareasPorPerfil/${perfilId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          setTareaList(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+        } catch (error) {
+            setNoTareaMessage("Aún no tienes asociada ninguna tarea")
+            
+        }
+      };
+
+      const fetchEventoList = async () => {
+        try {
+          const token = localStorage.getItem('token');
+    
+          // Obtiene el userName almacenado en localStorage
+        const perfilId = localStorage.getItem('perfilId');
+    
+    
+          const response = await axios.get(`${apiEndpoint}/Evento/ObtenerEventoResumePorPerfil/${perfilId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          setEventoList(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+        } catch (error) {
+            setNoEventoMessage("Aún no tienes asociado ningún evento")
+            
+        }
+      };
+
+
+      useEffect(()=>{
+        fetchProyectList()
+        fetchTareaList()
+        fetchEventoList()
+      },[])
     return(
     
             <Grid className='dashboardContainer' container spacing={2}>
@@ -24,30 +133,9 @@ const DashboardContainer = () => {
                     <Card.Body>
                         {/* Contenido de la lista de proyectos */}
                         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <ImageIcon />
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <WorkIcon />
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Work" secondary="Jan 7, 2014" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <BeachAccessIcon />
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Vacation" secondary="July 20, 2014" />
-                            </ListItem>
+                        { !noProyectMessage ? proyectList.map((proyecto) => (
+                                            <ProyectItem proyecto={proyecto}/>
+                                          )): noProyectMessage }                          
                         </List>
                     </Card.Body>
                     </Card>
@@ -62,30 +150,9 @@ const DashboardContainer = () => {
                     <Card.Body>
                         {/* Contenido de la lista de tareas pendientes */}
                         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <ImageIcon />
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <WorkIcon />
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Work" secondary="Jan 7, 2014" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <BeachAccessIcon />
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Vacation" secondary="July 20, 2014" />
-                            </ListItem>
+                        { !noTareaMessage ? tareaList.map((tarea) => (
+                                            <TareaItem tarea={tarea}/>
+                                          )): noTareaMessage }  
                         </List>
                     </Card.Body>
                     </Card>
@@ -100,30 +167,9 @@ const DashboardContainer = () => {
                     <Card.Body>
                         {/* Contenido de la lista de próximos eventos */}
                         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <ImageIcon />
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <WorkIcon />
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Work" secondary="Jan 7, 2014" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <BeachAccessIcon />
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Vacation" secondary="July 20, 2014" />
-                            </ListItem>
+                        { !noEventoMessage ? eventoList.map((evento) => (
+                                            <EventoItem evento={evento}/>
+                                          )): noEventoMessage }  
                         </List>
                     </Card.Body>
                     </Card>

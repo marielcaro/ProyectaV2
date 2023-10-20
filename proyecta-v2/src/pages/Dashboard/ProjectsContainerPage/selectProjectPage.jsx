@@ -71,9 +71,9 @@ useEffect(()=> {
                </Button>
                </Box>
          <div className="projectCardList">
-               {proyectos.map((proyecto, index) => (
+               { proyectos ? proyectos.map((proyecto, index) => (
                      <ProjectCard  key={index} proyecto={proyecto} handleClickProject={(id) => props.handleClickProject(id)}  />
-                  ))}
+                  )): "Aún no hay proyectos asociados"}
 
          </div>
       
