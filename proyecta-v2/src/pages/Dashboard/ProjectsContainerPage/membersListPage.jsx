@@ -72,9 +72,9 @@ const MembersListPage = (props) => {
       const handleConfirmAddMember = () => {
         // Agrega al nuevo integrante a la lista
         const newMember = {
-          userId: selectedName.id,
-          label: selectedName.label,
-          role: selectedRole,
+          perfilId: selectedName.perfilId,
+          nombreCompleto: selectedName.nombreCompleto,
+          rol: selectedRole,
         };
         const updatedMembers = [...allMembers, newMember];
         setAllMembers(updatedMembers);
@@ -166,20 +166,20 @@ const MembersListPage = (props) => {
         <div className="listContainer">
              <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
         {allMembers.map((member, index) => (
-                    <ListItem id={member.userId}>
+                    <ListItem id={member.perfilId}>
                     <ListItemAvatar>
                         
                     <Avatar sx={{ bgcolor: deepOrange[500] }}
-                            alt={member.label}
+                            alt={member.nombreCompleto}
                             src={member.icon}>
                         
                     </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={member.label} secondary={member.role?.charAt(0).toUpperCase() + member.role?.slice(1)} />
-                    <IconButton id={member.userId} aria-label="Eliminar" color="error" onClick={handleRemoveMember} >
+                    <ListItemText primary={member.nombreCompleto} secondary={member.rol?.charAt(0).toUpperCase() + member.rol?.slice(1)} />
+                    <IconButton id={member.perfilId} aria-label="Eliminar" color="error" onClick={handleRemoveMember} >
                         <DeleteIcon />
                     </IconButton>
-                    <IconButton  id={member.userId} aria-label="Editar" color="primary" onClick={handleEditMember}>
+                    <IconButton  id={member.perfilId} aria-label="Editar" color="primary" onClick={handleEditMember}>
                         <EditIcon />
                     </IconButton>
                     </ListItem>

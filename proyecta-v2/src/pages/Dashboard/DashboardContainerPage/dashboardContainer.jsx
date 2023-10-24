@@ -117,9 +117,12 @@ const DashboardContainer = () => {
 
 
       useEffect(()=>{
-        fetchProyectList()
-        fetchTareaList()
-        fetchEventoList()
+        if (localStorage.getItem('token') && localStorage.getItem('perfilId')) {
+
+          fetchProyectList()
+          fetchTareaList()
+          fetchEventoList()
+        }
       },[])
     return(
     

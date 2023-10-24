@@ -47,6 +47,11 @@ const UserMenu = () => {
 
         // Limpia el userName de localStorage si es necesario
         localStorage.removeItem('userName');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('perfilId');
+
+
         dispatch(exit());
       })
       .catch(error => {

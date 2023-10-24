@@ -13,7 +13,7 @@ const [sectionClicked, setSectionClicked] = useState("")
 const [linkList, setLinkList] = useState([])
 
 const handleLinkManagerModal =(name, list)=>{
-    if(name && list && list.length>0){
+    if(name && list ){
     setSectionClicked(name)
     setLinkList([...list])
     }
@@ -42,7 +42,7 @@ return(
          
         </div>     
             <div className="descriptionText"> 
-                {props.project.description}
+                {props.project.descripcion}
             </div>
             <hr></hr>
         </div>
@@ -59,9 +59,9 @@ return(
             </div>
             <div className="linkListContainer">
                 <ul>
-                {project.documentLinks?.map((doc, index) =>( 
-                    <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
-                ))}
+                {project.documentLinks && project.documentLinks.length > 0 ? project.documentLinks?.map((doc, index) =>( 
+                    <li><a id={doc.id} href={doc.link}>{doc.titulo}</a></li>
+                )): "Aún no hay enlaces asociados"}
                    
                 </ul>
             </div>
@@ -95,9 +95,9 @@ return(
                 <Card.Text>
                     <div className="linkListContainer">
                     <ul>
-                    {project.bibliografy?.map((doc, index) =>( 
-                    <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
-                ))}
+                    {project.bibliografy && project.bibliografy.length > 0 ? project.bibliografy?.map((doc, index) =>( 
+                    <li><a id={doc.id} href={doc.link}>{doc.titulo}</a></li>
+                )): "Aún no hay enlaces asociados"}
                     </ul>
                 </div>
                 </Card.Text>
@@ -121,9 +121,9 @@ return(
                 <Card.Text>
                     <div className="linkListContainer">
                     <ul>
-                    {project.laboratory?.map((doc, index) =>( 
-                    <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
-                ))}
+                    {project.laboratory && project.laboratory.length > 0 ? project.laboratory?.map((doc, index) =>( 
+                    <li><a id={doc.id} href={doc.link}>{doc.titulo}</a></li>
+                )): "Aún no hay enlaces asociados"}
                     </ul>
                 </div>
                 </Card.Text>
@@ -147,9 +147,9 @@ return(
                 <Card.Text>
                     <div className="linkListContainer">
                     <ul>
-                    {project.production?.map((doc, index) =>( 
-                    <li><a id={doc.id} href={doc.link}>{doc.title}</a></li>
-                ))}
+                    {project.production && project.production.length > 0 ? project.production?.map((doc, index) =>( 
+                    <li><a id={doc.id} href={doc.link}>{doc.titulo}</a></li>
+                )): "Aún no hay enlaces asociados"}
                     </ul>
                 </div>
                 </Card.Text>
@@ -176,7 +176,7 @@ return(
         </div> */}
         </div>
 
-        <LinksManagerModal projectId={props.project.projectId} show={showModal} handleHide={handleHideLinkManager} section={sectionClicked} list={linkList}  editLinks={(id,section, list) =>props.editLinks(id,section,list)}/>
+        <LinksManagerModal projectId={props.project.id} show={showModal} handleHide={handleHideLinkManager} section={sectionClicked} list={linkList}  editLinks={(id,section, list) =>props.editLinks(id,section,list)}/>
     </div>
 )
 

@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import BasicDateField from '../../../components/DateField/DateField';
+import axios from 'axios';
 
 import { Button, Modal } from 'react-bootstrap';
 import InputLabel from '@mui/material/InputLabel';
@@ -13,14 +14,16 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 const EditProjectModal = (props) => {
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
     const [show, setShow] = useState(props.show);
     const [project, setProject] = useState(props.project)
-    const [title, setTitle] = useState(props.project.projectName)
+    const [title, setTitle] = useState(props.project.nombreProyecto)
     const [id, setId] = useState(props.projectId)
-    const [description, setDescription] = useState( props.project.description)
+    const [description, setDescription] = useState( props.project.descripcion)
    
       
-        const [allTags, setAllTags] = useState(props.project.tags);
+        const [allTags, setAllTags] = useState([]);
     const [tags, setTags] = useState( []);
     const handleTagsChange = (event, newTags) => {
         setTags(newTags);
@@ -41,27 +44,36 @@ const EditProjectModal = (props) => {
 
 
       const handleSaveChangesProject = () => {
-        // let allMembers= [];
-        // members.forEach((mem,index) => {
-        //     let aux = {userId : mem.userId , label: mem.label}
-        //     allMembers.push(aux)
-        // });
-
-
-        let obj = {
-            projectName : title,
-            description : description,
-            // tags:tags,
+            let obj = {
+              id: id,
+            nombreProyecto : title,
+            descripcion : description,
+            etiquetas:tags,
         }
 
         props.editInfo(id, obj)
 
         setTitle("");
         setDescription("");
-        // setTags([]);
+        setTags([]);
 
         props.handleHide()
       }
+
+      const fetchPalabrasClaves = async () => {
+        try {
+         const token = localStorage.getItem('token');
+       
+          const response = await axios.get(`${apiEndpoint}/Etiqueta/ObtenerTodasEtiquetas`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          setAllTags(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+        } catch (error) {
+          console.error('Error a:', error);
+        }
+      };
 
       useEffect(()=>{
         setId(props.projectId)
@@ -72,15 +84,19 @@ const EditProjectModal = (props) => {
       },[props.project])
 
       useEffect(()=>{
-        setTitle(project.projectName)
-        setDescription(project.description)
-        setAllTags(project.tags)
+        setTitle(project.nombreProyecto)
+        setDescription(project.descripcion)
+        setAllTags(project.etiquetas)
 
       },[project])
       
       useEffect(()=>{
         setShow(props.show)
       },[props.show])
+
+      useEffect(()=>{
+        fetchPalabrasClaves();
+      },[])
 
 return (
 <Modal show={show} onHide={handleClose}>
@@ -93,13 +109,13 @@ return (
             <TextField id="projectName" label="Nombre del Proyecto" variant="standard" value={title} onChange={handleTitleChange}/>
                       <TextField id="description" multiline label="Descripción" variant="standard" value={description} onChange={handleDescriptionChange}  />                 
                     
-                         {/* <Autocomplete
+                         <Autocomplete
                               key={3}
                               multiple
                               id="tags"
                               options={allTags}
-                              getOptionLabel={(option) => option.label}
-                              isOptionEqualToValue={(option, value) => option.label === value.label}
+                              getOptionLabel={(option) => option.nombreEtiqueta}
+                              isOptionEqualToValue={(option, value) => option.nombreEtiqueta === value.nombreEtiqueta}
                               value={tags} // Use the state variable as the value
                               onChange={handleTagsChange} // Update the state on selection change
                               renderInput={(params) => (
@@ -110,7 +126,7 @@ return (
                                   placeholder="Añadir..."
                               />
                               )}
-                /> */}
+                />
                      
                     </Stack>
             </Modal.Body>

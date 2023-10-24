@@ -16,7 +16,7 @@ const LinksManagerModal = (props) => {
   const [id, setId] = useState(props.projectId ?? null)
   const [section, setSection] = useState(props.section ?? "");
   const [linkList, setLinkList] = useState(props.list ?? []);
-  const [newLink, setNewLink] = useState({ id: uuidv4(),title: "", link: "" });
+  const [newLink, setNewLink] = useState({ id: uuidv4(),titulo: "", link: "" });
   const [editingIndex, setEditingIndex] = useState(-1); // Índice del enlace en edición
 
   const nameTitle = () => {
@@ -45,7 +45,7 @@ const LinksManagerModal = (props) => {
   };
 
   const handleAddLink = () => {
-    if (newLink.title && newLink.link) {
+    if (newLink.titulo && newLink.link) {
       if (editingIndex === -1) {
         // Agregar nuevo enlace
         setLinkList([...linkList, newLink]);
@@ -56,7 +56,7 @@ const LinksManagerModal = (props) => {
         setLinkList(updatedLinks);
         setEditingIndex(-1);
       }
-      setNewLink({id:"", title: "", link: "" });
+      setNewLink({id:uuidv4(), titulo: "", link: "" });
     }
   };
 
@@ -66,7 +66,7 @@ const LinksManagerModal = (props) => {
     if (editingIndex === index) {
       // Cancelar la edición si el enlace en edición se elimina
       setEditingIndex(-1);
-      setNewLink({id:"", title: "", link: "" });
+      setNewLink({id:uuidv4(), titulo: "", link: "" });
     }
   };
 
@@ -74,7 +74,7 @@ const LinksManagerModal = (props) => {
     // Habilitar la edición de un enlace existente
     const linkToEdit = linkList[index];
     setEditingIndex(index);
-    setNewLink({ id: linkToEdit.id, title: linkToEdit.title, link: linkToEdit.link });
+    setNewLink({ id: linkToEdit.id, titulo: linkToEdit.titulo, link: linkToEdit.link });
   };
 
   useEffect(() => {
@@ -108,7 +108,7 @@ const LinksManagerModal = (props) => {
             <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
               {linkList.map((link, index) => (
                 <ListItem key={index}  id={link.id} className="link-container">
-                  <ListItemText primary={link.title} secondary={link.link} />
+                  <ListItemText primary={link.titulo} secondary={link.link} />
                   <IconButton aria-label="Eliminar" color="error" onClick={() => handleEditLink(index)} >
                           <EditIcon  />
                     </IconButton>
@@ -130,8 +130,8 @@ const LinksManagerModal = (props) => {
               <TextField
                 type="text"
                 placeholder="Título"
-                value={newLink.title}
-                onChange={(e) => setNewLink({ ...newLink, title: e.target.value })}
+                value={newLink.titulo}
+                onChange={(e) => setNewLink({ ...newLink, titulo: e.target.value })}
               />
               <TextField
                 type="text"

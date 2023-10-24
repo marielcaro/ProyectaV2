@@ -33,7 +33,7 @@ const ProjectCard = (props) => {
 
     return(
      <div>
-        <Card id={props.proyecto.projectId} className="projectCard shadow p-3 mb-3 bg-body rounded"  onClick={handleClick}>
+        <Card id={props.proyecto.proyectId} className="projectCard shadow p-3 mb-3 bg-body rounded"  onClick={handleClick}>
       <Card.Body>
         <Card.Title className="projectCardTitle">
         <div className='row'>

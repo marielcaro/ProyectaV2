@@ -14,8 +14,9 @@ const ProjectsContainerPage = () => {
     const [selectedCard, setSelectedCard] = useState(null);
     const [showList, setShowList] = useState(true);
     const handleClickProject = (id) => {
-        let card = projectList.find( x => x.projectId === parseInt(id) || x.projectId === id)
-        setSelectedCard(card);
+        // let card = projectList.find( x => x.projectId === parseInt(id) || x.projectId === id)
+        fetchProyectById(id);
+        // setSelectedCard(card);
     }
 
     const handleBackTrack = () =>{
@@ -24,46 +25,49 @@ const ProjectsContainerPage = () => {
     }
 
     const handleEditLinks = (id,section, linkList) =>{
-        let aux = [...projectList]
-        let py = projectList.find( x => x.projectId === parseInt(id) || x.projectId === id)
-        let pyIndex = projectList.findIndex( x => x.projectId === parseInt(id) || x.projectId === id)
-        py[section] = linkList;
-        aux[pyIndex]= py
-        setProjectList(aux)
+      let tipo = "";
+      switch(section){
+        case "documentLinks":
+          tipo="Documentacion"
+          break;
+        case "bibliografy":
+          tipo="Bibliografia";
+          break;
+        case "production":
+          tipo="Produccion";
+          break;
+        case "laboratory":
+          tipo="Laboratorio";
+          break;
+      }
+
+      fetchEditEnlaces(id,tipo,linkList)
+        // let aux = [...projectList]
+        // let py = projectList.find( x => x.projectId === parseInt(id) || x.projectId === id)
+        // let pyIndex = projectList.findIndex( x => x.projectId === parseInt(id) || x.projectId === id)
+        // py[section] = linkList;
+        // aux[pyIndex]= py
+        // setProjectList(aux)
     }
 
     const handleEditData = (id, obj) => {
-        let aux = [...projectList]
-        let py = projectList.find( x => x.projectId === parseInt(id) || x.projectId === id)
-        let pyIndex = projectList.findIndex( x => x.projectId === parseInt(id) || x.projectId === id)
-        py.projectName = obj.projectName;
-        py.description = obj.description;
-        // py.tags = obj.tags;
-
-        aux[pyIndex]= py
-        setProjectList(aux)
+      fetchEditProyectInfo(id, obj)
     }
 
     const handleDeleteData = (id) => {
-        let aux = [...projectList]
-        let py = projectList.find( x => x.projectId === parseInt(id)|| x.projectId === id )
-        let pyIndex = projectList.findIndex( x => x.projectId === parseInt(id) || x.projectId === id)
-       
-        aux = aux.slice(0, pyIndex).concat(aux.slice(pyIndex + 1));
-        setProjectList(aux)
+        fetchDeleteProyect(id)
         setShowList(true)
 
     }
 
     const handleEditFotoData = (id, img) =>{
-        let aux = [...projectList]
-        let py = projectList.find( x => x.projectId === parseInt(id) || x.projectId === id)
-        let pyIndex = projectList.findIndex( x => x.projectId === parseInt(id) || x.projectId === id)
-        py.icon = img
-        aux[pyIndex]= py
-        setProjectList(aux)
+     
+        fetchEditProyectFoto(id, img);
 
     }
+
+
+
     const addProjectMethod = (obj) =>{
         // let aux = [...projectList]
         // aux.push(obj)
@@ -95,8 +99,98 @@ const ProjectsContainerPage = () => {
           });
           console.log('Registro exitoso:', response.data);
           fetchProyectList();
+          
         } catch (error) {
             console.log('Error');
+            
+        }
+      };
+
+      const fetchEditProyectInfo = async (id, obj) => {
+        try {
+          const token = localStorage.getItem('token');
+          const requestData = {
+            id: obj.id,
+            nombreProyecto: obj.nombreProyecto,
+            descripcion: obj.descripcion,
+            etiquetas: obj.etiquetas
+          }
+    
+          const response = await axios.put(`${apiEndpoint}/Proyecto/ActualizarProyecto/${id}`, requestData, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          fetchProyectList() //Actualizar board
+          fetchProyectById(id)
+        } catch (error) {
+            
+        }
+      };
+
+      const fetchDeleteProyect = async (id) => {
+        try {
+          const token = localStorage.getItem('token');
+            
+          const response = await axios.delete(`${apiEndpoint}/Proyecto/EliminarProyect/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          fetchProyectList() //Actualizar board
+        } catch (error) {
+            
+        }
+      };
+
+      const fetchEditEnlaces = async (id, section, linkList) => {
+        try {
+          const token = localStorage.getItem('token');
+           
+          const response = await axios.post(`${apiEndpoint}/Enlaces/CrearEnlace?proyectoGuid=${id}&tipo=${section}`, linkList, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          fetchProyectList() //Actualizar board
+          fetchProyectById(id)
+        } catch (error) {
+            
+        }
+      };
+
+
+      const fetchEditProyectFoto = async (id, foto) => {
+        try {
+          const token = localStorage.getItem('token');
+          const requestData = {
+            foto: foto
+          }
+    
+          const response = await axios.post(`${apiEndpoint}/Proyecto/ActualizarFotoProyecto/${id}`, requestData, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          fetchProyectList() //Actualizar board
+          fetchProyectById()
+        } catch (error) {
+            
+        }
+      };
+
+      const fetchProyectById = async (id) => {
+        try {
+          const token = localStorage.getItem('token');
+           
+          
+          const response = await axios.get(`${apiEndpoint}/Proyecto/ObtenerProyecto/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          setSelectedCard(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+        } catch (error) {
             
         }
       };

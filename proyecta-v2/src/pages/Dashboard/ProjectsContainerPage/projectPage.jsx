@@ -28,8 +28,8 @@ import DeleteModal from './deleteModal';
 
 const ProjectPage = (props) => {
     const [value, setValue] = React.useState('1');
-    const [id,setId] = useState(props.project.projectId)
- const [image, setImage] = useState(props.project.icon)
+    const [id,setId] = useState(props.project.id)
+ const [image, setImage] = useState(props.project.fotoPerfil)
  const [dominantColor, setDominantColor] = useState(null);
  const [textColor, setTextColor] = useState(null);
  const [editFotoModalShow, setEditFotoModalShow] =useState(false);
@@ -107,16 +107,16 @@ const ProjectPage = (props) => {
     },[image])
 
     useEffect(()=> {
-      if(props.project.icon){
-        setImage(props.project.icon)
+      if(props.project.fotoPerfil){
+        setImage(props.project.fotoPerfil)
       
       }
-    },[props.project.icon])
+    },[props.project.fotoPerfil])
       
     useEffect(()=> {
-      if(props.project.projectId)
-      setId(props.project.projectId)
-    },[props.project.projectId])
+      if(props.project.id)
+      setId(props.project.id)
+    },[props.project.id])
 
     useEffect(()=> {
       if(dominantColor)
@@ -133,10 +133,10 @@ return(
             <ProjectProfileFoto image={image} />
             <Stack className="titleStack" >
             <div className='project-Title' style={{color: textColor }}>
-             {props.project.projectName}
+             {props.project.nombreProyecto}
             </div>
             <div className='project-Subtitle' style={{color: textColor }}>
-             Resol. {props.project.resolucion}
+             Resol. {props.project.nroResolucion}
             </div>
             </Stack>
           </Stack>
@@ -204,7 +204,7 @@ return(
           </TabList>
         </Box>
         <TabPanel value="1"><InformationProjectPage project={props.project} editLinks={(id,section, list) =>props.editLinks(id,section,list)}/></TabPanel>
-        <TabPanel value="2">< MembersListPage members={props.project.allProjectMembers}/></TabPanel>
+        <TabPanel value="2">< MembersListPage members={props.project.integrantes}/></TabPanel>
   
       </TabContext>
     </Box>
