@@ -24,6 +24,7 @@ import InformationProjectPage from './informationProjectPage.jsx'
 import MembersListPage from './membersListPage';
 import EditFotoModal from './editFotoModal';
 import DeleteModal from './deleteModal';
+import greyIcon from '../../../assets/icons/grey.png'
 
 
 const ProjectPage = (props) => {
@@ -100,9 +101,16 @@ const ProjectPage = (props) => {
     };
 
     useEffect(() => {
-      extractColors(image)
-      .then((color) => {setDominantColor(color[0])})
-      .catch(console.error)
+      if(image){
+        extractColors(image)
+        .then((color) => {setDominantColor(color[0])})
+        .catch(console.error)
+      }else{
+        extractColors(greyIcon)
+        .then((color) => {setDominantColor(color[0])})
+        .catch(console.error)
+      }
+    
 
     },[image])
 
@@ -204,7 +212,7 @@ return(
           </TabList>
         </Box>
         <TabPanel value="1"><InformationProjectPage project={props.project} editLinks={(id,section, list) =>props.editLinks(id,section,list)}/></TabPanel>
-        <TabPanel value="2">< MembersListPage members={props.project.integrantes}/></TabPanel>
+        <TabPanel value="2">< MembersListPage projectId={props.project.id} members={props.project.integrantes}/></TabPanel>
   
       </TabContext>
     </Box>

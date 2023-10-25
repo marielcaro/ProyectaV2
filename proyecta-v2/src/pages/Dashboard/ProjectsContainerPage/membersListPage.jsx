@@ -21,8 +21,11 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Autocomplete from '@mui/material/Autocomplete';
+import axios from 'axios';
 
 const MembersListPage = (props) => {
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
     const [allMembers, setAllMembers] = useState(props.members);
     const [editingName, setEditingName] = useState("");
     const [newRole, setNewRole] = useState("");
@@ -31,19 +34,11 @@ const MembersListPage = (props) => {
     const [showEditRole, setShowEditRole] = useState(false);
     const [memberToEditIndex, setMemberToEditIndex] = useState(-1);
     const [showAddMember, setShowAddMember] = useState(false);
-    const [selectedName, setSelectedName] = useState("");
+    const [selectedName, setSelectedName] = useState({ id: "", email: "", nombreCompleto: "", categoria: ""});
     const [selectedEmail, setSelectedEmail] = useState("");
     const [selectedRole, setSelectedRole] = useState("");
 
-    const allUsers = [
-        { id: 10 , label: 'Ignacio Manrique' },
-        { id: 20, label: 'Ramiro Palferro'},
-        { id: 30, label: 'Leandro Skyrim' },
-        { id: 40, label: 'Gonzalo Certo' },
-        { id: 50, label: 'Elías Remedi' },
-        { id: 60, label: "Lourdes Gouyot" },
-        { id: 70, label: 'Belén Velásquez'},
-    ]
+    const [allUsers, setAllUsers] = useState([]);
 
     const allMembersEmails = [
         { id: 10 , label: 'ignacio.manrique@gmail.com' },
@@ -72,12 +67,14 @@ const MembersListPage = (props) => {
       const handleConfirmAddMember = () => {
         // Agrega al nuevo integrante a la lista
         const newMember = {
-          perfilId: selectedName.perfilId,
-          nombreCompleto: selectedName.nombreCompleto,
+          perfilId: selectedName.id,
+          proyectId: props.projectId,
           rol: selectedRole,
         };
-        const updatedMembers = [...allMembers, newMember];
-        setAllMembers(updatedMembers);
+
+        fetchAddMember(newMember)
+        // const updatedMembers = [...allMembers, newMember];
+        // setAllMembers(updatedMembers);
       
         // Cierra la ventana modal de agregar integrante
         setShowAddMember(false);
@@ -94,11 +91,9 @@ const MembersListPage = (props) => {
       
       const handleConfirmEditRole = () => {
         // Edita el rol del integrante
-        const updatedMembers = [...allMembers];
 
-        updatedMembers[memberToEditIndex].role = newRole;
-        setAllMembers(updatedMembers);
-      
+        fetchUpdateRoleMember(memberToEditIndex, props.projectId, newRole);
+       
         // Cierra la ventana modal de edición del rol
         setShowEditRole(false);
         setNewRole(""); // Limpia el campo de entrada del nuevo rol
@@ -110,9 +105,10 @@ const MembersListPage = (props) => {
     
     const handleConfirmRemoveMember = () => {
       // Elimina al integrante
-      const updatedMembers = [...allMembers];
-      updatedMembers.splice(memberToRemoveIndex, 1);
-      setAllMembers(updatedMembers);
+      fetchDeleteMember(memberToRemoveIndex, props.projectId)
+    //   const updatedMembers = [...allMembers];
+    //   updatedMembers.splice(memberToRemoveIndex, 1);
+    //   setAllMembers(updatedMembers);
     
       // Cierra la ventana modal de confirmación
       setShowDeleteConfirmation(false);
@@ -120,7 +116,8 @@ const MembersListPage = (props) => {
 
     const handleEditMember = (event) => {
         // Muestra la ventana modal de edición del rol
-        let index= allMembers.findIndex(member => member.userId === parseInt(event.currentTarget.id) || member.userId === event.currentTarget.id );
+        let index = event.currentTarget.id;
+        // let index= allMembers.findIndex(member => member.userId === parseInt(event.currentTarget.id) || member.userId === event.currentTarget.id );
         if(memberToEditIndex === index){
             setShowEditRole(true);
         }else{
@@ -130,12 +127,93 @@ const MembersListPage = (props) => {
 
     const handleRemoveMember = (event) => {
         // Muestra la ventana modal de confirmación
-        let index= allMembers.findIndex(member => member.userId === parseInt(event.currentTarget.id) || member.userId === event.currentTarget.id );
+
+        let index= event.currentTarget.id;
         if(memberToRemoveIndex === index){
             setShowDeleteConfirmation(true);
         }else{
             setMemberToRemoveIndex(index);}
         
+      };
+      const fetchMembersProject = async (id) => {
+        try {
+          const token = localStorage.getItem('token');
+           
+          
+          const response = await axios.get(`${apiEndpoint}/Integrante/IntegrantesPorProyecto/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          setAllMembers(response.data)
+        } catch (error) {
+            
+        }
+      };
+
+      const fetchDeleteMember = async (perfilId, proyectoId) => {
+        try {
+          const token = localStorage.getItem('token');
+                     
+          const response = await axios.delete(`${apiEndpoint}/Integrante/EliminarIntegrante?perfilId=${perfilId}&proyectoId=${proyectoId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          fetchMembersProject(proyectoId)
+        } catch (error) {
+            
+        }
+      };
+
+      const fetchUpdateRoleMember = async (perfilId, proyectoId, rol) => {
+        try {
+          const token = localStorage.getItem('token');
+                     
+          const response = await axios.put(`${apiEndpoint}/Integrante/ActualizarIntegrante?perfilId=${perfilId}&proyectoId=${proyectoId}&Rol=${rol}`, null, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          fetchMembersProject(proyectoId)
+        } catch (error) {
+            
+        }
+      };
+
+      const fetchAddMember = async (obj) => {
+        try {
+          const token = localStorage.getItem('token');
+           
+          const rol = obj.rol
+          const perfilId = obj.perfilId
+          const proyectoId = obj.proyectId
+          
+          const response = await axios.post(`${apiEndpoint}/Integrante/CrearIntegrante?Rol=${rol}&perfilId=${perfilId}&proyectoId=${proyectoId}`, null, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          fetchMembersProject(obj.proyectId)
+        } catch (error) {
+            
+        }
+      };
+
+      const fetchMembers = async () => {
+        try {
+          const token = localStorage.getItem('token');
+           
+          
+          const response = await axios.get(`${apiEndpoint}/Perfil/GetAllResume`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+            },
+          });
+          setAllUsers(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+        } catch (error) {
+            
+        }
       };
 
     const handleAddMember = () => {
@@ -162,6 +240,10 @@ const MembersListPage = (props) => {
         setShowEditRole(true);
     }
     },[memberToEditIndex])
+
+    useEffect(()=> {
+        fetchMembers()
+    },[])
     return(
         <div className="listContainer">
              <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
@@ -228,7 +310,7 @@ const MembersListPage = (props) => {
                                           labelId="demo-simple-select-label"
                                           id="demo-simple-select"
                                           value={newRole}
-                                          label="Facultad"
+                                          label="Rol"
                                           onChange={(e) => setNewRole(e.target.value)}
                                         >
                                             <MenuItem value='director'>Director</MenuItem>
@@ -257,28 +339,25 @@ const MembersListPage = (props) => {
                 <Autocomplete
                     disablePortal
                     id="nameUser"
-                    value={selectedName}
+                    options={allUsers}
+                    getOptionLabel={(option) => option.nombreCompleto}
+                    isOptionEqualToValue={(option, value) => option.nombreCompleto === value.nombreCompleto}
+                    value={selectedName === undefined || selectedName===""? "" : selectedName}
                     onChange={(event, newValue) => {
                       setSelectedName(newValue);
-                    }}
-             
-                    options={allUsers}
+                    }}           
+                   
                     sx={{ width: '100%' }}
                     renderInput={(params) => <TextField {...params} label="Nombre de nuevo Integrante:" />}
                     />
-
-                <Autocomplete
-                                    disablePortal
-                                    id="emailUser"
-                                    value={selectedEmail}
-                                    onChange={(event, newValue) => {
-                                    setSelectedName(newValue);
-                                    }}
-                            
-                                    options={allMembersEmails}
-                                    sx={{ width: '100%' }}
-                                    renderInput={(params) => <TextField {...params} label="Email de Nuevo Integrante" />}
-                                    />
+            <TextField
+                type="text"
+                placeholder="Email"
+                InputProps={{
+                    readOnly: true,
+                }}
+                value={selectedName !== null ? selectedName.email : ""}
+              />
 
                 <FormControl fullWidth>
                                             <InputLabel id="demo-simple-select-label">Elegir Rol...</InputLabel>
@@ -286,7 +365,7 @@ const MembersListPage = (props) => {
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={selectedRole}
-                                            label="Facultad"
+                                            label="Rol"
                                             onChange={(e) => setSelectedRole(e.target.value)}
                                             >
                                                 <MenuItem value='director'>Director</MenuItem>

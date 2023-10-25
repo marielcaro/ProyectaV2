@@ -14,9 +14,8 @@ const ProjectsContainerPage = () => {
     const [selectedCard, setSelectedCard] = useState(null);
     const [showList, setShowList] = useState(true);
     const handleClickProject = (id) => {
-        // let card = projectList.find( x => x.projectId === parseInt(id) || x.projectId === id)
         fetchProyectById(id);
-        // setSelectedCard(card);
+       
     }
 
     const handleBackTrack = () =>{
@@ -42,12 +41,7 @@ const ProjectsContainerPage = () => {
       }
 
       fetchEditEnlaces(id,tipo,linkList)
-        // let aux = [...projectList]
-        // let py = projectList.find( x => x.projectId === parseInt(id) || x.projectId === id)
-        // let pyIndex = projectList.findIndex( x => x.projectId === parseInt(id) || x.projectId === id)
-        // py[section] = linkList;
-        // aux[pyIndex]= py
-        // setProjectList(aux)
+
     }
 
     const handleEditData = (id, obj) => {
@@ -69,10 +63,8 @@ const ProjectsContainerPage = () => {
 
 
     const addProjectMethod = (obj) =>{
-        // let aux = [...projectList]
-        // aux.push(obj)
+        
         fetchAddProyect(obj)
-        // setProjectList(aux)
     }
     const fetchAddProyect = async (obj) => {
         const requestData = {
@@ -132,7 +124,7 @@ const ProjectsContainerPage = () => {
         try {
           const token = localStorage.getItem('token');
             
-          const response = await axios.delete(`${apiEndpoint}/Proyecto/EliminarProyect/${id}`, {
+          const response = await axios.delete(`${apiEndpoint}/Proyecto/EliminarProyecto/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
             },
@@ -173,7 +165,7 @@ const ProjectsContainerPage = () => {
             },
           });
           fetchProyectList() //Actualizar board
-          fetchProyectById()
+          fetchProyectById(id)
         } catch (error) {
             
         }
