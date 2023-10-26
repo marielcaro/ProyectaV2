@@ -53,9 +53,7 @@ const Taskboard = (props) => {
   useEffect(()=> {
     if (selectedTaskId)
       fetchGetTaskById(selectedTaskId)
-    // let selectedTask=searchTask(selectedTaskId)
-    // setTaskData((taskData)=>({...taskData,...selectedTask}))
-    // console.log(selectedTaskId)
+ 
   },[selectedTaskId])
   
 useEffect(()=> {
@@ -88,8 +86,10 @@ useEffect(()=>{
   const reorder = (list, startIndex, endIndex) => {
  
     const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
+    let [removed] = result.splice(startIndex, 1);
+    removed.order=endIndex;
     result.splice(endIndex, 0, removed);
+    props.handleReorder(removed, endIndex)
     return result;
   };
   
@@ -98,19 +98,25 @@ useEffect(()=>{
    */
   const move = (source, destination, droppableSource, droppableDestination) => {
     const sourceClone = Array.from(source);
-    const destClone = Array.from(destination);
+  const destClone = Array.from(destination);
 
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
-  
-    destClone.splice(droppableDestination.index, 0, removed);
-  
-    const result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
+  let [removed] = sourceClone.splice(droppableSource.index, 1);
 
-    
-    props.handleMove(removed,droppableSource.droppableId, droppableDestination.droppableId)
-    return result;
+  // Calcula el nuevo orden de la tarjeta en la lista de destino
+  let newOrder= droppableDestination.index;
+
+    removed.order = newOrder;
+  // Actualiza el orden de las tarjetas en la lista de destino
+  destClone.splice(newOrder, 0, { ...removed, order: newOrder });
+
+  const result = {};
+  result[droppableSource.droppableId] = sourceClone;
+  result[droppableDestination.droppableId] = destClone;
+
+  // Llama a la función handleMove con la tarjeta movida y las listas afectadas
+  props.handleMove(removed, droppableSource.droppableId, droppableDestination.droppableId);
+
+  return result;
   };
   const grid = 4;
 
@@ -133,10 +139,12 @@ useEffect(()=>{
       newState[parseInt(sInd, 10)].tasks = items;
       setState(newState);
     } else {
-      const result = move(state[parseInt(sInd, 10)].tasks, state[parseInt(dInd, 10)].tasks, source, destination);
+      let result = move(state[parseInt(sInd, 10)].tasks, state[parseInt(dInd, 10)].tasks, source, destination);
+
         const newState = [...state];
       newState[parseInt(sInd, 10)].tasks = result[parseInt(sInd, 10)];
       newState[parseInt(dInd, 10)].tasks = result[parseInt(dInd, 10)];
+
       console.log(result)
       setState(newState);
     }

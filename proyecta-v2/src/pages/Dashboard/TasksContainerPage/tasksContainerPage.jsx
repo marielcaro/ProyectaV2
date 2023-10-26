@@ -21,7 +21,7 @@ import axios from 'axios';
 const TasksContainerPage = () => {
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
   const [projects, setProjects] = useState([]);
-  const listIds =[{id: 0, listName:'newTasks'},{id: 1, listName:'inProgressTasks'},{id: 2, listName:'resolvedTasks'},{id: 3, listName:'endedTasks'}];
+  const listIds =[{id: 0, listName:'new'},{id: 1, listName:'inProgress'},{id: 2, listName:'resolved'},{id: 3, listName:'ended'}];
 
   const [project, setProject] = useState("");
   const [currentRolByProject, setCurrentRoleByProject] = useState("");
@@ -113,22 +113,34 @@ const handleWindowSizeChange = () => {
 
   }
 
+  const handleReorderTask = (task, endOrder) => {
+    
+
+    fetchUpdateOrderTask(task.tareaId, endOrder);
+
+    // setDataAux(data => ({...data,
+    //   ...{"projects":auxDataList}}
+    // ))
+
+  }
+
   const handleMoveTask = (task, sourceId, destinationId) => {
     
-    let index =dataAux.projects.findIndex(item => item.id === project.id);
-    let  auxDataList = [...dataAux.projects];
+    // let index =dataAux.projects.findIndex(item => item.id === project.id);
+    // let  auxDataList = [...dataAux.projects];
 
     let source = listIds.find(x => x.id === parseInt(sourceId)).listName;
-    let sourceList = auxDataList[index][source];
-    let taskIndex =  sourceList.findIndex(item => item.id === task.id);
-    auxDataList[index][source] = sourceList.slice(0, taskIndex).concat(sourceList.slice(taskIndex + 1));
+    // let sourceList = auxDataList[index][source];
+    // let taskIndex =  sourceList.findIndex(item => item.id === task.id);
+    // auxDataList[index][source] = sourceList.slice(0, taskIndex).concat(sourceList.slice(taskIndex + 1));
 
     let dest = listIds.find(x => x.id === parseInt(destinationId)).listName;
-     auxDataList[index][dest].push(task);
+    //  auxDataList[index][dest].push(task);
+    fetchUpdateStatusTask(task.tareaId, dest, task.order);
 
-    setDataAux(data => ({...data,
-      ...{"projects":auxDataList}}
-    ))
+    // setDataAux(data => ({...data,
+    //   ...{"projects":auxDataList}}
+    // ))
 
   }
 
@@ -193,6 +205,36 @@ const handleWindowSizeChange = () => {
       const token = localStorage.getItem('token');
 
       const response = await axios.delete(`${apiEndpoint}/Tarea/EliminarTarea/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      fetchProyectTareaList(); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchUpdateOrderTask = async (id, newOrder) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.put(`${apiEndpoint}/Tarea/ActualizarOrdenTarea/${id}/${newOrder}`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      fetchProyectTareaList(); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchUpdateStatusTask = async (id, status, newOrder) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.put(`${apiEndpoint}/Tarea/ActualizarEstadoTarea/${id}/${status}/${newOrder}`, null, {
         headers: {
           Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
         },
@@ -345,7 +387,7 @@ const handleWindowSizeChange = () => {
             </div>
             
             <div>
-             { mobile === false? <Taskboard projectAllInfo={projectInfo} data={dataAux} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)}  handleMove={(task,sId, dId) => handleMoveTask(task,sId, dId)}/> : 
+             { mobile === false? <Taskboard projectAllInfo={projectInfo} data={dataAux} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)}  handleReorder={(task, order)=> handleReorderTask(task,order)} handleMove={(task,sId, dId) => handleMoveTask(task,sId, dId)}/> : 
             <TaskboardMobile projectAllInfo={projectInfo} data={dataAux} handleSave={(id, task) => handleSaveTask(id, task)} handleDelete={(id) => handleDeleteTask(id)}  handleMove={(task,sId, dId) => handleMoveTask(task,sId, dId)}/> }
             </div>
    
