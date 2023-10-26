@@ -15,14 +15,17 @@ import { grey } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { v4 as uuidv4 } from 'uuid';
 import ModalTask from './ModalTask';
-import data from "./mockData.json"
+import data from "./mockData.json";
+import axios from 'axios';
 
 const TasksContainerPage = () => {
-  const projects =[{id: 1, projectName:'Proyecto 1'},{id: 2, projectName:'Proyecto 2'},{id: 3, projectName:'Proyecto 3'},{id: 4, projectName:'Proyecto 4'}];
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+  const [projects, setProjects] = useState([]);
   const listIds =[{id: 0, listName:'newTasks'},{id: 1, listName:'inProgressTasks'},{id: 2, listName:'resolvedTasks'},{id: 3, listName:'endedTasks'}];
 
-  const [project, setProject] = useState(projects[0].id);
-  const [projectInfo, setProjectInfo] = useState(data.projects.find(x => x.projectId === projects[0].id));
+  const [project, setProject] = useState("");
+  const [currentRolByProject, setCurrentRoleByProject] = useState("");
+  const [projectInfo, setProjectInfo] = useState("");
  const [dataAux, setDataAux] = useState(data);
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
   const [newTask, setNewTask] = useState(null);
@@ -32,7 +35,6 @@ const handleWindowSizeChange = () => {
   setMobile(window.innerWidth <= 500);
 }
 
-
   const handleClose = () => setShowNewTaskModal(false);
   const handleShow = () => setShowNewTaskModal(true);
 
@@ -41,13 +43,11 @@ const handleWindowSizeChange = () => {
 
         for(var i=0;i<elements.length;i++){
           // push the component to elements!
-          listItem.push( <MenuItem value={elements[i].id}> {elements[i].projectName} </MenuItem>);
+          listItem.push( <MenuItem value={elements[i].proyectId}> {elements[i].proyectName} </MenuItem>);
     }
 
     return listItem;
 }
-
-
 
   const theme = createTheme({
     palette: {
@@ -76,122 +76,37 @@ const handleWindowSizeChange = () => {
   }
 
   const handleDeleteTask = (id) => {
-    let selectedTask=searchTask(id)
 
-    switch(selectedTask.status){
-      case "new":
-        let auxNewTaskList = [...projectInfo.newTasks]
-        let newTaskIndex =  projectInfo.newTasks.findIndex(item => item.id === selectedTask.id);
-        auxNewTaskList = auxNewTaskList.slice(0, newTaskIndex).concat(auxNewTaskList.slice(newTaskIndex + 1));
-        setProjectInfo({...projectInfo, 
-          'newTasks': auxNewTaskList})
-
-      break;
-
-      case "inProgress":
-        let auxInProgressTaskList = [...projectInfo.inProgressTasks]
-        let inProgressIndex =  projectInfo.inProgressTasks.findIndex(item => item.id === selectedTask.id);
-        auxInProgressTaskList = auxInProgressTaskList.slice(0, inProgressIndex).concat(auxInProgressTaskList.slice(inProgressIndex + 1));
-        setProjectInfo({...projectInfo, 
-          'inProgressTasks': auxInProgressTaskList})
-
-      break;
-
-      case "resolved":
-        let auxResolvedTaskList = [...projectInfo.resolvedTasks]
-        let resolvedIndex =  projectInfo.resolvedTasks.findIndex(item => item.id === selectedTask.id);
-        auxResolvedTaskList = auxResolvedTaskList.slice(0, resolvedIndex).concat(auxResolvedTaskList.slice(resolvedIndex + 1));
-        setProjectInfo({...projectInfo, 
-          'resolvedTasks': auxResolvedTaskList})
-
-      break;
-
-      case "ended":
-        let auxEndedTaskList = [...projectInfo.endedTasks]
-        let endedIndex =  projectInfo.endedTasks.findIndex(item => item.id === selectedTask.id);
-        auxEndedTaskList = auxEndedTaskList.slice(0, endedIndex).concat(auxEndedTaskList.slice(endedIndex + 1));
-        setProjectInfo({...projectInfo, 
-          'endedTasks': auxEndedTaskList})
-
-      break;
-
-    }
+    fetchDeleteTask(id)
     
   }
 
   const handleSaveTask = (id, taskDataChange) => {
-    let selectedTask=searchTask(id)
+    fetchUpdateInfoTask(id, taskDataChange)
 
-    if(selectedTask.status === taskDataChange.status){
-    switch(selectedTask.status){
-      case "new":
-        let auxNewTaskList = [...projectInfo.newTasks]
-        let newTaskIndex =  projectInfo.newTasks.findIndex(item => item.id === selectedTask.id);
-        auxNewTaskList[newTaskIndex] = taskDataChange;
-        setProjectInfo({...projectInfo, 
-          'newTasks': auxNewTaskList})
-
-      break;
-
-      case "inProgress":
-        let auxInProgressTaskList = [...projectInfo.inProgressTasks]
-        let inProgressIndex =  projectInfo.inProgressTasks.findIndex(item => item.id === selectedTask.id);
-        auxInProgressTaskList[inProgressIndex] = taskDataChange;
-        setProjectInfo({...projectInfo, 
-          'inProgressTasks': auxInProgressTaskList})
-
-      break;
-
-      case "resolved":
-        let auxResolvedTaskList = [...projectInfo.resolvedTasks]
-        let resolvedIndex =  projectInfo.resolvedTasks.findIndex(item => item.id === selectedTask.id);
-        auxResolvedTaskList[resolvedIndex] = taskDataChange;
-        setProjectInfo({...projectInfo, 
-          'resolvedTasks': auxResolvedTaskList})
-
-      break;
-
-      case "ended":
-        let auxEndedTaskList = [...projectInfo.endedTasks]
-        let endedIndex =  projectInfo.endedTasks.findIndex(item => item.id === selectedTask.id);
-        auxEndedTaskList[endedIndex] = taskDataChange;
-        setProjectInfo({...projectInfo, 
-          'endedTasks': auxEndedTaskList})
-
-      break;
-
-    }
-  }else{
-    let sourceId = listIds.find(x => x.listName === selectedTask.status+"Tasks").id;
-    let destId = listIds.find(x => x.listName === taskDataChange.status+"Tasks").id;
-    handleMoveTask(taskDataChange,sourceId,destId)
-
-    setProjectInfo(dataAux.projects.find(x => x.projectId === project))
-  }
     
   }
 
-  const handleSaveNewTask = (task) => {
-    let newTasks = [...projectInfo.newTasks]
-    newTasks.push(task)
-    
-    setProjectInfo({...projectInfo, 
-        'newTasks': newTasks})
+  const handleSaveNewTask =async  (task) => {
+
+    const autor =  await fetchNameByPerfilId();
+
+    fetchAddNewTask(task);
 
           let index = projects.findIndex( x => x.id ===project);
         const newTasktoAdd = {
-          "id":  uuidv4(), 
-          "title": "",
-          "projectName" : projects[index].projectName,
-          "lastUpdatedUser":"",
-          "lastUpdatedDate":"",
-          "status": "new",
-          "author":"Hernan Peinetti",
-          "endDate":"",
-          "description": "",
-          "members": [ ]
- 
-         };
+          "tareaId":  uuidv4(), 
+         "nombreTarea": "",
+         "proyectoGuid" : projects[index].proyectId,
+         "nombreProyecto" : projects[index].proyectName,
+         "autor": autor.nombreCompleto,
+         "autorGuid":autor.id,
+         "estado":"new",
+         "fechaFin":"",
+         "descripcion": "",
+         "listaIntegrantes": [ ]
+
+        };
          setNewTask(newTask => ({...newTask,
            ...newTasktoAdd
          }))
@@ -217,20 +132,23 @@ const handleWindowSizeChange = () => {
 
   }
 
-  const handleAddTask = () =>{
-    let index = projects.findIndex( x => x.id ===project);
+  const handleAddTask = async () =>{
+    let index = projects.findIndex( x => x.proyectId ===project);
     
+    const autor =  await fetchNameByPerfilId();
+
+
     const newTasktoAdd = {
-         "id":  uuidv4(), 
-         "title": "",
-         "projectName" : projects[index].projectName,
-         "lastUpdatedUser":"",
-         "lastUpdatedDate":"",
-         "status": "new",
-         "author":"Hernan Peinetti",
-         "endDate":"",
-         "description": "",
-         "members": [ ]
+         "tareaId":  uuidv4(), 
+         "nombreTarea": "",
+         "proyectoGuid" : projects[index].proyectId,
+         "nombreProyecto" : projects[index].proyectName,
+         "autor": autor.nombreCompleto,
+         "autorGuid":autor.id,
+         "estado":"new",
+         "fechaFin":"",
+         "descripcion": "",
+         "listaIntegrantes": [ ]
 
         };
         setNewTask(newTask => ({...newTask,
@@ -240,32 +158,160 @@ const handleWindowSizeChange = () => {
         setShowNewTaskModal(true)
   }
 
-  useEffect(()=>{
-    console.log(projectInfo)
-    let auxDataList = [...dataAux.projects]
-    let index =  dataAux.projects.findIndex(item => item.id === projectInfo.id);
-    auxDataList[index] = projectInfo;
 
-    setDataAux(data => ({...data,
-      ...{"projects":auxDataList}}
-    ))
-
-  },[projectInfo])
+  useEffect(()=> {
+    if(currentRolByProject){
+      fetchProyectTareaList()
+    }
+   
+  },[currentRolByProject])
 
   useEffect(()=>{
     if(project){
-      let selectedProjectInfo = data.projects.find(x => x.projectId === project);
-      setProjectInfo(selectedProjectInfo)
+      fetchRolByProjectId()
     }
 
   },[project])
 
+  useEffect(()=>{
+    if(projects.length>0 && projects !==null){
+      setProject(projects[0].proyectId)
+
+    }
+  },[projects])
+
   useEffect(() => {
+    fetchProyectList();
     window.addEventListener('resize', handleWindowSizeChange);
     return () => {
       window.removeEventListener('resize', handleWindowSizeChange);
     }
   }, []);
+
+  const fetchDeleteTask = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.delete(`${apiEndpoint}/Tarea/EliminarTarea/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      fetchProyectTareaList(); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchUpdateInfoTask = async (id, obj) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.put(`${apiEndpoint}/Tarea/ActualizarTarea`, obj, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      fetchProyectTareaList(); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchAddNewTask = async (obj) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.post(`${apiEndpoint}/Tarea/CrearTarea`, obj, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      fetchProyectTareaList(); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchProyectList = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      // Obtiene el userName almacenado en localStorage
+    const perfilId = localStorage.getItem('perfilId');
+
+
+      const response = await axios.get(`${apiEndpoint}/Proyecto/ProyectosPorPerfil/${perfilId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      setProjects(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchNameByPerfilId = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      // Obtiene el userName almacenado en localStorage
+    const perfilId = localStorage.getItem('perfilId');
+
+      const response = await axios.get(`${apiEndpoint}/Perfil/GetById?id=${perfilId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      return response.data; // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchRolByProjectId = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      // Obtiene el userName almacenado en localStorage
+    const perfilId = localStorage.getItem('perfilId');
+    const proyectId = project;
+
+
+      const response = await axios.get(`${apiEndpoint}/Integrante/RolPorIntegrante?proyectoId=${proyectId}&perfilId=${perfilId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      setCurrentRoleByProject(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchProyectTareaList = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      // Obtiene el userName almacenado en localStorage
+    const perfilId = localStorage.getItem('perfilId');
+    const proyectId = project;
+    const role = currentRolByProject.rol;
+
+      const response = await axios.get(`${apiEndpoint}/Tarea/ObtenerTareasPorPerfilYProyecto/${perfilId}/${proyectId}/${role}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      setProjectInfo(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+      // setProject(projects[0].proyectId)
+    } catch (error) {
+        
+    }
+  };
+
+
 
     return(
         <div>
@@ -284,7 +330,7 @@ const handleWindowSizeChange = () => {
                           label="Seleccionar Proyecto ..."
                           onChange={handleChange}
                         >
-                            {items(projects)}
+                            {projects.length > 0 ? items(projects) : ""}
                         </Select>
                       </FormControl>
                       </Grid>

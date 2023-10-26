@@ -16,9 +16,12 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ModalTask from './ModalTask';
 import './TaskboardMobile.css';
+import axios from 'axios';
 
 
 const TaskboardMobile= (props) => {
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
     const [openNews, setOpenNews] = React.useState(true);
     const [openInProgress, setOpenInProgress] = React.useState(true);
     const [openResolved, setOpenResolved] = React.useState(true);
@@ -32,22 +35,7 @@ const TaskboardMobile= (props) => {
 
     const [showEditModal, setShowEditModal] = useState(false);
 
-    const [taskData, setTaskData] = useState( {
-      id: "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
-      title: "Task 1",
-      projectName : "Proyecto 1",
-     lastUpdatedUser: "Mariel Caro",
-      lastUpdatedDate:"2023-08-23T18:00:00",
-      status: "ended",
-      author:"Hernan Peinetti",
-      endDate:"2023-08-30T18:00:00",
-      description: "Descripción 1: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
-      members: [
-         {label:"Mariel Caro", 
-         userId: 1},
-         {label:"Mica Chamut", 
-         userId: 2}
-      ] }) 
+    const [taskData, setTaskData] = useState(null) 
   
     const [selectedTaskId, setSelectedTaskId] =useState('');
     const [allAllowedMembers, setAllowedMembers] =useState(props.projectAllInfo.allProjectMembers);
@@ -75,12 +63,19 @@ const TaskboardMobile= (props) => {
   
       return task
     }
-  
     useEffect(()=> {
-      let selectedTask=searchTask(selectedTaskId)
-      setTaskData((taskData)=>({...taskData,...selectedTask}))
-      console.log(selectedTaskId)
+      if (selectedTaskId)
+        fetchGetTaskById(selectedTaskId)
+      // let selectedTask=searchTask(selectedTaskId)
+      // setTaskData((taskData)=>({...taskData,...selectedTask}))
+      // console.log(selectedTaskId)
     },[selectedTaskId])
+
+    // useEffect(()=> {
+    //   let selectedTask=searchTask(selectedTaskId)
+    //   setTaskData((taskData)=>({...taskData,...selectedTask}))
+    //   console.log(selectedTaskId)
+    // },[selectedTaskId])
 
     useEffect(()=> {
   
@@ -140,23 +135,37 @@ const TaskboardMobile= (props) => {
                 break; 
         }
         
-            for(var i=0;i<elements.length;i++){
-              // push the component to elements!
-              listItem.push( 
-                <ListItemButton id={elements[i].id} onClick={handleClickCard} target="#editTaskModal">
-                  <ListItemAvatar>
-                    <Avatar>
-                      <WorkIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={elements[i].title} secondary={ typeof(elements[i].endDate) === 'string' ? elements[i].endDate.replace('T', ' ') :  elements[i].endDate.toISOString().replace('T', ' ').split('.')[0] }  />
-                </ListItemButton>);
+        if(elements && elements.length>0){
+          for(var i=0;i<elements.length;i++){
+            // push the component to elements!
+            listItem.push( 
+              <ListItemButton id={elements[i].tareaId} onClick={handleClickCard} target="#editTaskModal">
+                <ListItemAvatar>
+                  <Avatar alt={elements[i].nombreProyecto} src={elements[i].fotoProyecto} />
+                 </ListItemAvatar>
+                <ListItemText primary={elements[i].nombreTarea} secondary={ typeof(elements[i].fechaFin) === 'string' ? elements[i].fechaFin.replace('T', ' ') :  elements[i].endDate.toISOString().replace('T', ' ').split('.')[0] }  />
+              </ListItemButton>);
+      }
         }
+           
     
         return listItem;
     }
 
-    
+    const fetchGetTaskById= async (id) => {
+      try {
+        const token = localStorage.getItem('token');
+  
+        const response = await axios.get(`${apiEndpoint}/Tarea/ObtenerTarea/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+          },
+        });
+        setTaskData(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+      } catch (error) {
+          
+      }
+    };
 
 return(
     <>

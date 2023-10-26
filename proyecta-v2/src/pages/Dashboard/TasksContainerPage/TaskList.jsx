@@ -33,10 +33,10 @@ const TaskList = (props) => {
  
   return (
     <div className="task-list" onDragEnd={handleOnDragEnd}>
-           {props.tasks.map((task, index) => (
+           {props.tasks ? props.tasks.map((task, index) => (
              <Draggable
-             key={task.id}
-             draggableId={task.id}
+             key={task.tareaId}
+             draggableId={task.tareaId}
              index={index}
            >
              {(provided, snapshot) => (
@@ -53,7 +53,7 @@ const TaskList = (props) => {
                    </div>
            ) }
            </Draggable>
-      ))}
+      )): ""}
          
 
     

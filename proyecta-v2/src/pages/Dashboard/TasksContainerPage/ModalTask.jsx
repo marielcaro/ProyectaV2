@@ -13,17 +13,20 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import axios from 'axios';
 
 const ModalTask = (props) => {
-const allAllowedMembers = props.allAllowedMembers;
-const [members, setMembers] = useState(props.taskData ? props.taskData.members : []);
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
+const [allAllowedMembers, setAllowedMembers] = useState([]);
+const [members, setMembers] = useState( []);
 const [key, setKey] = useState(0); // Clave temporal
-const [taskEndDate, setTaskEndDate]=useState(props.taskData ? props.taskData.endDate: "");
+const [taskEndDate, setTaskEndDate]=useState("");
 const [readonly, setReadonly] = useState(false);
-const [descriptionTask, setDescriptionTask] = useState(props.taskData ? props.taskData.description : "")
-const [titleTask, setTitleTask] = useState(props.taskData ? props.taskData.title : "")
+const [descriptionTask, setDescriptionTask] = useState("")
+const [titleTask, setTitleTask] = useState( "")
 const [showDeleteModal, setShowDeleteModal] = useState(false);
-const [status, setStatus] = React.useState(props.taskData ? props.taskData.status : "new");
+const [status, setStatus] = React.useState(props.taskData ? props.taskData.estado : "new");
 
 const handleChange = (event) => {
   setStatus(event.target.value);
@@ -61,19 +64,20 @@ const handleHideEditModal = () => {
 const handleSaveEditModal = () => {
   if(props.action === "edit"){
       let task = props.taskData;
-      task.members = members;
-      task.endDate = taskEndDate;
-      task.description = descriptionTask;
-      task.status = status;
+      task.tareaId = props.taskId
+      task.listaIntegrantes = members;
+      task.fechaFin = taskEndDate;
+      task.descripcion = descriptionTask;
+      task.estado = status;
         props.handleSave(props.taskId,task);
         props.handleClose()
   }else{
     if(props.action === "new"){
       let newTask = props.taskData;
-      newTask.title = titleTask;
-      newTask.members = members;
-      newTask.endDate = taskEndDate;
-      newTask.description = descriptionTask;
+      newTask.nombreTarea = titleTask;
+      newTask.listaIntegrantes = members;
+      newTask.fechaFin = taskEndDate;
+      newTask.descripcion = descriptionTask;
         props.handleSaveNew(newTask);
         props.handleClose()
     }
@@ -100,20 +104,46 @@ const handleMembersChange = (event, newMembers) => {
 
 useEffect(()=>{
   if (props.taskData){
-    setMembers(props.taskData.members)
+    if(props.action==="edit"){
+      const integrantes = fetchAllAllowedMembers();
+      setAllowedMembers(integrantes)
+    }else{
+      setAllowedMembers(props.allAllowedMembers ? props.allAllowedMembers : [])
+
+    }
+    setMembers(props.taskData.listaIntegrantes)
     setKey(key + 1); // Actualizar la clave temporal
     // console.log("date")
     console.log(props.taskData)
-    setDescriptionTask(props.taskData.description)
-    setTitleTask(props.taskData.title)
-    setTaskEndDate(props.taskData.endDate)
-    setStatus(props.taskData.status)
+    setDescriptionTask(props.taskData.descripcion)
+    setTitleTask(props.taskData.nombreTarea)
+    setTaskEndDate(props.taskData.fechaFin)
+    setStatus(props.taskData.estado)
+    
 
 
   }
  
 },[props.taskData])
 
+const fetchAllAllowedMembers = async () => {
+  try {
+    const token = localStorage.getItem('token');
+
+    // Obtiene el userName almacenado en localStorage
+  const proyectId = props.taskData.proyectoGuid;
+
+
+    const response = await axios.get(`${apiEndpoint}/Integrante/IntegrantesPorProyecto/${proyectId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+      },
+    });
+    setAllowedMembers(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+  } catch (error) {
+      
+  }
+};
 
 // useEffect( ()=>{
 //   console.log("asd")
@@ -125,7 +155,7 @@ useEffect(()=>{
           <>
              <Modal show={props.modalEditState} onHide={handleHideEditModal}>
             <Modal.Header closeButton>
-              <Modal.Title>{props.action ==="edit" ? props.taskData.title :   <TextField id="title" label="Título" variant="standard" value={titleTask}  onChange={handleTitleChange}/> }</Modal.Title>
+              <Modal.Title>{props.action ==="edit" ? titleTask :   (<TextField id="nombreTarea" label="Título" variant="standard" value={titleTask}  onChange={handleTitleChange}/>) }</Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <Stack spacing={4}  sx={{padding: '4px'}}>
@@ -145,9 +175,9 @@ useEffect(()=>{
 
                                         </Select>
                                       </FormControl> : <></>}
-                      <TextField id="projectName" label="Proyecto" variant="standard" value={props.taskData ? props.taskData.projectName : ""}/>
+                      <TextField id="nombreProyecto" label="Proyecto" variant="standard" value={props.taskData ? props.taskData.nombreProyecto : ""}/>
                       <BasicDateField label="Fecha de Finalización" date={taskEndDate} readOnly={readonly} handleChange={(value) => handleInputDateChange(value)}/>
-                      <TextField id="taskDetail" multiline label="Descripción" variant="standard" value={descriptionTask} onChange={handleDescritionChange}  InputProps={{
+                      <TextField id="descripcion" multiline label="Descripción" variant="standard" value={descriptionTask} onChange={handleDescritionChange}  InputProps={{
                        readOnly: readonly
                     }}/>
                       <Autocomplete
@@ -155,21 +185,23 @@ useEffect(()=>{
                               multiple
                               id="tags-standard"
                               options={allAllowedMembers}
-                              getOptionLabel={(option) => option.label}
-                              isOptionEqualToValue={(option, value) => option.label === value.label}
+                              getOptionLabel={(option) => option.nombreCompleto}
+                              isOptionEqualToValue={(option, value) => option.nombreCompleto === value.nombreCompleto}
                               value={members} // Use the state variable as the value
                               onChange={handleMembersChange} // Update the state on selection change
                               renderInput={(params) => (
                               <TextField
+                              variant="standard"
+                              label="Integrantes"
+                              placeholder="Añadir..."
                                   {...params}
-                                  variant="standard"
-                                  label="Integrantes"
-                                  placeholder="Añadir..."
+                                 
+
                               />
                               )}
                 />
-                      <TextField id="taskAuthor" label="Creador" value={props.taskData ? props.taskData.author : ""} variant="standard"></TextField>
-                      <label className="lastUpdatedLabel"> { props.action === "edit" ? "* Última modificación realizada por: "+  props.taskData.lastUpdatedUser + ", fecha: "+props.taskData.lastUpdatedDate.replace('T', ' ')  : ""}</label>
+                      <TextField id="taskAuthor" label="Creador" value={props.taskData ? props.taskData.autor : ""} variant="standard"></TextField>
+                      <label className="lastUpdatedLabel"> { props.action === "edit" && props.taskData? "* Última modificación el día: " + props.taskData.fechaUltimaActualizacion.replace('T', ' ')  : ""}</label>
                     </Stack>
             </Modal.Body>
             <Modal.Footer>

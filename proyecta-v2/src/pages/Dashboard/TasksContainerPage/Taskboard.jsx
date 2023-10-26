@@ -5,8 +5,12 @@ import TaskList from './TaskList';
 import ModalTask from './ModalTask';
 import './tasksContainerPage.css';
 import data from "./mockData.json"
+import axios from 'axios';
+
 
 const Taskboard = (props) => {
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
   const [newTaskList, setNewTaskList] = useState(props.projectAllInfo.newTasks);
 
   const [inProgressTaskList, setInProgressTaskList] = useState(props.projectAllInfo.inProgressTasks);
@@ -22,22 +26,7 @@ const Taskboard = (props) => {
 
   const [state, setState] = useState([ { id: "0", name:"Nuevas", tasks : newTaskList }, {id:"1" , name:"En Progreso", tasks : inProgressTaskList}, {id:"2" ,  name:"Resueltas", tasks : resolvedTaskList},{id:"3" ,  name:"Finalizadas", tasks : completedTaskList}]);
 
-  const [taskData, setTaskData] = useState( {
-    id: "607386e5-e1ad-4d25-bffb-a3b98131ced9", 
-    title: "Task 1",
-    projectName : "Proyecto 1",
-   lastUpdatedUser: "Mariel Caro",
-    lastUpdatedDate:"2023-08-23T18:00:00",
-    status: "ended",
-    author:"Hernan Peinetti",
-    endDate:"2023-08-30T18:00:00",
-    description: "Descripción 1: Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.",
-    members: [
-       {label:"Mariel Caro", 
-       userId: 1},
-       {label:"Mica Chamut", 
-       userId: 2}
-    ] }) 
+  const [taskData, setTaskData] = useState( null) 
 
   const [selectedTaskId, setSelectedTaskId] =useState('');
   const [allAllowedMembers, setAllowedMembers] =useState(props.projectAllInfo.allProjectMembers);
@@ -62,9 +51,11 @@ const Taskboard = (props) => {
   }
 
   useEffect(()=> {
-    let selectedTask=searchTask(selectedTaskId)
-    setTaskData((taskData)=>({...taskData,...selectedTask}))
-    console.log(selectedTaskId)
+    if (selectedTaskId)
+      fetchGetTaskById(selectedTaskId)
+    // let selectedTask=searchTask(selectedTaskId)
+    // setTaskData((taskData)=>({...taskData,...selectedTask}))
+    // console.log(selectedTaskId)
   },[selectedTaskId])
   
 useEffect(()=> {
@@ -150,6 +141,21 @@ useEffect(()=>{
       setState(newState);
     }
   }
+
+  const fetchGetTaskById= async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.get(`${apiEndpoint}/Tarea/ObtenerTarea/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      setTaskData(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
 
 
 
