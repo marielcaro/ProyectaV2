@@ -17,6 +17,8 @@ import { v4 as uuidv4 } from 'uuid';
 import ModalTask from './ModalTask';
 import data from "./mockData.json";
 import axios from 'axios';
+import ErrorToast from '../../../components/Toast/ErrorToast';
+
 
 const TasksContainerPage = () => {
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
@@ -115,32 +117,15 @@ const handleWindowSizeChange = () => {
 
   const handleReorderTask = (task, endOrder) => {
     
-
     fetchUpdateOrderTask(task.tareaId, endOrder);
-
-    // setDataAux(data => ({...data,
-    //   ...{"projects":auxDataList}}
-    // ))
-
   }
 
   const handleMoveTask = (task, sourceId, destinationId) => {
-    
-    // let index =dataAux.projects.findIndex(item => item.id === project.id);
-    // let  auxDataList = [...dataAux.projects];
-
     let source = listIds.find(x => x.id === parseInt(sourceId)).listName;
-    // let sourceList = auxDataList[index][source];
-    // let taskIndex =  sourceList.findIndex(item => item.id === task.id);
-    // auxDataList[index][source] = sourceList.slice(0, taskIndex).concat(sourceList.slice(taskIndex + 1));
-
+   
     let dest = listIds.find(x => x.id === parseInt(destinationId)).listName;
-    //  auxDataList[index][dest].push(task);
+  
     fetchUpdateStatusTask(task.tareaId, dest, task.order);
-
-    // setDataAux(data => ({...data,
-    //   ...{"projects":auxDataList}}
-    // ))
 
   }
 
@@ -211,7 +196,18 @@ const handleWindowSizeChange = () => {
       });
       fetchProyectTareaList(); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -226,7 +222,18 @@ const handleWindowSizeChange = () => {
       });
       fetchProyectTareaList(); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -241,7 +248,18 @@ const handleWindowSizeChange = () => {
       });
       fetchProyectTareaList(); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -256,7 +274,18 @@ const handleWindowSizeChange = () => {
       });
       fetchProyectTareaList(); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -271,7 +300,18 @@ const handleWindowSizeChange = () => {
       });
       fetchProyectTareaList(); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -290,7 +330,18 @@ const handleWindowSizeChange = () => {
       });
       setProjects(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -308,7 +359,18 @@ const handleWindowSizeChange = () => {
       });
       return response.data; // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -328,7 +390,18 @@ const handleWindowSizeChange = () => {
       });
       setCurrentRoleByProject(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -349,7 +422,18 @@ const handleWindowSizeChange = () => {
       setProjectInfo(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
       // setProject(projects[0].proyectId)
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 

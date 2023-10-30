@@ -2,26 +2,18 @@ import UserMenu from './userMenu';
 
 import axios from 'axios';
 
-import { useSelector, useDispatch } from 'react-redux'
-import { access, exit } from '../../../features/login/loginAction'
+import { useDispatch } from 'react-redux'
 
-import icon from '../../../assets/icons/proyect.png';
-import notificacion from '../../../assets/icons/notificacion.png';
 import './dashboardNavBar.css';
 
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-
-import image from '../../../assets/images/sampleImage.jpg';
-import menu from '../../../assets/icons/menu.png';
-import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
 
 import { useEffect, useState } from "react";
 import {useFloating,  offset,  flip,  shift } from '@floating-ui/react';
 import { useClick, useInteractions} from '@floating-ui/react';
 import {useDismiss} from '@floating-ui/react'
-
-import { foto, initial } from '../../../features/profileImage/profileAction'
+import ErrorToast from '../../../components/Toast/ErrorToast';
+import { foto } from '../../../features/profileImage/profileAction'
 
 const UserIconButton = () => {
 
@@ -49,7 +41,18 @@ const UserIconButton = () => {
       });
       setUserInfo(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-      console.error('Error al obtener las opciones de grado:', error);
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error interno, Usuario no encontrado")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Usuario no encontrado")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -67,7 +70,18 @@ const UserIconButton = () => {
       localStorage.setItem('perfilId', userInfo.perfilId);
       setProfile(response.data.fotoPerfil); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-      console.error('Error al obtener las opciones de grado:', error);
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error interno, Usuario no encontrado")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Usuario no encontrado")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
   

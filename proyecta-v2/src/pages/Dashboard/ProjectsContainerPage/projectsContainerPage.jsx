@@ -4,6 +4,7 @@ import './projectsContainerPage.css'
 import data from "./mockDataProject.json"
 import ProjectPage from './projectPage';
 import axios from 'axios';
+import ErrorToast from '../../../components/Toast/ErrorToast';
 
 
 const ProjectsContainerPage = () => {
@@ -93,7 +94,18 @@ const ProjectsContainerPage = () => {
           fetchProyectList();
           
         } catch (error) {
-            console.log('Error');
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
             
         }
       };
@@ -116,7 +128,18 @@ const ProjectsContainerPage = () => {
           fetchProyectList() //Actualizar board
           fetchProyectById(id)
         } catch (error) {
-            
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -131,7 +154,18 @@ const ProjectsContainerPage = () => {
           });
           fetchProyectList() //Actualizar board
         } catch (error) {
-            
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -147,7 +181,18 @@ const ProjectsContainerPage = () => {
           fetchProyectList() //Actualizar board
           fetchProyectById(id)
         } catch (error) {
-            
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -167,7 +212,18 @@ const ProjectsContainerPage = () => {
           fetchProyectList() //Actualizar board
           fetchProyectById(id)
         } catch (error) {
-            
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -183,7 +239,18 @@ const ProjectsContainerPage = () => {
           });
           setSelectedCard(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
         } catch (error) {
-            
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 

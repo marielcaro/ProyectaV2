@@ -1,17 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
-import dayjs from 'dayjs';
 import './projectsContainerPage.css';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import BasicDateField from '../../../components/DateField/DateField';
 import axios from 'axios';
+import ErrorToast from '../../../components/Toast/ErrorToast';
 
 import { Button, Modal } from 'react-bootstrap';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
 const EditProjectModal = (props) => {
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
@@ -71,7 +66,18 @@ const EditProjectModal = (props) => {
           });
           setAllTags(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
         } catch (error) {
-          console.error('Error a:', error);
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 

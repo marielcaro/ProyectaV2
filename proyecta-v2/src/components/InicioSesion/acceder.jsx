@@ -8,9 +8,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { access, exit, create, recover,register } from '../../features/login/loginAction'
 import axios from 'axios';
-
+import ErrorToast from '../Toast/ErrorToast';
+import Loader from '../Loader/Loader';
 
 const Acceder = () => {
+  const [loading, setLoading] = useState(false);
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
 
 
@@ -31,6 +33,7 @@ const Acceder = () => {
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
         const response = await axios.post(`${apiEndpoint}/Authentication/login`, formData);
           setUserData({
             userId: response.data.userId,
@@ -40,6 +43,7 @@ const Acceder = () => {
             perfilId: response.data.perfilId
         });
      
+     
           localStorage.setItem('userId', response.data.userId);
           localStorage.setItem('refreshToken', response.data.refreshToken);
           localStorage.setItem('userName', formData.username);
@@ -48,12 +52,28 @@ const Acceder = () => {
 
         // Aquí debes manejar la respuesta de la API, por ejemplo, almacenar el token de autenticación en el estado de tu aplicación o redirigir al usuario a la página principal.
         console.log(response.data);
+    
 
    
     } catch (error) {
-        // Manejar errores, por ejemplo, mostrar un mensaje de error al usuario.
-        console.error(error);
+          // Manejar errores, por ejemplo, mostrar un mensaje de error al usuario.
+      if(error.response.status === 401)
+      {
+        ErrorToast("Usuario o Contraseña incorrectos, por favor verifique los datos ingresados")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error interno, Usuario no encontrado")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Usuario no encontrado")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      }   
+       
+    }  finally{
+      setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
     }
+  
 };
 
 const handleChange = (e) => {
@@ -72,7 +92,7 @@ useEffect(()=>{
 
     return(
         <div className="inicioSesion card mx-auto my-1   p-5">
-
+ {loading && <Loader />} {/* Muestra el Loader cuando `loading` es true */}
         <div className="card-body">
         <h5 className="card-title my-3">Iniciar Sesión</h5>
         <div className='form m-auto p-4 align-items-center'>

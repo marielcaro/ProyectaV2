@@ -1,26 +1,20 @@
 import Stack from '@mui/material/Stack';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 
 import user from '../../assets/icons/user.png'
 import key from '../../assets/icons/key.png'
-import mail from '../../assets/icons/mail.png'
 import repeat from '../../assets/icons/repeat.png'
+import ErrorToast from '../Toast/ErrorToast';
 
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
 
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import KeyIcon from '@mui/icons-material/Key';
-
-import { useSelector, useDispatch } from 'react-redux'
-import { access, exit, create, recover, init, login } from '../../features/login/loginAction'
+import {  useDispatch } from 'react-redux'
+import { init, login } from '../../features/login/loginAction'
 
 const RecuperarCuenta = () => {
     const dispatch = useDispatch();
@@ -62,9 +56,18 @@ const RecuperarCuenta = () => {
           dispatch(login());
           // Realiza las acciones que desees después del registro exitoso, como redireccionar a una página de inicio de sesión, mostrar un mensaje de éxito, etc.
         } catch (error) {
-          // En caso de error, puedes manejarlo aquí.
-          console.error('Usuario inexistente', error);
-          // Puedes mostrar un mensaje de error al usuario o realizar otras acciones según tus necesidades.
+          if(error.response.status === 401)
+          {
+            ErrorToast("Usuario o Contraseña incorrectos, por favor verifique los datos ingresados")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error interno, Usuario no encontrado")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Usuario no encontrado")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          }   
         } 
 
       }else{

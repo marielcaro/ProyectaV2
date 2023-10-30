@@ -11,7 +11,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { refreshToken } from '../../../services/tokenService';
 
 const DashboardContainer = () => {
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
@@ -94,11 +94,11 @@ const DashboardContainer = () => {
       
       const fetchTareaList = async () => {
         try {
-          const token = localStorage.getItem('token');
+          let token = localStorage.getItem('token');
     
           // Obtiene el userName almacenado en localStorage
         const perfilId = localStorage.getItem('perfilId');
-    
+        token = await refreshToken(apiEndpoint, token, localStorage.getItem('refreshToken'));
     
           const response = await axios.get(`${apiEndpoint}/Tarea/ObtenerTareasPorPerfil/${perfilId}`, {
             headers: {

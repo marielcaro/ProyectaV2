@@ -26,6 +26,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import axios from 'axios';
+import ErrorToast from '../../../components/Toast/ErrorToast';
+
 
 const CalendarContainerPage = () => {
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
@@ -164,12 +166,6 @@ const handleSaveDateEdition = ()=> {
 
     fetchDeleteEvent(newEvent)
 
-    // let auxEventList = [...eventList]
-    // let index =  eventList.findIndex(item => item.id === newEvent.id);
-    // auxEventList = auxEventList.slice(0, index).concat(auxEventList.slice(index + 1));
-       
-      // setEventList(auxEventList);
-
        setProject('')
       setWeekDays([])
       setWeekNumberDays([])
@@ -203,21 +199,12 @@ const handleSaveDateEdition = ()=> {
   const handleSaveNewEvent = () => {
     
     if(eventSource=== "newEvent"){
-
       fetchAddNewEvent(newEvent)
-      // let auxEventList = [...eventList]
-      //  auxEventList.push(newEvent)
-      // setEventList(auxEventList);
-      
-
+  
     }else{
       if(eventSource==="selectedEvent"){
         fetchUpdateEvent(newEvent);
-        // let auxEventList = [...eventList]
-        // let index =  eventList.findIndex(item => item.id === newEvent.id);
-        // auxEventList[index] = newEvent;
-        // setEventList(auxEventList);
-        
+                
       }
 
     }
@@ -252,7 +239,6 @@ const handleSaveDateEdition = ()=> {
   }
 
   const handleEditDateClick = () => {
-    console.log(weekDays)
     setWeekDays(weekDays)
       eventModal.show()
   }
@@ -458,13 +444,8 @@ const handleSaveDateEdition = ()=> {
 
     }
 
-    console.log(selectedInfoDayRange.start)
-    console.log(selectedInfoDayRange.end)
   }, [selectedInfoDayRange]);
 
-  useEffect(()=>{
-    console.log("changeList")
-  },[eventList])
   
    useEffect(() => {
     const modalElement = document.getElementById('multiDayModal');
@@ -484,7 +465,6 @@ const handleSaveDateEdition = ()=> {
     }))
 
     setEventList(...eventList, eventObject)
-
 
     fetchGetEventByPerfilId()
     fetchProyectList()
@@ -518,7 +498,18 @@ const handleSaveDateEdition = ()=> {
       });
       fetchGetEventByPerfilId(); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -533,7 +524,18 @@ const handleSaveDateEdition = ()=> {
       });
       fetchGetEventByPerfilId(); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -567,7 +569,18 @@ const handleSaveDateEdition = ()=> {
       });
       fetchGetEventByPerfilId(); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -586,7 +599,18 @@ const handleSaveDateEdition = ()=> {
       });
       setProjects(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      }  
     }
   };
 
@@ -605,7 +629,18 @@ const handleSaveDateEdition = ()=> {
       });
       setMembers(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 
@@ -618,8 +653,7 @@ const handleSaveDateEdition = ()=> {
         headers: {
           Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
         },
-      });
- 
+      }); 
 
       const eventDataList = response.data.length > 0 ? response.data.map(item => {
         return {    
@@ -641,7 +675,18 @@ const handleSaveDateEdition = ()=> {
 
       setEventList(eventDataList); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-        
+      if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Datos no encontrados")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
     }
   };
 

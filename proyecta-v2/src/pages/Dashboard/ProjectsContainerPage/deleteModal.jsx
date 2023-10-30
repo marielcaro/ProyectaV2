@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './projectsContainerPage.css';
-import Stack from '@mui/material/Stack';
 
-import FotoUploader from './fotoUploader';
 import { Button, Modal } from 'react-bootstrap';
-
-
 
 const DeleteModal = (props) => {
     const [show, setShow] = useState(props.show);

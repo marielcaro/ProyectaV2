@@ -10,15 +10,8 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import KeyIcon from '@mui/icons-material/Key';
-
-import { useSelector, useDispatch } from 'react-redux'
-import { access, exit, create, recover, init, register } from '../../features/login/loginAction'
+import { useDispatch } from 'react-redux'
+import { init, register } from '../../features/login/loginAction'
 
 const CrearCuenta = () => {
     const dispatch = useDispatch()

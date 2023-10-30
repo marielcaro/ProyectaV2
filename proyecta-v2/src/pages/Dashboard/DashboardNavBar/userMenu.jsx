@@ -13,9 +13,9 @@ import ajustes from '../../../assets/icons/ajustes.png'
 import logout from '../../../assets/icons/logout.png'
 import user from '../../../assets/icons/user.png'
 
-import { useSelector, useDispatch } from 'react-redux'
-import { access, exit, create, recover, init } from '../../../features/login/loginAction'
-import { projects, dashboard, tasks, calendar } from '../../../features/dashboard/dashboardAction.js'
+import { useDispatch } from 'react-redux'
+import { exit } from '../../../features/login/loginAction'
+import { dashboard } from '../../../features/dashboard/dashboardAction.js'
 
 import ChangeProfileModal from './changeProfile';
 import ChangeUserInfoModal from './changeUserInfo';

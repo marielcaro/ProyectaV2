@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from 'axios';
+import ErrorToast from '../../../components/Toast/ErrorToast';
 
 const ModalTask = (props) => {
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
@@ -95,12 +96,6 @@ const handleMembersChange = (event, newMembers) => {
   setMembers(newMembers);
 };
 
-// useEffect(()=>{
-
-//   console.log("taskEndDate")
-//   console.log(taskEndDate)
-
-// },[taskEndDate])
 
 useEffect(()=>{
   if (props.taskData){
@@ -113,7 +108,6 @@ useEffect(()=>{
     }
     setMembers(props.taskData.listaIntegrantes)
     setKey(key + 1); // Actualizar la clave temporal
-    // console.log("date")
     console.log(props.taskData)
     setDescriptionTask(props.taskData.descripcion)
     setTitleTask(props.taskData.nombreTarea)
@@ -133,7 +127,6 @@ const fetchAllAllowedMembers = async () => {
     // Obtiene el userName almacenado en localStorage
   const proyectId = props.taskData.proyectoGuid;
 
-
     const response = await axios.get(`${apiEndpoint}/Integrante/IntegrantesPorProyecto/${proyectId}`, {
       headers: {
         Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
@@ -141,14 +134,20 @@ const fetchAllAllowedMembers = async () => {
     });
     setAllowedMembers(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
   } catch (error) {
-      
+    if(error.response.status === 401)
+    {
+      ErrorToast("Acceso no Autorizado")
+    }else{
+      if(error.response.status === 400){
+        ErrorToast("Error en la solicitud, verifique los datos ingresados")
+      }else if(error.response.status === 404){
+        ErrorToast("Error interno, Datos no encontrados")
+      }else if(error.response.status === 500){
+        ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+      }
+    } 
   }
 };
-
-// useEffect( ()=>{
-//   console.log("asd")
- 
-// },[descriptionTask])
 
 
     return (

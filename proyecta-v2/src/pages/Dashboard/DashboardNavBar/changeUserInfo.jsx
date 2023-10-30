@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import './changeProfile.css'
 import Stack from '@mui/material/Stack';
 import axios from 'axios';
+import ErrorToast from '../../../components/Toast/ErrorToast';
 
 import { Button, Modal } from 'react-bootstrap';
 
@@ -73,9 +74,18 @@ const ChangeUserInfoModal = (props) => {
           props.handleHide()
           // Realiza las acciones que desees después del registro exitoso, como redireccionar a una página de inicio de sesión, mostrar un mensaje de éxito, etc.
         } catch (error) {
-          // En caso de error, puedes manejarlo aquí.
-          console.error('Error en el registro:', error);
-          // Puedes mostrar un mensaje de error al usuario o realizar otras acciones según tus necesidades.
+          if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Usuario no encontrado")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
         } 
 
       }else{

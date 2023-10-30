@@ -13,6 +13,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import ErrorToast from '../../../components/Toast/ErrorToast';
+
 
 const ModalAddProject = (props) => {
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
@@ -142,7 +144,18 @@ const ModalAddProject = (props) => {
           });
           setFacultadOptions(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
         } catch (error) {
-          console.error('Error a:', error);
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -157,7 +170,18 @@ const ModalAddProject = (props) => {
           });
           setAllTags(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
         } catch (error) {
-          console.error('Error a:', error);
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -172,7 +196,18 @@ const ModalAddProject = (props) => {
           });
           setAllAllowedMembers(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
         } catch (error) {
-          console.error('Error a:', error);
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -187,7 +222,18 @@ const ModalAddProject = (props) => {
           });
           setAllAllowedLeaders(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
         } catch (error) {
-          console.error('Error a:', error);
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 

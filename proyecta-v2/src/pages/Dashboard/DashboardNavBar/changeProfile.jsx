@@ -3,6 +3,8 @@ import './changeProfile.css'
 import Stack from '@mui/material/Stack';
 import ImageUploader from '../../../components/imageUploader/imageUploader';
 import axios from 'axios';
+import ErrorToast from '../../../components/Toast/ErrorToast';
+
 
 import { Button, Modal } from 'react-bootstrap';
 
@@ -15,10 +17,6 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-
-
-import fullname from '../../../assets/icons/name.png'
-import nrodni from '../../../assets/icons/nrodni.png'
 
 import career from '../../../assets/icons/career.png'
 import graduado from '../../../assets/icons/grado.png'
@@ -85,9 +83,18 @@ const ChangeProfileModal = (props) => {
           props.handleHide()
           // Realiza las acciones que desees después del registro exitoso, como redireccionar a una página de inicio de sesión, mostrar un mensaje de éxito, etc.
         } catch (error) {
-          // En caso de error, puedes manejarlo aquí.
-          console.error('Error en el registro:', error);
-          // Puedes mostrar un mensaje de error al usuario o realizar otras acciones según tus necesidades.
+          if(error.response.status === 401)
+      {
+        ErrorToast("Acceso no Autorizado")
+      }else{
+        if(error.response.status === 400){
+          ErrorToast("Error en la solicitud, verifique los datos ingresados")
+        }else if(error.response.status === 404){
+          ErrorToast("Error interno, Usuario no encontrado")
+        }else if(error.response.status === 500){
+          ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+        }
+      } 
         } 
 
       }else{
@@ -100,18 +107,26 @@ const ChangeProfileModal = (props) => {
     try {
       const token = localStorage.getItem('token');
 
-      // Obtiene el userName almacenado en localStorage
-    const userName = localStorage.getItem('userName');
-
-
       const response = await axios.get(`${apiEndpoint}/Categorias/GetAll`, {
         headers: {
           Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
         },
       });
+
       setGradoOptions(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-      console.error('Error al obtener las opciones de grado:', error);
+      if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud")
+            }else if(error.response.status === 404){
+              ErrorToast("No existen categorias académicas ingresados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
     }
   };
 

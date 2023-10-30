@@ -27,9 +27,9 @@ import user from '../../assets/icons/user.png'
 import key from '../../assets/icons/key.png'
 import email from '../../assets/icons/mail.png'
 import repeat from '../../assets/icons/repeat.png'
-
+import ErrorToast from '../../components/Toast/ErrorToast';
 import { useSelector, useDispatch } from 'react-redux'
-import { access, recover, exit, create, init, register, login} from '../../features/login/loginAction'
+import { init, login} from '../../features/login/loginAction'
 
 import MainNavBar from '../../components/mainNavBar/mainNavBar';
 
@@ -83,19 +83,27 @@ const handleChangeRepeatPass = (e) => {
    const fetchGradoOptions = async () => {
     try {
       const token = localStorage.getItem('token');
-
-      // Obtiene el userName almacenado en localStorage
-    const userName = localStorage.getItem('userName');
-
-
+   
       const response = await axios.get(`${apiEndpoint}/Categorias/GetAll`, {
         headers: {
           Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
         },
       });
+
       setGradoOptions(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
     } catch (error) {
-      console.error('Error al obtener las opciones de grado:', error);
+      if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud")
+            }else if(error.response.status === 404){
+              ErrorToast("No existen grados académicos ingresados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
     }
   };
 
@@ -132,9 +140,19 @@ const handleChangeRepeatPass = (e) => {
         dispatch(login())
         // Realiza las acciones que desees después del registro exitoso, como redireccionar a una página de inicio de sesión, mostrar un mensaje de éxito, etc.
       } catch (error) {
-        // En caso de error, puedes manejarlo aquí.
-        console.error('Error en el registro:', error);
-        // Puedes mostrar un mensaje de error al usuario o realizar otras acciones según tus necesidades.
+         if(error.response.status === 401)
+          {
+            ErrorToast("Usuario o Contraseña incorrectos, por favor verifique los datos ingresados")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error interno, Usuario no encontrado")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Usuario no encontrado")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
+    
       } 
 
 

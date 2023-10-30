@@ -12,6 +12,8 @@ import Dashboard from './pages/Dashboard/dashboard';
 
 import { useSelector, useDispatch } from 'react-redux'
 import { access, exit,  init } from './features/login/loginAction'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const login = useSelector((state) => state.login.value)
@@ -52,7 +54,7 @@ function App() {
   return (
     <div className="App">
       {Page()}
-      
+      <ToastContainer />
   
       {/* <Dashboard /> */}
     {/* <RegisterUserPage/> */}

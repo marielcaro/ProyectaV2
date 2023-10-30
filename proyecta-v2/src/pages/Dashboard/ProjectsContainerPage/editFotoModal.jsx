@@ -1,17 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import dayjs from 'dayjs';
+
 import './projectsContainerPage.css';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import BasicDateField from '../../../components/DateField/DateField';
+
 import FotoUploader from './fotoUploader';
 import { Button, Modal } from 'react-bootstrap';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
 
 const EditFotoModal = (props) => {
     const [show, setShow] = useState(props.show);

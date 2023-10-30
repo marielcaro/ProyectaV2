@@ -22,6 +22,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
+import ErrorToast from '../../../components/Toast/ErrorToast';
+
 
 const MembersListPage = (props) => {
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
@@ -73,8 +75,6 @@ const MembersListPage = (props) => {
         };
 
         fetchAddMember(newMember)
-        // const updatedMembers = [...allMembers, newMember];
-        // setAllMembers(updatedMembers);
       
         // Cierra la ventana modal de agregar integrante
         setShowAddMember(false);
@@ -106,10 +106,7 @@ const MembersListPage = (props) => {
     const handleConfirmRemoveMember = () => {
       // Elimina al integrante
       fetchDeleteMember(memberToRemoveIndex, props.projectId)
-    //   const updatedMembers = [...allMembers];
-    //   updatedMembers.splice(memberToRemoveIndex, 1);
-    //   setAllMembers(updatedMembers);
-    
+     
       // Cierra la ventana modal de confirmación
       setShowDeleteConfirmation(false);
     };
@@ -117,7 +114,7 @@ const MembersListPage = (props) => {
     const handleEditMember = (event) => {
         // Muestra la ventana modal de edición del rol
         let index = event.currentTarget.id;
-        // let index= allMembers.findIndex(member => member.userId === parseInt(event.currentTarget.id) || member.userId === event.currentTarget.id );
+
         if(memberToEditIndex === index){
             setShowEditRole(true);
         }else{
@@ -147,7 +144,18 @@ const MembersListPage = (props) => {
           });
           setAllMembers(response.data)
         } catch (error) {
-            
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -162,7 +170,18 @@ const MembersListPage = (props) => {
           });
           fetchMembersProject(proyectoId)
         } catch (error) {
-            
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -177,7 +196,18 @@ const MembersListPage = (props) => {
           });
           fetchMembersProject(proyectoId)
         } catch (error) {
-            
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -196,7 +226,18 @@ const MembersListPage = (props) => {
           });
           fetchMembersProject(obj.proyectId)
         } catch (error) {
-            
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
@@ -212,7 +253,18 @@ const MembersListPage = (props) => {
           });
           setAllUsers(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
         } catch (error) {
-            
+          if(error.response.status === 401)
+          {
+            ErrorToast("Acceso no Autorizado")
+          }else{
+            if(error.response.status === 400){
+              ErrorToast("Error en la solicitud, verifique los datos ingresados")
+            }else if(error.response.status === 404){
+              ErrorToast("Error interno, Datos no encontrados")
+            }else if(error.response.status === 500){
+              ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+            }
+          } 
         }
       };
 
