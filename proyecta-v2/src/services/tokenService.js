@@ -7,7 +7,7 @@ const refreshToken = async () => {
 
     const token = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refreshToken');
-    const perfilId = localStorage.getItem('perfilId');
+    const perfilId = localStorage.getItem('userName');
   
     if (!token || !refreshToken) {
       // No hay token de acceso o token de renovación disponibles.
