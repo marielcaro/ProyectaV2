@@ -22,13 +22,30 @@ const DashboardContainer = () => {
     const [eventoList, setEventoList] = useState([]);
     const [noEventoMessage, setNoEventoMessage] = useState("");
 
+    function convertirFecha(fechaString) {
+      const fecha = new Date(fechaString);
+      const dia = fecha.getDate().toString().padStart(2, '0');
+      const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+      const año = fecha.getFullYear();
+      const fechaFormateada = `${dia}/${mes}/${año}`;
+      return fechaFormateada;
+    }
+
+    function convertirHora(horaString) {
+      const partesHora = horaString.split(":");
+      const hora = partesHora[0];
+      const minutos = partesHora[1];
+      const horaFormateada = `${hora}:${minutos}`;
+      return horaFormateada;
+    }
+
     const EventoItem = (props) => {
         return(
             <ListItem>
             <ListItemAvatar>
-            <Avatar alt={props.evento.titulo} src={props.evento.proyectIcon} />
+            <Avatar alt={props.evento.titulo} src={props.evento.proyectoIcon} />
             </ListItemAvatar>
-            <ListItemText primary={props.evento.titulo - props.evento.proyectName} secondary={props.evento.fechaInicio - props.evento.horaInicio}/>
+            <ListItemText primary={props.evento.titulo + " - " + props.evento.nombreProyecto} secondary={convertirFecha(props.evento.fechaInicio) +" - "+ convertirHora(props.evento.horaInicio)}/>
             </ListItem>
         );
     } 

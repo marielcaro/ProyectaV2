@@ -15,6 +15,7 @@ import user from '../../../assets/icons/user.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { access, exit, create, recover, init } from '../../../features/login/loginAction'
+import { projects, dashboard, tasks, calendar } from '../../../features/dashboard/dashboardAction.js'
 
 import ChangeProfileModal from './changeProfile';
 import ChangeUserInfoModal from './changeUserInfo';
@@ -50,6 +51,8 @@ const UserMenu = () => {
         localStorage.removeItem('userId');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('perfilId');
+
+        dispatch(dashboard())
 
 
         dispatch(exit());

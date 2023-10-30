@@ -25,9 +25,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
-
+import axios from 'axios';
 
 const CalendarContainerPage = () => {
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
   const [dayRangeModal, setDayRangeModal] = useState(null);
   const [eventModal, setEventModal] = useState(null);
   const [modalTitle, setModalTitle] = useState('');
@@ -51,28 +52,12 @@ const CalendarContainerPage = () => {
   const [verifyStartTime,setverifyStartTime] =useState(false) 
   const [verifyEndTime, setverifyEndTime] =useState(false) 
   const [verifyProjectName,setverifyProjectName] =useState(false) 
-  const members = ['Mariel Caro', 'Hernán Peinetti', 'Juan Manuel Romano', 'Micaela Chamut'];
+  const [members, setMembers] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
-  const projects =['Proyecto 1','Proyecto 2','Proyecto 3','Proyecto 4'];
+  const [projects, setProjects] = useState([]);
   const [project, setProject] = useState('');
   const [eventList, setEventList] = useState([]);
-  const eventObject = [
-    { // this object will be "parsed" into an Event Object
-      id: uuidv4(),
-      title: 'Congress', // a property!
-      description:'Descripcion 1',
-      projectId: 2,
-      projectName:'Proyecto 3',
-      participants: ['Mariel Caro','Hernán Peinetti'],
-      startRecur: '2023-08-18T09:00:00',
-      endRecur: '2023-08-29T18:00:00',
-      startTime: '12:30:00', // a property!
-      endTime: '13:30:00', // a property! ** see important note below about 'end' **
-      daysOfWeek: [ '1','2' ],
-      display: 'block',
-      color : randomColor(),
-    }
-  ]
+  const [eventObject, setEventObject] = useState([])
 
   const [weekDays, setWeekDays] = useState(()=>[]);
   const [weekNumberDays, setWeekNumberDays] = useState(()=>[]);
@@ -142,7 +127,7 @@ const handleSaveDateEdition = ()=> {
 
           for(var i=0;i<elements.length;i++){
             // push the component to elements!
-            listItem.push( <MenuItem value={i}> {elements[i]} </MenuItem>);
+            listItem.push( <MenuItem value={elements[i].proyectId}> {elements[i].proyectName} </MenuItem>);
       }
 
       return listItem;
@@ -177,11 +162,13 @@ const handleSaveDateEdition = ()=> {
 
   const handleDeleteEvent =() =>{
 
-    let auxEventList = [...eventList]
-    let index =  eventList.findIndex(item => item.id === newEvent.id);
-    auxEventList = auxEventList.slice(0, index).concat(auxEventList.slice(index + 1));
+    fetchDeleteEvent(newEvent)
+
+    // let auxEventList = [...eventList]
+    // let index =  eventList.findIndex(item => item.id === newEvent.id);
+    // auxEventList = auxEventList.slice(0, index).concat(auxEventList.slice(index + 1));
        
-      setEventList(auxEventList);
+      // setEventList(auxEventList);
 
        setProject('')
       setWeekDays([])
@@ -216,17 +203,20 @@ const handleSaveDateEdition = ()=> {
   const handleSaveNewEvent = () => {
     
     if(eventSource=== "newEvent"){
-      let auxEventList = [...eventList]
-       auxEventList.push(newEvent)
-      setEventList(auxEventList);
+
+      fetchAddNewEvent(newEvent)
+      // let auxEventList = [...eventList]
+      //  auxEventList.push(newEvent)
+      // setEventList(auxEventList);
       
 
     }else{
       if(eventSource==="selectedEvent"){
-        let auxEventList = [...eventList]
-        let index =  eventList.findIndex(item => item.id === newEvent.id);
-        auxEventList[index] = newEvent;
-        setEventList(auxEventList);
+        fetchUpdateEvent(newEvent);
+        // let auxEventList = [...eventList]
+        // let index =  eventList.findIndex(item => item.id === newEvent.id);
+        // auxEventList[index] = newEvent;
+        // setEventList(auxEventList);
         
       }
 
@@ -383,12 +373,17 @@ const handleSaveDateEdition = ()=> {
 
 
     useEffect(()=>{
-      
-      setNewEvent({
-        ...newEvent,
-        'projectId':project,
-        'projectName' : projects[project]
-       })
+      if(project){
+        const a =  projects.find(x => x.proyectId === project).proyectName
+        setNewEvent({
+          ...newEvent,
+          'projectId':project,
+          'projectName' : projects.find(x => x.proyectId === project).proyectName
+         })
+         fetchAllAllowedMembers()
+
+      }
+     
 
    },[project])
 
@@ -466,6 +461,10 @@ const handleSaveDateEdition = ()=> {
     console.log(selectedInfoDayRange.start)
     console.log(selectedInfoDayRange.end)
   }, [selectedInfoDayRange]);
+
+  useEffect(()=>{
+    console.log("changeList")
+  },[eventList])
   
    useEffect(() => {
     const modalElement = document.getElementById('multiDayModal');
@@ -485,7 +484,167 @@ const handleSaveDateEdition = ()=> {
     }))
 
     setEventList(...eventList, eventObject)
+
+
+    fetchGetEventByPerfilId()
+    fetchProyectList()
   }, []);
+
+  const fetchAddNewEvent = async (obj) => {
+    try {
+      const token = localStorage.getItem('token');
+      const requestData=
+      {  
+          id: obj.id,
+          titulo:obj.title,
+          descripcion:obj.description,
+          proyectoGuid:obj.projectId,
+          nombreProyecto:obj.projectName,
+          integrantes: obj.participants,
+          fechaInicio: obj.startRecur,
+          fechaFin:obj.endRecur,
+          horaInicio: obj.startTime, 
+          horaFin: obj.endTime,
+          diasRecurrencia: obj.daysOfWeek && obj.daysOfWeek.length >0 ?  obj.daysOfWeek.map(num => num.toString()) : [""], 
+          display: 'block',
+          color : randomColor() 
+        };
+     
+
+      const response = await axios.post(`${apiEndpoint}/Evento/CrearEvento`, requestData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      fetchGetEventByPerfilId(); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchDeleteEvent = async (obj) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.delete(`${apiEndpoint}/Evento/EliminarEvento/${obj.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      fetchGetEventByPerfilId(); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+
+  const fetchUpdateEvent = async (obj) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const requestData=
+      {  
+          id: obj.id,
+          titulo:obj.title,
+          descripcion:obj.description,
+          proyectoGuid:obj.projectId,
+          nombreProyecto:obj.projectName,
+          integrantes: obj.participants,
+          fechaInicio: obj.startRecur,
+          fechaFin:obj.endRecur,
+          horaInicio: obj.startTime, 
+          horaFin: obj.endTime,
+          diasRecurrencia: obj.daysOfWeek && obj.daysOfWeek.length >0 ?  obj.daysOfWeek.map(num => num.toString()) : [""], 
+          display: 'block',
+          color : randomColor() 
+        };
+     
+
+      const response = await axios.put(`${apiEndpoint}/Evento/ActualizarEvento/${obj.id}`, requestData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      fetchGetEventByPerfilId(); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchProyectList = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      // Obtiene el userName almacenado en localStorage
+    const perfilId = localStorage.getItem('perfilId');
+
+
+      const response = await axios.get(`${apiEndpoint}/Proyecto/ProyectosPorPerfil/${perfilId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      setProjects(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchAllAllowedMembers = async () => {
+    try {
+      const token = localStorage.getItem('token');
+  
+      // Obtiene el userName almacenado en localStorage
+    const proyectId = project;
+  
+  
+      const response = await axios.get(`${apiEndpoint}/Integrante/IntegrantesPorProyecto/${proyectId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+      setMembers(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
+  const fetchGetEventByPerfilId= async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const perfilId = localStorage.getItem('perfilId')
+
+      const response = await axios.get(`${apiEndpoint}/Evento/ObtenerEventoPorPerfil/${perfilId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+        },
+      });
+ 
+
+      const eventDataList = response.data.length > 0 ? response.data.map(item => {
+        return {    
+          id: item.id,
+          title:item.titulo,
+          description:item.descripcion,
+          projectId:item.proyectoGuid,
+          projectName:item.nombreProyecto,
+          participants: item.integrantes,
+          startRecur: item.fechaInicio,
+          endRecur:item.fechaFin,
+          daysOfWeek:item.diasRecurrencia && item.diasRecurrencia.length > 0 && item.diasRecurrencia[0]!=="" ? item.diasRecurrencia : "",
+          startTime: item.horaInicio, 
+          endTime: item.horaFin,
+          display: 'block',
+          color : randomColor() 
+        };
+      }) : [];
+
+      setEventList(eventDataList); // Asume que la respuesta contiene las opciones en un formato adecuado.
+    } catch (error) {
+        
+    }
+  };
+
 
 
  return(
@@ -555,7 +714,7 @@ const handleSaveDateEdition = ()=> {
                       label="Proyecto Vinculado"
                       onChange={handleSelectChange}
                     >
-                      {items(projects)}
+                      {projects.length > 0 ? items(projects): ""}
                       
                 </Select>
         </FormControl>
@@ -563,7 +722,8 @@ const handleSaveDateEdition = ()=> {
                     multiple
                     id="tags-standard"
                     options={members}
-                    getOptionLabel={(option) => option}
+                    getOptionLabel={(option) => option.nombreCompleto}
+                    isOptionEqualToValue={(option, value) => option.nombreCompleto === value.nombreCompleto}
                     value={selectedMembers}
                     onChange={(event, newValue) => {
                       setSelectedMembers(newValue);
