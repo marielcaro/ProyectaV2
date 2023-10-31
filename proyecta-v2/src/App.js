@@ -1,9 +1,5 @@
-import 'popper.js/dist/umd/popper.min.js'
-;
- 
-import logo from './logo.svg';
+import 'popper.js/dist/umd/popper.min.js'; 
 import './App.css';
-import MainNavBar from './components/mainNavBar/mainNavBar';
 import MainPage from './pages/mainPage';
 import RegisterUserPage from './pages/RegisterUser/registerUserPage';
 import LoginAlone from './pages/LoginAlone';
@@ -11,7 +7,6 @@ import LoginAlone from './pages/LoginAlone';
 import Dashboard from './pages/Dashboard/dashboard';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { access, exit,  init } from './features/login/loginAction'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -55,9 +50,6 @@ function App() {
     <div className="App">
       {Page()}
       <ToastContainer />
-  
-      {/* <Dashboard /> */}
-    {/* <RegisterUserPage/> */}
    
     </div>
   );
