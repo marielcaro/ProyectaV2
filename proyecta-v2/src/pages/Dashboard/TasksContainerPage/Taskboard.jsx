@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext, Droppable,Draggable } from 'react-beautiful-dnd';
 import TaskList from './TaskList';
 import ModalTask from './ModalTask';
 import './tasksContainerPage.css';
-import data from "./mockData.json"
 import axios from 'axios';
 
 

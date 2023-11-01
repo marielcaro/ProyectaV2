@@ -1,12 +1,9 @@
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+
 import welcomeImg from  '../assets/images/teamwork1.png'
 import MainNavBar from '../components/mainNavBar/mainNavBar';
 
 import InicioSesion from '../components/InicioSesion/inicioSesion';
 import { useSelector, useDispatch } from 'react-redux'
-import { access, recover, exit, create, init } from '../features/login/loginAction'
 
 import './mainPage.css';
 

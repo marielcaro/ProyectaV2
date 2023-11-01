@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import ProjectCard from './projectCard';
 import './projectsContainerPage.css'
 import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import EditProjectModal from './editProjectModal';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';

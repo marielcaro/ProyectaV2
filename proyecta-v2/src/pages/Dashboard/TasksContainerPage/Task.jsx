@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './tasksContainerPage.css';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
-import image from '../../../assets/images/project-management.png'
-import axios from 'axios';
-
 
 const Task = (props) => {
-  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
-
   const handleClickTask = (event) =>{
     props.handleClickTask(event.target.offsetParent.id)
   }

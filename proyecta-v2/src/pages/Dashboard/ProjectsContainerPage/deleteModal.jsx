@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import './projectsContainerPage.css';
 
 import { Button, Modal } from 'react-bootstrap';

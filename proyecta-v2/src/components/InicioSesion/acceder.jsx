@@ -5,8 +5,8 @@ import user from '../../assets/icons/user.png'
 import key from '../../assets/icons/key.png'
 import Box from '@mui/material/Box';
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
-import { access, exit, create, recover,register } from '../../features/login/loginAction'
+import {  useDispatch } from 'react-redux'
+import { access, recover,register } from '../../features/login/loginAction'
 import axios from 'axios';
 import ErrorToast from '../Toast/ErrorToast';
 import Loader from '../Loader/Loader';

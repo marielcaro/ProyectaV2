@@ -3,8 +3,7 @@ import DashboardSideBar from "./dashboardSideBar/dashboardSideBar";
 
 import DashboardNavBar from './DashboardNavBar/dashboardNavBar';
 import { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux'
-import { projects, dashboard, tasks, calendar } from '../../features/dashboard/dashboardAction.js'
+import { useSelector } from 'react-redux'
 
 import TasksContainerPage from "./TasksContainerPage/tasksContainerPage"
 import ProjectsContainerPage from "./ProjectsContainerPage/projectsContainerPage"

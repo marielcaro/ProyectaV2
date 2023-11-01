@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import './projectsContainerPage.css';
 import Stack from '@mui/material/Stack';

@@ -1,7 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
 import './fotoUploader.css';
-import { useSelector, useDispatch } from 'react-redux'
-
 import uploadIcon from "../../../assets/icons/upload.png"
 
 const FotoUploader = (props) => {

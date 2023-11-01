@@ -1,7 +1,6 @@
 import React from 'react';
 import './showDayModal.css';
-import Stack from '@mui/material/Stack';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const ShowDayModal = (props) => {
 

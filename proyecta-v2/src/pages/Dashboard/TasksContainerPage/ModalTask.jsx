@@ -4,7 +4,6 @@ import './tasksContainerPage.css';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import BasicDatePicker from '../../../components/DatePicker/DatePicker';
 import BasicDateField from '../../../components/DateField/DateField';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { grey } from '@mui/material/colors';

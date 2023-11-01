@@ -1,7 +1,7 @@
 import './userMenu.css'
 
 import * as React from 'react';
-import { useEffect, useState, useRef } from 'react';
+import { useState} from 'react';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';

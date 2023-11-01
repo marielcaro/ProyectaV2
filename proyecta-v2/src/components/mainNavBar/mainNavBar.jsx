@@ -2,8 +2,8 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 
-import { useSelector, useDispatch } from 'react-redux'
-import { access, exit, login } from '../../features/login/loginAction'
+import { useDispatch } from 'react-redux'
+import { login } from '../../features/login/loginAction'
 
 import icon from '../../assets/icons/proyectaIcon.png';
 import './mainNavBar.css';

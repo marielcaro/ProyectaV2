@@ -4,13 +4,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
-
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux'
-import { access, exit, create, recover, init } from '../../../features/login/loginAction'
 
 const EditProjectMenu = (props) => {
-  const dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClickFotoEdit = (event) => {

@@ -34,6 +34,8 @@ function App() {
           return (<MainPage />)
         case 'Recover':
           return (<MainPage />)
+        default:
+          break;
 
   };
 

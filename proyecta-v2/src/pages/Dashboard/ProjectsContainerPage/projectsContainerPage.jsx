@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SelectProjectPage from './selectProjectPage';
 import './projectsContainerPage.css'
-import data from "./mockDataProject.json"
 import ProjectPage from './projectPage';
 import axios from 'axios';
 import ErrorToast from '../../../components/Toast/ErrorToast';

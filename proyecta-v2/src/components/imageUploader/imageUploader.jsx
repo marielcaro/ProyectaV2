@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import './imageUploader.css';
 import { useSelector, useDispatch } from 'react-redux'
-import { foto, initial } from '../../features/profileImage/profileAction'
+import { foto } from '../../features/profileImage/profileAction'
 
-import uploadIcon from "../../assets/icons/upload.png"
+
 
 const ImageUploader = () => {
  

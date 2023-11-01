@@ -2,14 +2,7 @@ import './userMenu.css'
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
-import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
-
-
-import ajustes from '../../../assets/icons/ajustes.png'
-import logout from '../../../assets/icons/logout.png'
-import user from '../../../assets/icons/user.png'
-
 import * as React from 'react';
 
 const NotificationsList = () => {

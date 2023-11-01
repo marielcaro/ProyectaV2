@@ -1,20 +1,5 @@
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button';
 
-import { useSelector, useDispatch } from 'react-redux'
-import { access, exit } from '../../../features/login/loginAction'
-
-import icon from '../../../assets/icons/proyect.png';
-import notificacion from '../../../assets/icons/notificacion.png';
 import './dashboardNavBar.css';
-
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-
-import image from '../../../assets/images/sampleImage.jpg';
-import menu from '../../../assets/icons/menu.png';
-import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
 
 import { useState } from "react";
 import {useFloating,  offset,  flip,  shift } from '@floating-ui/react';

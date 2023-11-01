@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import Task from './Task';
-import { DragDropContext, Droppable,Draggable } from 'react-beautiful-dnd';
+import { Draggable } from 'react-beautiful-dnd';
 import './tasksContainerPage.css';
 
 const TaskList = (props) => {

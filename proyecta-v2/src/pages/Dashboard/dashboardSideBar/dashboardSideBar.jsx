@@ -11,7 +11,7 @@ import tareasFocus from '../../../assets/icons/tareasFocus.png'
 import calendario from '../../../assets/icons/calendario.png'
 import calendarioFocus from '../../../assets/icons/calendarFocus.png'
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { projects, dashboard, tasks, calendar } from '../../../features/dashboard/dashboardAction.js'
 
 const DashboardSideBar = () => {

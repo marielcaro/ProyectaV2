@@ -1,13 +1,9 @@
 import './tasksContainerPage.css'
 import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import ListItemButton from '@mui/material/ListItemButton';
 
 import InputLabel from '@mui/material/InputLabel';
@@ -21,11 +17,6 @@ import axios from 'axios';
 
 const TaskboardMobile= (props) => {
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
-
-    const [openNews, setOpenNews] = React.useState(true);
-    const [openInProgress, setOpenInProgress] = React.useState(true);
-    const [openResolved, setOpenResolved] = React.useState(true);
-    const [openEnded, setOpenEnded] = React.useState(true);
 
     const [newTaskList, setNewTaskList] = useState(props.projectAllInfo.newTasks);
     const [inProgressTaskList, setInProgressTaskList] = useState(props.projectAllInfo.inProgressTasks);
@@ -66,16 +57,8 @@ const TaskboardMobile= (props) => {
     useEffect(()=> {
       if (selectedTaskId)
         fetchGetTaskById(selectedTaskId)
-      // let selectedTask=searchTask(selectedTaskId)
-      // setTaskData((taskData)=>({...taskData,...selectedTask}))
-      // console.log(selectedTaskId)
+ 
     },[selectedTaskId])
-
-    // useEffect(()=> {
-    //   let selectedTask=searchTask(selectedTaskId)
-    //   setTaskData((taskData)=>({...taskData,...selectedTask}))
-    //   console.log(selectedTaskId)
-    // },[selectedTaskId])
 
     useEffect(()=> {
   

@@ -4,7 +4,6 @@ import Card from 'react-bootstrap/Card';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
-import image from '../../../assets/images/project-management.png'
 import Chip from '@mui/material/Chip';
 import { orange } from '@mui/material/colors';
 
