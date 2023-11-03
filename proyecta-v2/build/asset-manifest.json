@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b48ff9ad.css",
+    "main.js": "/static/js/main.4eac0363.js",
+    "static/js/787.7add26f7.chunk.js": "/static/js/787.7add26f7.chunk.js",
+    "static/media/Nunito-Medium.ttf": "/static/media/Nunito-Medium.a7c01ee77faba77e24c1.ttf",
+    "static/media/Nunito-Light.ttf": "/static/media/Nunito-Light.0ec468f65958d1263b60.ttf",
+    "static/media/Nunito-Regular.ttf": "/static/media/Nunito-Regular.99a3b019e7727ac19479.ttf",
+    "static/media/Nunito-Bold.ttf": "/static/media/Nunito-Bold.f4338623f94e6079de97.ttf",
+    "static/media/BerkshireSwash-Regular.ttf": "/static/media/BerkshireSwash-Regular.deb8b610d048e614dbbf.ttf",
+    "static/media/teamwork1.png": "/static/media/teamwork1.085da043f4e9e3b9bda4.png",
+    "static/media/default.png": "/static/media/default.fc4a208129bf95b5c670.png",
+    "index.html": "/index.html",
+    "main.b48ff9ad.css.map": "/static/css/main.b48ff9ad.css.map",
+    "main.4eac0363.js.map": "/static/js/main.4eac0363.js.map",
+    "787.7add26f7.chunk.js.map": "/static/js/787.7add26f7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b48ff9ad.css",
+    "static/js/main.4eac0363.js"
+  ]
+}

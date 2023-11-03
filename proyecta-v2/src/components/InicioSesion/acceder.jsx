@@ -10,6 +10,7 @@ import { access, recover,register } from '../../features/login/loginAction'
 import axios from 'axios';
 import ErrorToast from '../Toast/ErrorToast';
 import Loader from '../Loader/Loader';
+import SuccessToast from '../../components/Toast/SuccessToast';
 
 const Acceder = () => {
   const [loading, setLoading] = useState(false);
@@ -50,6 +51,9 @@ const Acceder = () => {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('perfilId', response.data.perfilId);
 
+          if(response.status === 200){
+            SuccessToast("Acceso Exitoso");
+          }
         // Aquí debes manejar la respuesta de la API, por ejemplo, almacenar el token de autenticación en el estado de tu aplicación o redirigir al usuario a la página principal.
         console.log(response.data);
     

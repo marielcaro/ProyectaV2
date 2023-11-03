@@ -15,6 +15,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import {  useDispatch } from 'react-redux'
 import { init, login } from '../../features/login/loginAction'
+import SuccessToast from '../../components/Toast/SuccessToast';
+
 
 const RecuperarCuenta = () => {
     const dispatch = useDispatch();
@@ -50,7 +52,9 @@ const RecuperarCuenta = () => {
 
         try {
           const response = await axios.post(`${apiEndpoint}/Authentication/reset-password`, requestData);
-          
+          if(response.status === 200){
+            SuccessToast("Usuario Recuperado con éxito!!");
+          }
           // La respuesta exitosa se encuentra en response.data.
           console.log('Contraseña Recuperada correctamente:', response.data);
           dispatch(login());

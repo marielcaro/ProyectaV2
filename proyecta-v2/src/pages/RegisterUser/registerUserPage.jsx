@@ -30,6 +30,7 @@ import repeat from '../../assets/icons/repeat.png'
 import ErrorToast from '../../components/Toast/ErrorToast';
 import { useSelector, useDispatch } from 'react-redux'
 import { init, login} from '../../features/login/loginAction'
+import SuccessToast from '../../components/Toast/SuccessToast';
 
 import MainNavBar from '../../components/mainNavBar/mainNavBar';
 
@@ -41,12 +42,10 @@ const RegisterUserPage = () => {
   const [gradoOptions, setGradoOptions] = useState([]);
   const [fecNac, setFecNac] = useState('');
   const [repeatedPass, setRepeatedPass] =useState("");
+  const [usernameError, setUsernameError] = useState(''); // Estado para el mensaje de error del username
 
-
-const handleChangeRepeatPass = (e) => {
-  setRepeatedPass(e.currentTarget.value);
-}
-
+  const [passwordValidationMessage, setPasswordValidationMessage] = useState(''); // Estado para el mensaje de validación
+  const [allFieldsCompleted, setAllFieldsCompleted] = useState(false); // Estado para rastrear la completitud de campos
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
 
   const [formData, setFormData] = useState({
@@ -62,6 +61,60 @@ const handleChangeRepeatPass = (e) => {
     principalArea: '',
     username: '',
   });
+  // Función para verificar la contraseña
+  const validatePassword = (password) => {
+    const passwordPattern = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$/;
+    if (!passwordPattern.test(password)) {
+      setPasswordValidationMessage('La contraseña debe ser mayor a 8 dígitos y tener al menos un número, una mayúscula y un símbolo');
+    } else {
+      setPasswordValidationMessage('');
+    }
+  };
+
+ // Función para verificar si todos los campos están completos
+ const checkAllFieldsCompleted = () => {
+  const {
+    email,
+    dni,
+    nombreCompleto,
+    carreraProfesional,
+    universidad,
+    principalArea,
+    username,
+    password
+  } = formData;
+
+  const passwordPattern = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$/;
+
+  if (
+    email !== '' &&
+    dni !== '' &&
+    nombreCompleto !== '' &&
+    fecNac !== '' &&
+    carreraProfesional !== '' &&
+    universidad !== '' &&
+    grado !== '' &&
+    profile.payload !== '' &&
+    principalArea !== '' &&
+    username !== '' &&
+    password !== '' &&
+    passwordPattern.test(password) &&
+    repeatedPass !== '' &&
+    repeatedPass === password &&
+    !usernameError
+  ) {
+    setAllFieldsCompleted(true);
+  } else {
+    setAllFieldsCompleted(false);
+  }
+};
+
+
+const handleChangeRepeatPass = (e) => {
+  setRepeatedPass(e.currentTarget.value);
+}
+
+
 
   const handleDateChange = (date) => {
     setFecNac(dayjs(date).format('YYYY-MM-DDTHH:mm:ss'))
@@ -69,6 +122,19 @@ const handleChangeRepeatPass = (e) => {
 
   const handleInputChange = (e) => {
     const { id, value } = e.currentTarget;
+    if(id === 'password'){
+      validatePassword(value)
+    }
+
+        // Validación para el campo "Username"
+        if (id === 'username') {
+          if (value.length < 6) {
+            setUsernameError('El username debe tener al menos 6 caracteres.');
+          } else {
+            setUsernameError(''); // Borra el mensaje de error si la validación es correcta
+          }
+        }
+
     setFormData({
       ...formData,
       [id]: value,
@@ -133,11 +199,13 @@ const handleChangeRepeatPass = (e) => {
             Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
           },
         });
-        
-        // La respuesta exitosa se encuentra en response.data.
-        console.log('Registro exitoso:', response.data);
-    
-        dispatch(login())
+        if (response.status === 200) {
+          // Registro exitoso
+          SuccessToast("Usuario Registrado con éxito!! Bienvenido");
+          
+        }
+        dispatch(login());
+
         // Realiza las acciones que desees después del registro exitoso, como redireccionar a una página de inicio de sesión, mostrar un mensaje de éxito, etc.
       } catch (error) {
          if(error.response.status === 401)
@@ -161,14 +229,14 @@ const handleChangeRepeatPass = (e) => {
     }
    
   }
+  useEffect(() => {
+    checkAllFieldsCompleted();
+  }, [formData, repeatedPass,profile, fecNac,grado]);
+
   // Llama a la función para obtener las opciones de grado cuando el componente se monta.
   useEffect(() => {
     fetchGradoOptions();
   }, []);
-
-  useEffect(()=> {
-    console.log(fecNac)
-  },[fecNac])
 
     return (
       <>
@@ -293,6 +361,11 @@ const handleChangeRepeatPass = (e) => {
 
                                     </Box>
 
+                                    {/* Mensaje de error del campo "Username" */}
+                                {usernameError && (
+                                  <div style={{ color: 'red' }}>{usernameError}</div>
+                                )}
+
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={key} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
@@ -300,6 +373,8 @@ const handleChangeRepeatPass = (e) => {
                                             id="password" label="Contraseña" type="password" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
+                                      {/* Mensaje de validación de contraseña */}
+                                      <p style={{ color: 'red' }}>{passwordValidationMessage}</p>
 
                                     
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -311,7 +386,7 @@ const handleChangeRepeatPass = (e) => {
                                     </Box>
 
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                    <button type="button" className="createBtn shadow-sm  btn btn-primary px-4 rounded-pill  " onClick={registerUserClick}>Crear Cuenta</button>
+                                    <button type="button" className="createBtn shadow-sm  btn btn-primary px-4 rounded-pill  " disabled={!allFieldsCompleted} onClick={registerUserClick}>Crear Cuenta</button>
                                     </Box>
                                     </Stack>
                           </div>

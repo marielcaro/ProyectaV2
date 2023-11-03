@@ -5,7 +5,7 @@
 
 @media (max-width: 768px) {
     .inicioSesion{
-        display: contents;
+        display: none;
     }
 
  }
