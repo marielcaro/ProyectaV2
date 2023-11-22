@@ -609,7 +609,7 @@ const handleSaveDateEdition = ()=> {
         if(error.response.status === 400){
           ErrorToast("Error en la solicitud, verifique los datos ingresados")
         }else if(error.response.status === 404){
-          ErrorToast("Error interno, Datos no encontrados")
+          ErrorToast("Aún no tienes proyectos Asociados")
         }else if(error.response.status === 500){
           ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
         }
