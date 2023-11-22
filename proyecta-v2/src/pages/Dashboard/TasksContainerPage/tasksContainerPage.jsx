@@ -18,9 +18,12 @@ import ModalTask from './ModalTask';
 import data from "./mockData.json";
 import axios from 'axios';
 import ErrorToast from '../../../components/Toast/ErrorToast';
+import Loader from '../../../components/Loader/Loader';
 
 
 const TasksContainerPage = () => {
+  const [loading, setLoading] = useState(false);
+
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
   const [projects, setProjects] = useState([]);
   const listIds =[{id: 0, listName:'new'},{id: 1, listName:'inProgress'},{id: 2, listName:'resolved'},{id: 3, listName:'ended'}];
@@ -337,7 +340,7 @@ const handleWindowSizeChange = () => {
         if(error.response.status === 400){
           ErrorToast("Error en la solicitud, verifique los datos ingresados")
         }else if(error.response.status === 404){
-          ErrorToast("Error interno, Datos no encontrados")
+          ErrorToast("Aún no tienes proyectos asociados")
         }else if(error.response.status === 500){
           ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
         }
@@ -407,6 +410,8 @@ const handleWindowSizeChange = () => {
 
   const fetchProyectTareaList = async () => {
     try {
+      setLoading(true);
+
       const token = localStorage.getItem('token');
 
       // Obtiene el userName almacenado en localStorage
@@ -434,13 +439,16 @@ const handleWindowSizeChange = () => {
           ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
         }
       } 
-    }
+    } finally{
+      setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+  }
   };
 
 
 
     return(
         <div>
+                {loading && <Loader />} {/* Muestra el Loader cuando `loading` es true */}
 
             <div  className="selectProjectBar mb-3 p-2 shadow-sm">
            
@@ -462,7 +470,7 @@ const handleWindowSizeChange = () => {
                       </Grid>
                       <Grid className="gridButton py-2" xs={4}>
                       <ThemeProvider theme={theme}>
-                        <Button className="newTask ms-0 my-2" variant="contained" color="primary" onClick={handleAddTask}> { mobile === false ? <> <AddIcon sx={{ color: grey[50] }}/> Nueva Tarea </> :  <AddIcon sx={{ color: grey[50] }}/>}</Button>
+                        <Button className="newTask ms-0 my-2" variant="contained" color="primary" onClick={handleAddTask} disabled={projects.length === 0}> { mobile === false ? <> <AddIcon sx={{ color: grey[50] }}/> Nueva Tarea </> :  <AddIcon sx={{ color: grey[50] }}/>}</Button>
                         </ThemeProvider>
                       </Grid>
                     </Grid>

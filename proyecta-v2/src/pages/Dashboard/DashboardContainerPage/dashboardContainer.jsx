@@ -9,8 +9,12 @@ import Avatar from '@mui/material/Avatar';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { refreshToken } from '../../../services/tokenService';
+import Loader from '../../../components/Loader/Loader';
+
 
 const DashboardContainer = () => {
+  const [loading, setLoading] = useState(false);
+
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
     const [proyectList, setProyectList] = useState([]);
     const [noProyectMessage, setNoProyectMessage] = useState("");
@@ -71,6 +75,8 @@ const DashboardContainer = () => {
 
     const fetchProyectList = async () => {
         try {
+          setLoading(true);
+
           const token = localStorage.getItem('token');
     
           // Obtiene el userName almacenado en localStorage
@@ -87,10 +93,16 @@ const DashboardContainer = () => {
             setNoProyectMessage("Aún no tienes asociado ningún proyecto")
             
         }
+      
+          finally{
+            setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+        }
       };
       
       const fetchTareaList = async () => {
         try {
+          setLoading(true);
+
           let token = localStorage.getItem('token');
     
           // Obtiene el userName almacenado en localStorage
@@ -106,11 +118,15 @@ const DashboardContainer = () => {
         } catch (error) {
             setNoTareaMessage("Aún no tienes asociada ninguna tarea")
             
-        }
+        }finally{
+          setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+      }
       };
 
       const fetchEventoList = async () => {
         try {
+          setLoading(true);
+
           const token = localStorage.getItem('token');
     
           // Obtiene el userName almacenado en localStorage
@@ -126,7 +142,9 @@ const DashboardContainer = () => {
         } catch (error) {
             setNoEventoMessage("Aún no tienes asociado ningún evento")
             
-        }
+        }finally{
+          setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+      }
       };
 
 
@@ -141,6 +159,8 @@ const DashboardContainer = () => {
     return(
     
             <Grid className='dashboardContainer' container spacing={2}>
+                {loading && <Loader />} {/* Muestra el Loader cuando `loading` es true */}
+
                 {/* Columna 1: Lista de Proyectos */}
                 <Grid item xs={12} sm={6} md={4}>
                     <Card className="dashboardCard" variant="outlined" sx={{ boxShadow: '0 4px 6px rgba(255, 165, 0, 0.1)' }}>

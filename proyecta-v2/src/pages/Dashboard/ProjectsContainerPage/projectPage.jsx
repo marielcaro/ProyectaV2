@@ -22,9 +22,12 @@ import MembersListPage from './membersListPage';
 import EditFotoModal from './editFotoModal';
 import DeleteModal from './deleteModal';
 import greyIcon from '../../../assets/icons/grey.png'
+import axios from 'axios';
 
 
 const ProjectPage = (props) => {
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
     const [value, setValue] = React.useState('1');
     const [id,setId] = useState(props.project.id)
  const [image, setImage] = useState(props.project.fotoPerfil)
@@ -33,7 +36,7 @@ const ProjectPage = (props) => {
  const [editFotoModalShow, setEditFotoModalShow] =useState(false);
  const [editInfoModalShow, setEditInfoModalShow] =useState(false);
  const [deleteModalShow, setDeleteModalShow] =useState(false);
-
+const [disableEdit, setDisableEdit] = useState(false);
 
  const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -97,6 +100,35 @@ const ProjectPage = (props) => {
       return brightness >= 128 ? 'black' : 'white';
     };
 
+    const obtenerRolPerfil = async (proyectoId) => {
+      try {
+         const token = localStorage.getItem('token');
+         const perfilId = localStorage.getItem('perfilId');
+        // Hacer la solicitud al endpoint GetPerfilCategoriaByPerfilId en C#
+        const response = await axios.get(`${apiEndpoint}/Integrante/RolPorIntegrante?proyectoId=${proyectoId}&perfilId=${perfilId}`, {
+         headers: {
+           Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+         },
+       });
+        
+      
+          const rol = response.data.rol;
+          const investigador = 'Investigador';
+          // Verificar la categoría recibida (suponiendo que el campo 'categoria' contiene la categoría del perfil)
+          if ( rol.toUpperCase() === investigador.toUpperCase()) {
+            // Si la categoría del perfil es 'Estudiante', deshabilitar el botón
+            setDisableEdit(true);
+          } else {
+            // Si no es 'Estudiante', habilitar el botón
+            setDisableEdit(false);}
+          
+        
+      } catch (error) {
+        console.error('Error al obtener la categoría del perfil:', error);
+        // Manejar el error si ocurre un problema con la solicitud
+      }
+    };
+
     useEffect(() => {
       if(image){
         extractColors(image)
@@ -114,14 +146,22 @@ const ProjectPage = (props) => {
     useEffect(()=> {
       if(props.project.fotoPerfil){
         setImage(props.project.fotoPerfil)
-      
       }
     },[props.project.fotoPerfil])
       
     useEffect(()=> {
       if(props.project.id)
       setId(props.project.id)
+
     },[props.project.id])
+
+    useEffect(()=>{
+      if(id){
+        obtenerRolPerfil(id)
+
+      }
+
+    },[id])
 
     useEffect(()=> {
       if(dominantColor)
@@ -167,13 +207,14 @@ return(
           ref={refs.setReference} {...getReferenceProps()}
             className="editProjectButton"
             style={{
-              background: 'white',
-              color: 'orange',
+              background: disableEdit ? 'grey' : 'white', // Cambiar el color de fondo a gris si disableEdit es true
+              color: disableEdit ? 'darkgrey' : 'orange', // Cambiar el color del ícono a gris oscuro si disableEdit es true
               position: 'absolute',
               bottom: '16px',
               right: '8px',
               zIndex: 2,
             }}
+            disabled={disableEdit}
           >
             <EditIcon />
           </Fab>

@@ -4,9 +4,12 @@ import './projectsContainerPage.css'
 import ProjectPage from './projectPage';
 import axios from 'axios';
 import ErrorToast from '../../../components/Toast/ErrorToast';
+import Loader from '../../../components/Loader/Loader';
 
 
 const ProjectsContainerPage = () => {
+  const [loading, setLoading] = useState(false);
+
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
     const [projectList, setProjectList] = useState(null);
     const [noProyectMessage, setNoProyectMessage] = useState("");
@@ -274,6 +277,7 @@ const ProjectsContainerPage = () => {
 
     const fetchProyectList = async () => {
         try {
+          setLoading(true);
           const token = localStorage.getItem('token');
     
           // Obtiene el userName almacenado en localStorage
@@ -290,6 +294,9 @@ const ProjectsContainerPage = () => {
             setNoProyectMessage("Aún no tienes asociado ningún proyecto")
             
         }
+         finally{
+            setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+        }
       };
 
     useEffect(() => {
@@ -305,6 +312,7 @@ const ProjectsContainerPage = () => {
 
     return(
         <div>
+          {loading && <Loader />} {/* Muestra el Loader cuando `loading` es true */}
         {showList ? <SelectProjectPage projectList={projectList} handleClickProject={(id) => handleClickProject(id)} addProject={(obj) => addProjectMethod(obj)}/> : 
         <ProjectPage project={selectedCard} backTrack={handleBackTrack} deleteProject={(id)=>handleDeleteData(id)} editFoto={(id,img) => handleEditFotoData(id,img)} editInfo= {(id,obj) => handleEditData(id,obj)} editLinks={(id,section, list) =>handleEditLinks(id,section,list)} />}
      </div>

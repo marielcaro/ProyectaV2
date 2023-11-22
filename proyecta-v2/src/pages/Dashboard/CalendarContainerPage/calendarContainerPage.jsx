@@ -27,9 +27,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import axios from 'axios';
 import ErrorToast from '../../../components/Toast/ErrorToast';
+import Loader from '../../../components/Loader/Loader';
 
 
 const CalendarContainerPage = () => {
+  const [loading, setLoading] = useState(false);
+
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
   const [dayRangeModal, setDayRangeModal] = useState(null);
   const [eventModal, setEventModal] = useState(null);
@@ -646,6 +649,8 @@ const handleSaveDateEdition = ()=> {
 
   const fetchGetEventByPerfilId= async () => {
     try {
+      setLoading(true);
+
       const token = localStorage.getItem('token');
       const perfilId = localStorage.getItem('perfilId')
 
@@ -687,7 +692,9 @@ const handleSaveDateEdition = ()=> {
           ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
         }
       } 
-    }
+    }finally{
+      setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+  }
   };
 
 
@@ -695,6 +702,8 @@ const handleSaveDateEdition = ()=> {
  return(
  
     <div className='calendarBoard'>
+     {loading && <Loader />} {/* Muestra el Loader cuando `loading` es true */}
+
      <FullCalendar
         plugins={[ dayGridPlugin, interactionPlugin ]}
         locale = {esLocale}
