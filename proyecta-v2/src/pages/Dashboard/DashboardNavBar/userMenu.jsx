@@ -8,7 +8,7 @@ import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import axios from 'axios';
-
+import SuccessToast from '../../../components/Toast/SuccessToast.jsx';
 import ajustes from '../../../assets/icons/ajustes.png'
 import logout from '../../../assets/icons/logout.png'
 import user from '../../../assets/icons/user.png'
@@ -53,7 +53,11 @@ const UserMenu = () => {
         localStorage.removeItem('perfilId');
 
         dispatch(dashboard())
-
+        if (response.status === 200) {
+          // Registro exitoso
+          SuccessToast("Saliendo de la aplicación...");
+          
+        }
 
         dispatch(exit());
       })

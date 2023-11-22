@@ -85,6 +85,8 @@ const ProjectsContainerPage = () => {
 
 
         try {
+          setLoading(true);
+
          const token = localStorage.getItem('token');    
     
           const response = await axios.post(`${apiEndpoint}/Proyecto/CrearProyecto`, requestData, {
@@ -109,7 +111,9 @@ const ProjectsContainerPage = () => {
             }
           } 
             
-        }
+        } finally{
+          setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+      }
       };
 
       const fetchEditProyectInfo = async (id, obj) => {
@@ -231,6 +235,7 @@ const ProjectsContainerPage = () => {
 
       const fetchProyectById = async (id) => {
         try {
+          setLoading(true);
           const token = localStorage.getItem('token');
            
           
@@ -272,7 +277,9 @@ const ProjectsContainerPage = () => {
               ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
             }
           } 
-        }
+        }finally{
+          setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+      }
       };
 
     const fetchProyectList = async () => {

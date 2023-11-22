@@ -475,6 +475,7 @@ const handleSaveDateEdition = ()=> {
 
   const fetchAddNewEvent = async (obj) => {
     try {
+      setLoading(true)
       const token = localStorage.getItem('token');
       const requestData=
       {  
@@ -513,6 +514,8 @@ const handleSaveDateEdition = ()=> {
           ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
         }
       } 
+    } finally{
+      setLoading(false)
     }
   };
 

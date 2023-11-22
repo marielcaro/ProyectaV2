@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import ImageUploader from '../../../components/imageUploader/imageUploader';
 import axios from 'axios';
 import ErrorToast from '../../../components/Toast/ErrorToast';
-
+import SuccessToast from '../../../components/Toast/SuccessToast';
 
 import { Button, Modal } from 'react-bootstrap';
 
@@ -76,9 +76,12 @@ const ChangeProfileModal = (props) => {
               Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
             },
           });
-          
-          // La respuesta exitosa se encuentra en response.data.
-          console.log('Registro exitoso:', response.data);
+          if (response.status === 200) {
+            // Registro exitoso
+            SuccessToast("Cambios registrados correctamenta");
+            
+          }
+      
           props.handleHide()
           // Realiza las acciones que desees después del registro exitoso, como redireccionar a una página de inicio de sesión, mostrar un mensaje de éxito, etc.
         } catch (error) {
@@ -154,6 +157,9 @@ const ChangeProfileModal = (props) => {
             if (perfilData.categoria) {
               setGrado(perfilData.categoria);
             }
+
+          
+
           } catch (error) {
             if(error.response.status === 401)
                 {

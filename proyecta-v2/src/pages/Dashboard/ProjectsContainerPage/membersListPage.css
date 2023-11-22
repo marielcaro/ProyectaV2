@@ -1,8 +1,15 @@
+ .MuiListItem-root:hover {
+    cursor: pointer;
+    background-color: linen;
+  }
+
 .listContainer{
     align-items: left;
     overflow-y: auto;
     max-height: 52vh !important;
 }
+
+
 
 .fab-button {
     position: fixed !important;

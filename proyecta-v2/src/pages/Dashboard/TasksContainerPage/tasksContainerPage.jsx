@@ -294,6 +294,7 @@ const handleWindowSizeChange = () => {
 
   const fetchAddNewTask = async (obj) => {
     try {
+      setLoading(true)
       const token = localStorage.getItem('token');
 
       const response = await axios.post(`${apiEndpoint}/Tarea/CrearTarea`, obj, {
@@ -315,7 +316,9 @@ const handleWindowSizeChange = () => {
           ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
         }
       } 
-    }
+    }finally{
+      setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+  }
   };
 
   const fetchProyectList = async () => {

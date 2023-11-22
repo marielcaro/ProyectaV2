@@ -31,10 +31,12 @@ import ErrorToast from '../../components/Toast/ErrorToast';
 import { useSelector, useDispatch } from 'react-redux'
 import { init, login} from '../../features/login/loginAction'
 import SuccessToast from '../../components/Toast/SuccessToast';
-
+import Loader from '../../components/Loader/Loader';
 import MainNavBar from '../../components/mainNavBar/mainNavBar';
 
 const RegisterUserPage = () => {
+  const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch()
   const profile = useSelector((state) => state.profile.value)
 
@@ -192,6 +194,8 @@ const handleChangeRepeatPass = (e) => {
       };
 
       try {
+        setLoading(true);
+
         const token = localStorage.getItem('token');
 
         const response = await axios.post(`${apiEndpoint}/Authentication/registro`, requestData,{
@@ -221,7 +225,9 @@ const handleChangeRepeatPass = (e) => {
             }
           } 
     
-      } 
+      }   finally{
+        setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+    }
 
 
     } else{
@@ -243,6 +249,8 @@ const handleChangeRepeatPass = (e) => {
                <MainNavBar />
 
         <div className='registerUser container-fluid  d-flex flex-grow-1 flex-column'>
+        {loading && <Loader />} {/* Muestra el Loader cuando `loading` es true */}
+
       <div className='row  registerUserRow d-flex  flex-grow-1  align-items-center' >
       <div className='registerPage col  col-12 '>
                 <div className="card">
