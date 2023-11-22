@@ -129,8 +129,51 @@ const ChangeProfileModal = (props) => {
     }
   };
 
+        // Función para obtener las opciones de "último grado alcanzado" desde el servidor.
+        const fetchPerfilInformationOptions = async () => {
+          try {
+            const token = localStorage.getItem('token');
+            const id =localStorage.getItem('perfilId');
+
+            const response = await axios.get(`${apiEndpoint}/Perfil/GetPerfilInformation?perfilId=${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
+              },
+            });
+      
+            const perfilData = response.data; // Suponiendo que response.data contiene los datos del perfil
+            setFormData({
+              carreraProfesional: perfilData.carreraProfesional || '',
+              universidad: perfilData.universidad || '',
+              categoria: perfilData.categoria || '',
+              fotoPerfil: perfilData.fotoPerfil || '',
+              principalArea: perfilData.principalArea || ''
+            });
+
+             // Si hay un valor de grado en el perfil, establece el estado de grado
+            if (perfilData.categoria) {
+              setGrado(perfilData.categoria);
+            }
+          } catch (error) {
+            if(error.response.status === 401)
+                {
+                  ErrorToast("Acceso no Autorizado")
+                }else{
+                  if(error.response.status === 400){
+                    ErrorToast("Error en la solicitud")
+                  }else if(error.response.status === 404){
+                    ErrorToast("No existen categorias académicas ingresados")
+                  }else if(error.response.status === 500){
+                    ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+                  }
+                } 
+          }
+        };
+
     useEffect(()=>{
         setShow(props.show)
+        fetchGradoOptions();
+        fetchPerfilInformationOptions(); // Llamar a la función al cargar el component
       },[props.show])
 
       useEffect(() => {
@@ -148,7 +191,7 @@ const ChangeProfileModal = (props) => {
             <Stack spacing={2}>
                             <div>
                                       <p style={{marginBottom:0}}>Subí una foto para tu perfil de usuario:</p>
-                                    <ImageUploader />
+                                    <ImageUploader initialImage={formData.fotoPerfil} />
                                     </div>
                                                                                                      
                                     
@@ -161,7 +204,7 @@ const ChangeProfileModal = (props) => {
                                         <img className='icons' src={subject} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="principalArea" label="Principal Área de Investigación" variant="standard" onChange={handleInputChange} />
+                                            id="principalArea" label="Principal Área de Investigación" variant="standard" onChange={handleInputChange} value={formData.principalArea}/>
 
                                     </Box>
 
@@ -169,7 +212,7 @@ const ChangeProfileModal = (props) => {
                                         <img className='icons' src={career} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="carreraProfesional" label="Carrera Universitaria" variant="standard" onChange={handleInputChange}/>
+                                            id="carreraProfesional" label="Carrera Universitaria" variant="standard" onChange={handleInputChange} value={formData.carreraProfesional}/>
 
                                     </Box>
 
@@ -205,7 +248,7 @@ const ChangeProfileModal = (props) => {
                                         <img className='icons' src={university} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="universidad" label="Universidad" variant="standard" onChange={handleInputChange}/>
+                                            id="universidad" label="Universidad" variant="standard" onChange={handleInputChange}  value={formData.universidad}/>
 
                                     </Box>
 

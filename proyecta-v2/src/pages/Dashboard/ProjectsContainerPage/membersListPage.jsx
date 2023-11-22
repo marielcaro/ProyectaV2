@@ -22,10 +22,13 @@ import Select from '@mui/material/Select';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import ErrorToast from '../../../components/Toast/ErrorToast';
-
+import MemberDetailsModal from './memberDetailsModal';
 
 const MembersListPage = (props) => {
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
+    const [showMemberDetailsModal, setShowMemberDetailsModal] = useState(false);
+    const [selectedMemberId, setSelectedMemberId] = useState(null);
 
     const [allMembers, setAllMembers] = useState(props.members);
     const [editingName, setEditingName] = useState("");
@@ -60,6 +63,11 @@ const MembersListPage = (props) => {
         }
          
     }
+
+    const handleListItemClick = (perfilId) => {
+      setSelectedMemberId(perfilId);
+      setShowMemberDetailsModal(true);
+    };
 
     const handleCloseAddMember = () => {
         setShowAddMember(false);
@@ -299,7 +307,7 @@ const MembersListPage = (props) => {
         <div className="listContainer">
              <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
         {allMembers.map((member, index) => (
-                    <ListItem id={member.perfilId}>
+                    <ListItem id={member.perfilId} key={member.perfilId} onClick={() => handleListItemClick(member.perfilId)}>
                     <ListItemAvatar>
                         
                     <Avatar sx={{ bgcolor: deepOrange[500] }}
@@ -321,6 +329,14 @@ const MembersListPage = (props) => {
      
     
     </List>
+
+    {/* Mostrar el Modal de detalles del miembro */}
+    <MemberDetailsModal
+        show={showMemberDetailsModal}
+        onHide={() => setShowMemberDetailsModal(false)}
+        perfilId={selectedMemberId}
+      />
+      
     <Fab
         style={{ backgroundColor: 'orangered', color: 'white' }}
         aria-label="Agregar Integrante"

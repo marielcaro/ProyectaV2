@@ -107,6 +107,20 @@ const UserIconButton = () => {
 
     useEffect(() =>{
       if(profile){
+        
+      // Convertir la cadena base64 a un Blob
+      const byteCharacters = atob(profile.split(',')[1]);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'image/jpeg' });
+
+      // Obtener el tamaño del Blob en bytes
+      const imageSizeInBytes = blob.size;
+      console.log(`El tamaño de la imagen perfil base64 es: ${imageSizeInBytes} bytes`);
+
         dispatch (foto(profile));
       }
     },[profile])

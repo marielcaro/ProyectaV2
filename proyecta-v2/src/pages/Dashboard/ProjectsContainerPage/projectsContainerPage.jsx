@@ -236,7 +236,26 @@ const ProjectsContainerPage = () => {
               Authorization: `Bearer ${token}`, // Reemplaza YourAccessTokenHere por el token de autorización.
             },
           });
+
+          if( response.data.fotoPerfil !=='/static/media/default.fc4a208129bf95b5c670.png'){
+                // Convertir la cadena base64 a un Blob
+                const byteCharacters = atob(response.data.fotoPerfil.split(',')[1]);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], { type: 'image/jpeg' });
+
+                // Obtener el tamaño del Blob en bytes
+                const imageSizeInBytes = blob.size;
+                console.log(`El tamaño de la imagen proyecto base64 es: ${imageSizeInBytes} bytes`);
+          }
+            
           setSelectedCard(response.data); // Asume que la respuesta contiene las opciones en un formato adecuado.
+
+           
+
         } catch (error) {
           if(error.response.status === 401)
           {

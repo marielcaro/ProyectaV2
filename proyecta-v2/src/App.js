@@ -12,32 +12,38 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const login = useSelector((state) => state.login.value)
+  const isMobile = window.innerWidth < 768; // Define el ancho que consideras como mobile
+
 
   const Page  = () => {
-    switch (login) {
-      case 'Login':
-        return   (<LoginAlone />)
-      case 'Access':
-        return   (<Dashboard />)
-      
-      case 'Exit':
-        return (<MainPage />)
-     
-      case 'Initial':
-        return (<MainPage />)
-
-         case 'Register':
-        return (<RegisterUserPage />)
+        if (isMobile && login === 'Recover') {
+          return <LoginAlone />;
+        } else {
+        switch (login) {
+          case 'Login':
+            return   (<LoginAlone />)
+          case 'Access':
+            return   (<Dashboard />)
+          
+          case 'Exit':
+            return (<MainPage />)
         
+          case 'Initial':
+            return (<MainPage />)
 
-        case 'Create':
-          return (<MainPage />)
-        case 'Recover':
-          return (<MainPage />)
-        default:
-          break;
+            case 'Register':
+            return (<RegisterUserPage />)
+            
 
-  };
+            case 'Create':
+              return (<MainPage />)
+            case 'Recover':
+              return (<MainPage />)
+            default:
+              break;
+
+      };
+    }
 
   }
 

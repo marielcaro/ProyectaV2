@@ -1,3 +1,5 @@
+import './recuperarCuenta.css';
+
 import Stack from '@mui/material/Stack';
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';

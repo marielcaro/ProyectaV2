@@ -3,7 +3,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 
 import { useDispatch } from 'react-redux'
-import { login } from '../../features/login/loginAction'
+import { access, login } from '../../features/login/loginAction'
 
 import icon from '../../assets/icons/proyectaIcon.png';
 import './mainNavBar.css';
