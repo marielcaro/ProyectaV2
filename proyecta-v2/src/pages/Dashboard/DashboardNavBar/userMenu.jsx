@@ -19,14 +19,18 @@ import { dashboard } from '../../../features/dashboard/dashboardAction.js'
 
 import ChangeProfileModal from './changeProfile';
 import ChangeUserInfoModal from './changeUserInfo';
+import Loader from '../../../components/Loader/Loader.jsx';
+import ErrorToast from '../../../components/Toast/ErrorToast.jsx';
 
 const UserMenu = () => {
+  const [loading, setLoading] = useState(false);
+
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
 
   const [showProfileModal, setShowProfileModal] =useState(false);
   const [showUserInfoModal, setShowUserInfoModal] =useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     const token = localStorage.getItem('token');
 
     // Obtiene el userName almacenado en localStorage
@@ -39,9 +43,11 @@ const UserMenu = () => {
     Authorization: `Bearer ${token}`,
     userName: userName
   };
+  try {
+    setLoading(true);
 
-  axios.post(`${apiEndpoint}/Authentication/logout?userName=${userName}`, data, { headers })
-      .then(response => {
+    const response = await axios.post(`${apiEndpoint}/Authentication/logout?userName=${userName}`, data, { headers });
+     
         // Procesa la respuesta del logout
         // ...
         localStorage.removeItem('token');
@@ -60,11 +66,12 @@ const UserMenu = () => {
         }
 
         dispatch(exit());
-      })
-      .catch(error => {
+      } catch (error) {
         // Maneja cualquier error que pueda ocurrir durante el logout.
-        console.error(error);
-      });
+        ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
+      } finally{
+        setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+      }
   };
 
   const handleShowUserInfoModal = () =>{
@@ -97,6 +104,8 @@ const UserMenu = () => {
 
 return(
     <div> 
+       {loading && <Loader />} {/* Muestra el Loader cuando `loading` es true */}
+
        <Paper>
         <MenuList>
           <MenuItem onClick={handleShowProfileModal}>

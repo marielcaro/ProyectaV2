@@ -13,6 +13,7 @@ import ErrorToast from '../Toast/ErrorToast';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Loader from '../Loader/Loader';
 
 
 import {  useDispatch } from 'react-redux'
@@ -21,6 +22,8 @@ import SuccessToast from '../../components/Toast/SuccessToast';
 
 
 const RecuperarCuenta = () => {
+  const [loading, setLoading] = useState(false);
+
     const dispatch = useDispatch();
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
     const [repeatedPass, setRepeatedPass] =useState("");
@@ -53,6 +56,8 @@ const RecuperarCuenta = () => {
         };
 
         try {
+          setLoading(true);
+
           const response = await axios.post(`${apiEndpoint}/Authentication/reset-password`, requestData);
           if(response.status === 200){
             SuccessToast("Usuario Recuperado con éxito!!");
@@ -74,7 +79,9 @@ const RecuperarCuenta = () => {
               ErrorToast('Servidor inhabilitado, intente nuevamente más tarde. Estamos mejorando sus servicios.');
             }
           }   
-        } 
+        }  finally{
+          setLoading(false); // Oculta el Loader después de la petición (éxito o fallo)
+        }
 
       }else{
         alert ("Contraseña no coincidente o campos vacíos");
@@ -83,6 +90,8 @@ const RecuperarCuenta = () => {
 
     return(
         <div className="recuperarCuenta card mx-auto my-1   p-5">
+           {loading && <Loader />} {/* Muestra el Loader cuando `loading` es true */}
+
    <IconButton onClick={() => dispatch(init())} className="backButton" aria-label="back">
               <ArrowBackIcon />
             </IconButton>
