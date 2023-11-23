@@ -45,7 +45,7 @@ const RegisterUserPage = () => {
   const [fecNac, setFecNac] = useState('');
   const [repeatedPass, setRepeatedPass] =useState("");
   const [usernameError, setUsernameError] = useState(''); // Estado para el mensaje de error del username
-
+  const [repeatedPassError, setRepeatedPassError] = useState(false);
   const [passwordValidationMessage, setPasswordValidationMessage] = useState(''); // Estado para el mensaje de validación
   const [allFieldsCompleted, setAllFieldsCompleted] = useState(false); // Estado para rastrear la completitud de campos
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
@@ -65,9 +65,9 @@ const RegisterUserPage = () => {
   });
   // Función para verificar la contraseña
   const validatePassword = (password) => {
-    const passwordPattern = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$/;
+    const passwordPattern = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^*&+=]).{8,}$/;
     if (!passwordPattern.test(password)) {
-      setPasswordValidationMessage('La contraseña debe ser mayor a 8 dígitos y tener al menos un número, una mayúscula y un símbolo');
+      setPasswordValidationMessage('La contraseña debe ser mayor a 8 dígitos y tener al menos un número, una mayúscula y un símbolo (@,#,$,%,^,*,&,+,=)');
     } else {
       setPasswordValidationMessage('');
     }
@@ -114,6 +114,14 @@ const RegisterUserPage = () => {
 
 const handleChangeRepeatPass = (e) => {
   setRepeatedPass(e.currentTarget.value);
+
+  // Validación para contraseña repetida
+  if (e.currentTarget.value !== formData.password) {
+    setRepeatedPassError(true);
+  } else {
+    setRepeatedPassError(false);
+  }
+
 }
 
 
@@ -274,8 +282,8 @@ const handleChangeRepeatPass = (e) => {
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={fullname} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
-                                                    
-                                            id="nombreCompleto" label="Nombre y Apellido Completo" variant="standard" onChange={handleInputChange}/>
+                                                    required
+                                            id="nombreCompleto" label="Nombre y Apellido" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
@@ -286,10 +294,13 @@ const handleChangeRepeatPass = (e) => {
                           <div className="formColumn col col-12 col-sm-12 col-md-4  col-lg-4 col-xl-4">
                           <Stack spacing={2}>
                           <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                        <img className='icons' src={nrodni} height="24" width="24" alt="User" />
+                            <div>
+                            <img className='icons' src={nrodni} height="24" width="24" alt="User" />
+                            </div>
+                                       
                                           <TextField fullWidth  
-                                                    
-                                            id="dni" label="Número de documento" type="number" variant="standard" onChange={handleInputChange}/>
+                                                    required
+                                            id="dni" label="DNI" type="number" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
@@ -298,15 +309,15 @@ const handleChangeRepeatPass = (e) => {
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={subject} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
-                                                    
-                                            id="principalArea" label="Principal Área de Investigación" variant="standard" onChange={handleInputChange}/>
+                                                    required
+                                            id="principalArea" label="Área de Investigación" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={career} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
-                                                    
+                                                    required
                                             id="carreraProfesional" label="Carrera Universitaria" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
@@ -319,6 +330,7 @@ const handleChangeRepeatPass = (e) => {
                                           <FormControl variant="standard" sx={{ m: 1 , minWidth: '100%' }}>
                                       <InputLabel id="demo-simple-select-standard-label">Último grado alcanzado</InputLabel>
                                       <Select
+                                      required
                                         labelId="demo-simple-select-standard-label"
                                         id="demo-simple-select-standard"
                                         value={grado}
@@ -342,7 +354,7 @@ const handleChangeRepeatPass = (e) => {
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={university} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
-                                                    
+                                                    required
                                             id="universidad" label="Universidad" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
@@ -355,7 +367,7 @@ const handleChangeRepeatPass = (e) => {
                           <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={email} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
-                                                    
+                                                    required
                                             id="email" label="Correo electrónico" type="email" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
@@ -364,34 +376,37 @@ const handleChangeRepeatPass = (e) => {
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={user} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
-                                                    
+                                                    required
                                             id="username" label="Nombre de Usuario" variant="standard" onChange={handleInputChange}/>
 
                                     </Box>
 
                                     {/* Mensaje de error del campo "Username" */}
                                 {usernameError && (
-                                  <div style={{ color: 'red' }}>{usernameError}</div>
+                                  <p className="errorMessage" style={{ color: 'red' }}>{usernameError}</p>
                                 )}
 
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                        <img className='icons' src={key} height="24" width="24" alt="User" />
+                                      <img className='icons' src={key} height="24" width="24" alt="User" />
                                           <TextField fullWidth  
                                                     
-                                            id="password" label="Contraseña" type="password" variant="standard" onChange={handleInputChange}/>
+                                            id="password" label="Contraseña" type="password" variant="standard" onChange={handleInputChange}
+                                      
+                                            />
 
                                     </Box>
                                       {/* Mensaje de validación de contraseña */}
-                                      <p style={{ color: 'red' }}>{passwordValidationMessage}</p>
+                                      <p className="errorMessage" style={{ color: 'red' }}>{passwordValidationMessage}</p>
 
                                     
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <img className='icons' src={repeat} height="24" width="24" alt="User" />
-                                          <TextField fullWidth  
-                                                    
-                                            id="repeat-password" label="Confirmar Contraseña"  type="password" variant="standard" onChange={handleChangeRepeatPass}/>
+                                          <TextField fullWidth                                                     
+                                            id="repeat-password" label="Confirmar Contraseña"  type="password" variant="standard"   
+                                            onChange={handleChangeRepeatPass}/>
 
                                     </Box>
+                                    {repeatedPassError &&  <p className="errorMessage" style={{ color: 'red' }}>Las contraseñas no coinciden.</p>}
 
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                     <button type="button" className="createBtn shadow-sm  btn btn-primary px-4 rounded-pill  " disabled={!allFieldsCompleted} onClick={registerUserClick}>Crear Cuenta</button>
