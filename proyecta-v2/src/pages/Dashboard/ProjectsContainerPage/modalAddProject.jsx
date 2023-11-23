@@ -14,6 +14,7 @@ import Select from '@mui/material/Select';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import ErrorToast from '../../../components/Toast/ErrorToast';
+import BasicDatePicker from '../../../components/DatePicker/DatePicker'
 
 
 const ModalAddProject = (props) => {
@@ -267,7 +268,9 @@ return (
             <Stack spacing={4}  sx={{padding: '4px'}}>
             <TextField id="projectName" label="Nombre del Proyecto" variant="standard" value={title} onChange={handleTitleChange}/>
             <TextField id="resolucion" multiline label="Nro. de Resolución" variant="standard" value={resolucion} onChange={handleResolucionChange}  />
-                      <BasicDateField label="Fecha de Alta" date={taskStartDate} handleChange={(value) => handleInputDateChange(value)} disableFuture={true} />
+            <BasicDatePicker id='Fecha de Alta' label="Fecha de Alta" changeHandler={(value) => handleInputDateChange(value)}/>
+
+                      {/* <BasicDateField label="Fecha de Alta" date={taskStartDate} handleChange={(value) => handleInputDateChange(value)} disableFuture={true} /> */}
                       <TextField id="description" multiline label="Descripción" variant="standard" value={description} onChange={handleDescriptionChange}  />
                    
 
