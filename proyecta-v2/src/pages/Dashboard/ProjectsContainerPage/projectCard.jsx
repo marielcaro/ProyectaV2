@@ -48,7 +48,8 @@ const ProjectCard = (props) => {
             <Stack spacing={1} >
                 <h6 className='taskNumber'> Tareas Cumplidas: {props.proyecto ? props.proyecto.nroTotalTareas : 0} / {props.proyecto  ? props.proyecto.nroTareasCompletas : 0}  </h6>
                     
-                <Stack direction="row" spacing={1}>
+                <Stack  direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 1, sm: 2, md: 4 }} >
                 {tagList.map((tag, index) => (
                 <Chip label={tag.nombreEtiqueta} sx={{ backgroundColor: orange[200] }} key={index} p />
             ))}
