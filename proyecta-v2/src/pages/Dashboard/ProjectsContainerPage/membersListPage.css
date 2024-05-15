@@ -23,6 +23,13 @@
   }
 }
 
+@media screen and (min-height: 739px) and (max-height: 900px) {
+  .listContainer {
+      max-height: 44vh !important; /* Cambia el valor según necesites */
+  }
+}
+
+
 /* Estilo específico para pantallas de altura grande (por ejemplo, más de 900px de alto) */
 @media screen and (min-height: 901px) {
   .listContainer {
