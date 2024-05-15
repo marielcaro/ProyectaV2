@@ -14,6 +14,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from 'axios';
 import ErrorToast from '../../../components/Toast/ErrorToast';
+import BasicDatePicker from '../../../components/DatePicker/DatePicker'
+
 
 const ModalTask = (props) => {
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
@@ -174,7 +176,9 @@ const fetchAllAllowedMembers = async () => {
                                         </Select>
                                       </FormControl> : <></>}
                       <TextField id="nombreProyecto" label="Proyecto" variant="standard" value={props.taskData ? props.taskData.nombreProyecto : ""}/>
-                      <BasicDateField label="Fecha de Finalización" date={taskEndDate} readOnly={readonly} handleChange={(value) => handleInputDateChange(value)}/>
+                      <BasicDatePicker id="fechaFinalizacion" label="Fecha de Finalización" date={taskEndDate} readOnly={readonly} changeHandler={(value) => handleInputDateChange(value)}/>
+
+                      {/* <BasicDateField label="Fecha de Finalización" date={taskEndDate} readOnly={readonly} handleChange={(value) => handleInputDateChange(value)}/> */}
                       <TextField id="descripcion" multiline label="Descripción" variant="standard" value={descriptionTask} onChange={handleDescritionChange}  InputProps={{
                        readOnly: readonly
                     }}/>

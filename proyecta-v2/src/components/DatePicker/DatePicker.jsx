@@ -12,15 +12,29 @@ import './DatePicker.css';
 
 export default function BasicDatePicker(props) {
   const [locale, setLocale] = useState('es');
-  const [value, setValue] = useState(dayjs(''));
-
-  const handleChange = () => {
-    props.changeHandler(value)
-  }
+  // const [value, setValue] = useState(dayjs(new Date(props.date)));
+  const [value, setValue] = useState(props.date ? dayjs(props.date) : null); // Establecer el estado inicial solo si props.date está definido
+  useEffect(() => {
+    handleChange(value);
+  }, [value]);
 
   useEffect(() => {
-    handleChange();
-  },[value])
+    const newValue = props.date ? dayjs(props.date) : null;
+
+    // Actualiza el valor del estado solo si ha cambiado
+// Actualiza el valor del estado solo si ha cambiado
+if (!value || !newValue || !value.isSame(newValue)) {
+  setValue(newValue);
+  console.log("here")
+}
+  }, [props.date]);
+
+  const handleChange = (newValue) => {
+    if (newValue !== null) {
+      setValue(newValue);
+      props.changeHandler(newValue);
+    }
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
@@ -28,16 +42,21 @@ export default function BasicDatePicker(props) {
         label={props.label}
         value={value}
         onChange={(newValue) => {
-          setValue(newValue);
+          handleChange(newValue);
         }}
+
         renderInput={({ inputRef, inputProps, InputProps }) => (
             <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
              {InputProps?.endAdornment}
-             <TextField fullWidth  ref={inputRef} {...inputProps}  id="date" label={props.label} variant="standard" />
-    
-           
+             <TextField fullWidth  ref={inputRef} {...inputProps}  id="date" label={props.label} variant="standard" 
+             readOnly= {props.readOnly} 
+             disabled = {props.readOnly} 
+             />
+               
           </Box>
         )}
+        // open= {!props.readOnly} // Mantener cerrado el DatePicker
+        disabled= {props.readOnly} // Deshabilitar el DatePicker
       />
     </LocalizationProvider>
   );
